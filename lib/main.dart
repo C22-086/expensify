@@ -1,9 +1,9 @@
+import 'package:core/common/route_observer.dart';
 import 'package:core/presentation/bloc/login/login_bloc.dart';
 import 'package:core/presentation/pages/login_page.dart';
+import 'package:expensify/injection.dart' as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:core/common/route_observer.dart';
-import 'package:expensify/injection.dart' as di;
 
 void main() {
   runApp(const MyApp());

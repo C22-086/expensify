@@ -1,4 +1,0 @@
-#Sat Nov 19 12:36:42 WIB 2022
-base.0=/Users/macuser/Documents/Project/GitHub/expensify/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
