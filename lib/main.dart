@@ -1,6 +1,4 @@
-import 'package:core/common/route_observer.dart';
-import 'package:core/presentation/bloc/login/login_bloc.dart';
-import 'package:core/presentation/pages/login_page.dart';
+import 'package:core/core.dart';
 import 'package:expensify/injection.dart' as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,9 +25,9 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(
-                builder: (_) => const LoginPage(),
-              );
+              return MaterialPageRoute(builder: (_) => const LoginPage());
+            case RegisterPage.routeName:
+              return MaterialPageRoute(builder: (_) => const RegisterPage());
             default:
               return MaterialPageRoute(
                 builder: (_) {
