@@ -1,8 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  static const routeName = '/register_page';
+
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +26,13 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 28),
                 Center(
                     child: Text(
-                  'Selamat Datang',
+                  'Buat Akun',
                   style: kHeading5,
                 )),
                 const SizedBox(height: 5),
                 Center(
                     child: Text(
-                  'Silahkan masuk untuk melanjutkan',
+                  'Mulai kelola keuangan anda sekarang!',
                   style: kBodyText,
                 )),
                 const SizedBox(height: 26),
@@ -45,6 +47,26 @@ class LoginPage extends StatelessWidget {
                     hintText: 'Email',
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: kGrey)),
+                  ),
+                  textInputAction: TextInputAction.search,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Nomor Telepon',
+                  style: kHeading7,
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  onChanged: (query) {},
+                  decoration: const InputDecoration(
+                    hintText: 'Nomor Telepon',
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
+                      child: Text('+62 | '),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
                   ),
                   textInputAction: TextInputAction.search,
                 ),
@@ -74,16 +96,55 @@ class LoginPage extends StatelessWidget {
                           value: false,
                           onChanged: (value) {},
                         ),
-                        Text(
-                          'Ingat saya',
-                          style: kBodyText,
+                        Column(
+                          children: [
+                            Row(
+                              children: const [
+                                Text(
+                                  'Saya menyutujui segala isi ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                Text(
+                                  'syarat',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: kGreen),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: const [
+                                Text(
+                                  'penggunaan ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: kGreen),
+                                ),
+                                Text(
+                                  'dan ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                Text(
+                                  'kebijakan privasi',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: kGreen),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ],
                     ),
-                    Text(
-                      'Lupa kata sandi?',
-                      style: kBodyText,
-                    )
                   ],
                 ),
                 const SizedBox(height: 22),
@@ -92,7 +153,7 @@ class LoginPage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(backgroundColor: kGreen),
-                    child: const Text('Masuk'),
+                    child: const Text('Daftar'),
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -149,7 +210,7 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Belum memiliki akun?',
+                      'Sudah memiliki akun?',
                       style: kBodyText,
                     ),
                     const SizedBox(
@@ -157,10 +218,10 @@ class LoginPage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, RegisterPage.routeName);
+                        Navigator.pushNamed(context, '/home');
                       },
                       child: const Text(
-                        'Daftar',
+                        'Masuk',
                         style: TextStyle(
                           color: kGreen,
                           fontSize: 12,
