@@ -80,6 +80,24 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "firebase_core",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_platform_interface",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.5.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_web",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///Users/macuser/Flutter/packages/flutter",
       "packageUri": "lib/",
@@ -100,6 +118,12 @@
     {
       "name": "flutter_test",
       "rootUri": "file:///Users/macuser/Flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///Users/macuser/Flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -126,6 +150,12 @@
       "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
     },
     {
       "name": "lints",
@@ -302,7 +332,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-11-21T12:38:00.080917Z",
+  "generated": "2022-11-22T07:26:20.936669Z",
   "generator": "pub",
   "generatorVersion": "2.18.2"
 }

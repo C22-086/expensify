@@ -37,6 +37,7 @@ dependencies:
   core:
     path: core
   get_it: ^7.2.0
+  firebase_core: ^2.3.0
 
 dev_dependencies:
   flutter_test:
