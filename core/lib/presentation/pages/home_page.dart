@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () async {
               final navigator = Navigator.of(context);
+              GoogleSignIn().signOut();
               await auth.signOut();
               navigator.pushReplacementNamed('/home');
             },

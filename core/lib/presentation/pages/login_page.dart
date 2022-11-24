@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
+  bool _isLoadingGoogle = false;
   bool? _isAgree = false;
   bool _isPasswordShow = false;
   final _emailController = TextEditingController();
@@ -180,7 +182,38 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 40),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    final navigator = Navigator.of(context);
+                    setState(() {
+                      _isLoadingGoogle = true;
+                    });
+
+                    try {
+                      if (FirebaseAuth.instance.currentUser == null) {
+                        GoogleSignInAccount? account =
+                            await GoogleSignIn().signIn();
+
+                        if (account != null) {
+                          GoogleSignInAuthentication auth =
+                              await account.authentication;
+                          OAuthCredential credential =
+                              GoogleAuthProvider.credential(
+                                  accessToken: auth.accessToken,
+                                  idToken: auth.idToken);
+
+                          await FirebaseAuth.instance
+                              .signInWithCredential(credential);
+
+                          navigator.pushNamed(HomePage.routeName);
+                        }
+                      }
+                    } catch (e) {
+                      final snackbar = SnackBar(content: Text(e.toString()));
+                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    } finally {
+                      _isLoadingGoogle = false;
+                    }
+                  },
                   child: Container(
                     height: 50,
                     width: double.infinity,
@@ -195,13 +228,23 @@ class _LoginPageState extends State<LoginPage> {
                         Image.network(
                             'http://pngimg.com/uploads/google/google_PNG19635.png',
                             fit: BoxFit.cover),
-                        const Text(
-                          'Masuk dengan Google',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
+                        _isLoadingGoogle
+                            ? Container(
+                                width: 24,
+                                height: 24,
+                                padding: const EdgeInsets.all(2.0),
+                                child: const CircularProgressIndicator(
+                                  color: kGreen,
+                                  strokeWidth: 3,
+                                ),
+                              )
+                            : const Text(
+                                'Masuk dengan Google',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                         const SizedBox(
                           width: 0,
                         )
