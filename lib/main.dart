@@ -11,6 +11,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -21,9 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => di.locator<LoginBloc>(),
-        )
+        BlocProvider(create: (_) => di.locator<LoginBloc>()),
+        BlocProvider(create: (_) => di.locator<RegisterBloc>()),
       ],
       child: MaterialApp(
         title: 'Expensify',
@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const LoginPage());
             case RegisterPage.routeName:
               return MaterialPageRoute(builder: (_) => const RegisterPage());
+            case HomePage.routeName:
+              return MaterialPageRoute(builder: (_) => const HomePage());
             default:
               return MaterialPageRoute(
                 builder: (_) {

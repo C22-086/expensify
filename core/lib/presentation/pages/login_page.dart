@@ -1,8 +1,21 @@
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _auth = FirebaseAuth.instance;
+  bool _isLoading = false;
+  bool? _isAgree = false;
+  bool _isPasswordShow = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +53,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _emailController,
                   onChanged: (query) {},
                   decoration: const InputDecoration(
                     hintText: 'Email',
@@ -55,14 +69,23 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _passwordController,
                   onChanged: (query) {},
-                  decoration: const InputDecoration(
+                  obscureText: !_isPasswordShow,
+                  decoration: InputDecoration(
                     hintText: 'Kata Sandi',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                         borderSide: BorderSide(color: kGrey)),
-                    suffixIcon: Icon(Icons.remove_red_eye),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordShow = !_isPasswordShow;
+                          });
+                        },
+                        icon: Icon(_isPasswordShow
+                            ? Icons.visibility_off
+                            : Icons.visibility)),
                   ),
-                  textInputAction: TextInputAction.search,
                 ),
                 const SizedBox(height: 7),
                 Row(
@@ -71,8 +94,12 @@ class LoginPage extends StatelessWidget {
                     Row(
                       children: [
                         Checkbox(
-                          value: false,
-                          onChanged: (value) {},
+                          value: _isAgree,
+                          onChanged: (value) {
+                            setState(() {
+                              _isAgree = value;
+                            });
+                          },
                         ),
                         Text(
                           'Ingat saya',
@@ -89,10 +116,48 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 22),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      try {
+                        final navigator = Navigator.of(context);
+                        final email = _emailController.text;
+                        final password = _passwordController.text;
+                        if (email.isEmpty) {
+                          const snackbar =
+                              SnackBar(content: Text('Email belum di isi'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        } else if (password.isEmpty) {
+                          const snackbar =
+                              SnackBar(content: Text('Password belum di isi'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        } else {
+                          await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
+                          navigator.pushNamed(HomePage.routeName);
+                        }
+                      } catch (e) {
+                        final snackbar = SnackBar(content: Text(e.toString()));
+                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                      } finally {
+                        _isLoading = false;
+                      }
+                    },
                     style: ElevatedButton.styleFrom(backgroundColor: kGreen),
-                    child: const Text('Masuk'),
+                    icon: _isLoading
+                        ? Container(
+                            width: 24,
+                            height: 24,
+                            padding: const EdgeInsets.all(2.0),
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : const SizedBox(),
+                    label: _isLoading ? const SizedBox() : const Text('Masuk'),
                   ),
                 ),
                 const SizedBox(height: 50),
