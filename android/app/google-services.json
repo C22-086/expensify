@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "496886854887-tbudaipstsl1bcbocm26gjl340v372kd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expensify",
+            "certificate_hash": "a078edcc7871af51bd16d20bedc70ed141874b83"
+          }
+        },
+        {
           "client_id": "496886854887-8j0q2gummmfhesi1tvf7j473vkd4k1pt.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "496886854887-8j0q2gummmfhesi1tvf7j473vkd4k1pt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "496886854887-8tp85lb9ind8fpdiugo1ei0ul2jsl411.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.expensify"
+              }
             }
           ]
         }

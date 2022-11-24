@@ -176,6 +176,36 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "google_sign_in",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-5.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "google_sign_in_android",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "google_sign_in_ios",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_ios-5.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "google_sign_in_platform_interface",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "google_sign_in_web",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.5",
       "packageUri": "lib/",
@@ -302,6 +332,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "quiver",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/macuser/Flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -374,7 +410,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-11-24T06:47:41.643307Z",
+  "generated": "2022-11-24T12:26:40.579324Z",
   "generator": "pub",
-  "generatorVersion": "2.18.4"
+  "generatorVersion": "2.18.5"
 }
