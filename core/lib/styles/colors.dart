@@ -1,6 +1,7 @@
 // colors
 import 'package:flutter/material.dart';
 
+const Color kWhite = Colors.white;
 const Color kRichBlack = Color(0xFF000814);
 const Color kOxfordBlue = Color(0xFF001D3D);
 const Color kPrussianBlue = Color(0xFF003566);
@@ -18,8 +19,8 @@ const kColorScheme = ColorScheme(
   error: Colors.red,
   onPrimary: kRichBlack,
   onSecondary: Colors.white,
-  onSurface: Colors.white,
+  onSurface: Colors.black,
   onBackground: Colors.white,
   onError: Colors.white,
-  brightness: Brightness.dark,
+  brightness: Brightness.light,
 );

@@ -1,5 +1,9 @@
+import 'package:core/core.dart';
+import 'package:core/presentation/widgets/onboarding_content.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../widgets/dots_indicator.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -9,129 +13,107 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  final pageController = PageController();
+  final PageController _pageController = PageController(
+    initialPage: 0,
+  );
 
-  int pageIndex = 0;
+  final pageContent = [
+    const OnboardingContent(
+        imageUrl: 'assets/onboarding_1.png',
+        title: 'Track your daily Expenses  ',
+        description:
+            'Daily note down your expenses to help you manage your income '),
+    const OnboardingContent(
+        imageUrl: 'assets/onboarding_2.png',
+        title: 'Expenses Statistics',
+        description:
+            'Expense patterns are plotted in different types of chart based on date and time for easy understanding '),
+    const OnboardingContent(
+      imageUrl: 'assets/onboarding_3.png',
+      title: 'Plan for your future',
+      description:
+          'Build healthy financial habits. Control unnecessary expenses',
+    ),
+  ];
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Flexible(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _pageContent(
-                      imageUrl: 'assets/onboarding_1.png',
-                      title: 'Track your daily Expenses  ',
-                      description:
-                          'Daily note down your expenses to help you manage your income '),
-                  _pageContent(
-                      imageUrl: 'assets/onboarding_2.png',
-                      title: 'Expenses Statistics',
-                      description:
-                          'Expense patterns are plotted in different types of chart based on date and time for easy understanding '),
-                  _pageContent(
-                    imageUrl: 'assets/onboarding_3.png',
-                    title: 'Plan for your future',
-                    description:
-                        'Build healthy financial habits. Control unnecessary expenses',
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Column _pageContent(
-      {required String imageUrl,
-      required String title,
-      required String description}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          imageUrl,
-        ),
-        const SizedBox(
-          height: 40,
-        ),
-        Text(
-          title,
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 30),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Text(
-            description,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(fontSize: 16),
-          ),
-        ),
-        const SizedBox(height: 81),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < 3; i++)
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: _dotsPageIndicator(
-                  color: pageIndex == i
-                      ? const Color(0xff42BC73)
-                      : const Color(0xffE5E5E5),
+      body: BlocBuilder<OnboardingCubit, OnboardingState>(
+        builder: (context, state) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  onPageChanged: (value) {
+                    state.pageIndex = value;
+                  },
+                  controller: _pageController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: pageContent.length,
+                  itemBuilder: (context, index) {
+                    return pageContent[index];
+                  },
                 ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 28),
-        ElevatedButton(
-          onPressed: () {
-            if (pageController.page!.toInt() < 2) {
-              nextPage();
-            } else {
-              Navigator.pushNamed(context, '/home');
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(22),
-            shape: const CircleBorder(),
-            backgroundColor: const Color(0xff42BC73),
-          ),
-          child: const Icon(Icons.arrow_forward_ios),
-        ),
-      ],
-    );
-  }
-
-  Container _dotsPageIndicator({required Color color}) {
-    return Container(
-      height: 4,
-      width: 30,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
+                Positioned(
+                  bottom: 65,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (int i = 0; i < 3; i++)
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: DotsIndicator(
+                                backgroundColor:
+                                    state.pageIndex == i ? kGreen : kGrey,
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 28),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (state.pageIndex == pageContent.length - 1) {
+                            Navigator.pushNamed(context, '/home');
+                          }
+                          context.read<OnboardingCubit>().nextPage();
+                          _pageController.animateToPage(
+                            state.pageIndex + 1,
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(22),
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: kWhite,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
-  }
-
-  void nextPage() {
-    pageController.animateToPage(pageController.page!.toInt() + 1,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
-    setState(() {
-      pageIndex = pageController.page!.toInt() + 1;
-    });
   }
 }
