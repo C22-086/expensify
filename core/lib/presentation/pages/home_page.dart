@@ -1,8 +1,10 @@
 import 'package:core/core.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:core/presentation/widgets/custome_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../widgets/custom_add_card.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
@@ -24,7 +26,7 @@ class HomePage extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.29,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/green_substract.png'),
@@ -37,142 +39,170 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              right: 30,
-              left: 30,
-              top: 55,
-            ),
-            child: Column(
+            padding: const EdgeInsets.only(top: 25),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset('assets/icon_wallet.png'),
-                            const SizedBox(width: 9),
-                            Text(
-                              'Balance',
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w500,
-                                color: kWhite,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultMargin,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const SizedBox(width: 9),
+                              Text(
+                                'Balance',
+                                style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w500,
+                                  color: kWhite,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Text('IDR 5.000.000',
-                            style: GoogleFonts.inter(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: kWhite)),
-                      ],
-                    ),
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundColor: kWhite,
-                      child: CircleAvatar(
-                        radius: 25,
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Text('IDR 5.000.000',
+                              style: GoogleFonts.inter(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: kWhite)),
+                        ],
                       ),
-                    ),
-                  ],
+                      const CircleAvatar(
+                        radius: 30,
+                        backgroundColor: kWhite,
+                        child: CircleAvatar(
+                          radius: 25,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 45),
                 SizedBox(
                   height: 146,
                   child: ListView(
+                    physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    children: [
-                      buildOverviewChart(),
-                      buildOverviewChart(),
+                    children: const [
+                      OverviewCard(
+                        color: kGreen,
+                        secColor: kSoftGreen,
+                        title: 'Income',
+                        label: "+",
+                        amount: 400,
+                        subMinPercent: "30% from tranfer",
+                        subMaxPercent: "70% from salary",
+                        valueChartOne: 70,
+                        valueChartTwo: 30,
+                        chartOneTitle: "70%",
+                        chartTwoTitle: "30%",
+                      ),
+                      OverviewCard(
+                        color: kRed,
+                        secColor: kSoftRed,
+                        title: 'Expense',
+                        label: "-",
+                        amount: 700,
+                        subMinPercent: "30% from tranfer",
+                        subMaxPercent: "70% from salary",
+                        valueChartOne: 65,
+                        valueChartTwo: 35,
+                        chartOneTitle: "65%",
+                        chartTwoTitle: "35%",
+                      ),
                     ],
                   ),
-                )
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultMargin,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Expanded(
+                              child: AddCard(
+                            iconPath: 'assets/icon_income.png',
+                            subtitle: 'Income',
+                            textColor: kGreen,
+                          )),
+                          SizedBox(width: 20),
+                          Expanded(
+                              child: AddCard(
+                            iconPath: 'assets/icon_expense.png',
+                            subtitle: 'Expense',
+                            textColor: kRed,
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 25),
+                      Text(
+                        "Recent Transaction",
+                        style: kHeading5.copyWith(color: kSoftBlack),
+                      ),
+                      const SizedBox(height: 25),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 8,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 55,
+                                  width: 55,
+                                  decoration: BoxDecoration(
+                                    color: kSoftGreen,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/icon_up.png',
+                                    scale: 2,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Salary", style: kHeading7),
+                                    const SizedBox(height: 5),
+                                    Text("Nov, 18 2022", style: kBodyText),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "+ IDR 20.000",
+                                  style: kHeading6.copyWith(
+                                    color: kGreen,
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
     ));
-  }
-
-  Container buildOverviewChart() {
-    return Container(
-      margin: const EdgeInsets.only(right: 20),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        color: kWhite,
-      ),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Text('Income Overview'),
-                  const SizedBox(width: 10),
-                  Image.asset('assets/icon-trending-up.png'),
-                ],
-              ),
-              Text(
-                '+ IDR 400K',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: kGreen,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '30% from transfer',
-                style: GoogleFonts.poppins(
-                  color: const Color(0xff6C6C6C),
-                ),
-              ),
-              Text(
-                '70& from salary',
-                style: GoogleFonts.poppins(
-                  color: const Color(0xff6C6C6C),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 84,
-            width: 84,
-            child: PieChart(
-              PieChartData(
-                  pieTouchData: PieTouchData(enabled: true),
-                  centerSpaceColor: Colors.transparent,
-                  centerSpaceRadius: 30,
-                  sections: [
-                    PieChartSectionData(
-                      color: const Color(0xff1F8B4E),
-                      value: 70,
-                      title: '70%',
-                      radius: 20,
-                    ),
-                    PieChartSectionData(
-                      color: const Color(0xffE6F7E6),
-                      value: 30,
-                      title: '30%',
-                      radius: 20,
-                    ),
-                  ]),
-              swapAnimationCurve: Curves.linear,
-              swapAnimationDuration: const Duration(
-                milliseconds: 150,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

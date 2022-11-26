@@ -24,7 +24,10 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       BlocProvider.of<AuthBloc>(context).add(
-        LogInRequested(_emailController.text, _passwordController.text),
+        LogInRequested(
+          _emailController.text,
+          _passwordController.text,
+        ),
       );
     }
   }

@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<OnboardingCubit>()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Expensify',
         home: const LoginPage(),
         theme: ThemeData(colorScheme: kColorScheme),
