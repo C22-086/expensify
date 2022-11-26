@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => di.locator<LoginBloc>()),
-        BlocProvider(create: (_) => di.locator<RegisterBloc>()),
+        BlocProvider(create: (_) => di.locator<AuthBloc>()),
       ],
       child: MaterialApp(
         title: 'Expensify',
