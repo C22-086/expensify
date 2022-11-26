@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Expensify',
-        home: const MainPage(),
+        home: const LoginPage(),
         theme: ThemeData(colorScheme: kColorScheme),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {

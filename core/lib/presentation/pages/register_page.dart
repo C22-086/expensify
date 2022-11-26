@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
             if (state is Authenticated) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) => const MainPage(),
                 ),
               );
             }
