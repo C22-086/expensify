@@ -78,8 +78,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             Padding(
                               padding: const EdgeInsets.all(8),
                               child: DotsIndicator(
-                                  backgroundColor:
-                                      state.pageIndex == i ? kGreen : kGrey),
+                                backgroundColor:
+                                    state.pageIndex == i ? kGreen : kGrey,
+                              ),
                             ),
                         ],
                       ),
