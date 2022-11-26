@@ -9,3 +9,4 @@ export 'presentation/bloc/onboarding/onboarding_bloc.dart';
 export 'presentation/pages/login_page.dart';
 export 'presentation/pages/register_page.dart';
 export 'presentation/pages/home_page.dart';
+export 'presentation/pages/main_page.dart';
