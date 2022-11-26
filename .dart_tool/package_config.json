@@ -140,6 +140,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "fl_chart",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/fl_chart-0.55.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///Users/macuser/Flutter/packages/flutter",
       "packageUri": "lib/",
@@ -416,7 +422,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-11-26T03:45:58.109630Z",
+  "generated": "2022-11-26T05:25:50.808740Z",
   "generator": "pub",
   "generatorVersion": "2.18.5"
 }

@@ -14,3 +14,8 @@ export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';
 export 'domain/usecases/auth/login.dart';
 export 'utils/failure.dart';
+export 'presentation/bloc/onboarding/onboarding_bloc.dart';
+export 'presentation/pages/login_page.dart';
+export 'presentation/pages/register_page.dart';
+export 'presentation/pages/home_page.dart';
+export 'presentation/pages/main_page.dart';

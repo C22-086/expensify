@@ -26,4 +26,6 @@ Future<void> init() async {
   locator.registerLazySingleton<FirebaseAuth>(
     () => FirebaseAuth.instance,
   );
+
+  locator.registerFactory(() => OnboardingCubit());
 }
