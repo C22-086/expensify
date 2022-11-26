@@ -5,4 +5,5 @@ final locator = GetIt.instance;
 Future<void> init() async {
   locator.registerFactory(() => LoginBloc());
   locator.registerFactory(() => RegisterBloc());
+  locator.registerFactory(() => OnboardingCubit());
 }
