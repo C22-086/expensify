@@ -57,13 +57,15 @@ class HomePage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                'assets/icon_wallet.png',
+                                scale: 2.5,
+                                color: kWhite,
+                              ),
                               const SizedBox(width: 9),
                               Text(
                                 'Balance',
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.w500,
-                                  color: kWhite,
-                                ),
+                                style: kHeading7.copyWith(color: kWhite),
                               ),
                             ],
                           ),
@@ -91,7 +93,7 @@ class HomePage extends StatelessWidget {
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    children: const [
+                    children: [
                       OverviewCard(
                         color: kGreen,
                         secColor: kSoftGreen,
@@ -104,6 +106,7 @@ class HomePage extends StatelessWidget {
                         valueChartTwo: 30,
                         chartOneTitle: "70%",
                         chartTwoTitle: "30%",
+                        onTap: () {},
                       ),
                       OverviewCard(
                         color: kRed,
@@ -117,6 +120,7 @@ class HomePage extends StatelessWidget {
                         valueChartTwo: 35,
                         chartOneTitle: "65%",
                         chartTwoTitle: "35%",
+                        onTap: () {},
                       ),
                     ],
                   ),

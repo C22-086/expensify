@@ -11,6 +11,8 @@ Future<void> init() async {
       logInGoogle: locator(),
       register: locator()));
 
+  locator.registerFactory(() => SetPage());
+
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(firebaseAuth: locator()),
