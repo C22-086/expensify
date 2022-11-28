@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => di.locator<SetPage>()),
+        BlocProvider(create: (_) => di.locator<SetCategory>()),
         BlocProvider(create: (_) => di.locator<AuthBloc>()),
         BlocProvider(create: (_) => di.locator<OnboardingCubit>()),
       ],
@@ -43,11 +44,21 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(builder: (_) => const LoginPage());
+              return MaterialPageRoute(
+                builder: (_) => const LoginPage(),
+              );
             case RegisterPage.routeName:
-              return MaterialPageRoute(builder: (_) => const RegisterPage());
+              return MaterialPageRoute(
+                builder: (_) => const RegisterPage(),
+              );
             case HomePage.routeName:
-              return MaterialPageRoute(builder: (_) => const HomePage());
+              return MaterialPageRoute(
+                builder: (_) => const HomePage(),
+              );
+            case DetailIncomePage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const DetailIncomePage(),
+              );
             default:
               return MaterialPageRoute(
                 builder: (_) {
