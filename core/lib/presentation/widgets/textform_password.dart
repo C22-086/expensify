@@ -27,6 +27,7 @@ class TextFormPassword extends StatelessWidget {
           onChanged: (query) {},
           obscureText: !isPasswordShow,
           decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.lock_outline_rounded),
             hintText: 'Kata Sandi',
             border:
                 const OutlineInputBorder(borderSide: BorderSide(color: kGrey)),

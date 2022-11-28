@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import '../../core.dart';
 
 class AddCard extends StatelessWidget {
-  const AddCard({
-    super.key,
-    required this.iconPath,
-    required this.subtitle,
-    required this.textColor,
-  });
+  const AddCard(
+      {super.key,
+      required this.iconPath,
+      required this.subtitle,
+      required this.textColor,
+      required this.onTap});
 
   final String iconPath;
   final String subtitle;
   final Color textColor;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class AddCard extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () {},
+          onTap: onTap,
           borderRadius: BorderRadius.circular(8),
           child: Container(
             height: 100,

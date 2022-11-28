@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import '../../core.dart';
 
 class OverviewCard extends StatelessWidget {
-  const OverviewCard({
-    super.key,
-    required this.title,
-    required this.subMinPercent,
-    required this.subMaxPercent,
-    required this.chartOneTitle,
-    required this.chartTwoTitle,
-    required this.valueChartOne,
-    required this.valueChartTwo,
-    required this.amount,
-    required this.color,
-    required this.label,
-    required this.secColor,
-    required this.onTap,
-  });
+  const OverviewCard(
+      {super.key,
+      required this.title,
+      required this.subMinPercent,
+      required this.subMaxPercent,
+      required this.chartOneTitle,
+      required this.chartTwoTitle,
+      required this.valueChartOne,
+      required this.valueChartTwo,
+      required this.amount,
+      required this.color,
+      required this.label,
+      required this.secColor,
+      required this.onTap,
+      required this.titleImageUrl});
 
   final Color color;
   final Color secColor;
@@ -30,6 +30,7 @@ class OverviewCard extends StatelessWidget {
   final String chartTwoTitle;
   final double valueChartOne;
   final double valueChartTwo;
+  final String titleImageUrl;
   final int amount;
   final Function() onTap;
 
@@ -49,12 +50,20 @@ class OverviewCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '$title Overview',
-                    style: kBodyText.copyWith(
-                      fontSize: 14,
-                      color: kRichBlack,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '$title Overview',
+                        style: kBodyText.copyWith(
+                          fontSize: 14,
+                          color: kRichBlack,
+                        ),
+                      ),
+                      Image.asset(
+                        titleImageUrl,
+                        width: 15,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 5),
                   Text(
