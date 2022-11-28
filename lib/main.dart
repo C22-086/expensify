@@ -59,6 +59,10 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const DetailIncomePage(),
               );
+            case DetailExpensePage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const DetailExpensePage(),
+              );
             default:
               return MaterialPageRoute(
                 builder: (_) {

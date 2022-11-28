@@ -7,9 +7,9 @@ import '../widgets/back_button.dart';
 import '../widgets/custom_category.dart';
 import '../widgets/custom_header_app.dart';
 
-class DetailIncomePage extends StatelessWidget {
-  static const routeName = '/detail_income_page';
-  const DetailIncomePage({super.key});
+class DetailExpensePage extends StatelessWidget {
+  static const routeName = '/detail_expense_page';
+  const DetailExpensePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class DetailIncomePage extends StatelessWidget {
                   },
                 ),
                 Text(
-                  "Income overview",
+                  "Expenses overview",
                   style: kHeading6.copyWith(color: kWhite),
                 ),
                 const SizedBox(width: 20)
@@ -51,18 +51,22 @@ class DetailIncomePage extends StatelessWidget {
               CustomeCategory(
                 index: 0,
                 title: "Last Year",
+                titleColor: kRed,
               ),
               CustomeCategory(
                 index: 1,
                 title: "Last Month",
+                titleColor: kRed,
               ),
               CustomeCategory(
                 index: 2,
                 title: "Last Week",
+                titleColor: kRed,
               ),
               CustomeCategory(
                 index: 3,
                 title: "Last Day",
+                titleColor: kRed,
               ),
             ],
           ),
@@ -81,10 +85,10 @@ class DetailIncomePage extends StatelessWidget {
               right: 50,
             ),
             decoration: BoxDecoration(
-              color: kGreen,
+              color: kDarkRed,
               borderRadius: BorderRadius.circular(14),
               image: const DecorationImage(
-                image: AssetImage('assets/income_card.png'),
+                image: AssetImage('assets/expense_card.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -97,7 +101,7 @@ class DetailIncomePage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 20),
                     Text(
-                      '+ IDR 500K',
+                      '- IDR 900K',
                       style: kHeading5.copyWith(
                         fontSize: 30,
                         color: kWhite,
@@ -125,16 +129,16 @@ class DetailIncomePage extends StatelessWidget {
                         centerSpaceRadius: 40,
                         sections: [
                           PieChartSectionData(
-                            color: const Color(0xff37A767),
-                            value: 80,
-                            title: "80%",
+                            color: const Color(0xffFF396F),
+                            value: 60,
+                            title: "60%",
                             radius: 30,
                             titleStyle: kBodyText.copyWith(color: kWhite),
                           ),
                           PieChartSectionData(
                             color: kWhite,
-                            value: 20,
-                            title: "20%",
+                            value: 40,
+                            title: "40%",
                             radius: 30,
                             titleStyle: kBodyText.copyWith(color: kGreen),
                           ),
@@ -164,8 +168,10 @@ class DetailIncomePage extends StatelessWidget {
                 itemCount: 2,
                 itemBuilder: (context, index) {
                   return const IncomeTailCard(
-                    iconPath: 'assets/icon_up.png',
-                    color: kSoftGreen,
+                    iconPath: 'assets/icon_down.png',
+                    color: kSoftRed,
+                    currencyColor: kRed,
+                    label: "-",
                   );
                 },
               ),
@@ -177,8 +183,10 @@ class DetailIncomePage extends StatelessWidget {
                 itemCount: 8,
                 itemBuilder: (context, index) {
                   return const IncomeTailCard(
-                    iconPath: 'assets/icon_up.png',
-                    color: kSoftGreen,
+                    iconPath: 'assets/icon_down.png',
+                    color: kSoftRed,
+                    currencyColor: kRed,
+                    label: "-",
                   );
                 },
               )
@@ -189,7 +197,11 @@ class DetailIncomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const BackgroundHeader(height: 0.15),
+          const BackgroundHeader(
+            height: 0.15,
+            imagePath: 'assets/red_substract.png',
+            color: kDarkRed,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
