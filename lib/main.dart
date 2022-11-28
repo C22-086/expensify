@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Expensify',
-        home: const LoginPage(),
+        home: const MainPage(),
         theme: ThemeData(colorScheme: kColorScheme),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
@@ -54,6 +54,10 @@ class MyApp extends StatelessWidget {
             case HomePage.routeName:
               return MaterialPageRoute(
                 builder: (_) => const HomePage(),
+              );
+            case AddIncomePage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const AddIncomePage(),
               );
             case DetailIncomePage.routeName:
               return MaterialPageRoute(

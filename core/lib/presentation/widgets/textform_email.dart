@@ -20,6 +20,7 @@ class TextFormEmail extends StatelessWidget {
           controller: emailController,
           onChanged: (query) {},
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.email_outlined),
             hintText: 'Email',
             border: OutlineInputBorder(borderSide: BorderSide(color: kGrey)),
           ),

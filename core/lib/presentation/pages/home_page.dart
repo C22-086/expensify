@@ -75,6 +75,7 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: [
                 OverviewCard(
+                  titleImageUrl: 'assets/icon-trending-up.png',
                   color: kGreen,
                   secColor: kSoftGreen,
                   title: 'Income',
@@ -94,6 +95,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 OverviewCard(
+                  titleImageUrl: 'assets/icon-trending-down.png',
                   color: kRed,
                   secColor: kSoftRed,
                   title: 'Expense',
@@ -127,19 +129,23 @@ class HomePage extends StatelessWidget {
           top: height * 0.04,
         ),
         child: Row(
-          children: const [
+          children: [
             Expanded(
                 child: AddCard(
               iconPath: 'assets/icon_income.png',
               subtitle: 'Income',
               textColor: kGreen,
+              onTap: () {
+                Navigator.pushNamed(context, AddIncomePage.routeName);
+              },
             )),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
               child: AddCard(
                 iconPath: 'assets/icon_expense.png',
                 subtitle: 'Expense',
                 textColor: kRed,
+                onTap: () {},
               ),
             ),
           ],
@@ -155,11 +161,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Recent Transaction",
-              style: kHeading5.copyWith(color: kSoftBlack),
-            ),
-            const SizedBox(height: 25),
             ListView.builder(
               shrinkWrap: true,
               itemCount: 8,
@@ -190,14 +191,25 @@ class HomePage extends StatelessWidget {
           children: [
             const BackgroundHeader(height: 0.32),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildHeader(),
                 buildCard(),
                 buildMainFuture(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Text(
+                    "Recent Transaction",
+                    style: kHeading5.copyWith(
+                      color: kSoftBlack,
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: SizedBox(
                     child: ListView(
-                      shrinkWrap: true,
+                      shrinkWrap: false,
                       physics: const BouncingScrollPhysics(),
                       children: [
                         buildContent(),
