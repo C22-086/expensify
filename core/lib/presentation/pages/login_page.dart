@@ -15,29 +15,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _signInEmailAndPassword(context) {
-    if (_emailController.text.isEmpty) {
-      const snackbar = SnackBar(content: Text('Email belum di isi'));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } else if (_passwordController.text.isEmpty) {
-      const snackbar = SnackBar(content: Text('Password belum di isi'));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } else {
-      BlocProvider.of<AuthBloc>(context).add(
-        LogInRequested(
-          _emailController.text,
-          _passwordController.text,
-        ),
-      );
-    }
-  }
-
-  void _signInWithGoogle(context) {
-    BlocProvider.of<AuthBloc>(context).add(
-      GoogleLogInRequested(),
-    );
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -69,215 +46,39 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
-                  Center(
-                    child: Text(
-                      'Expensify',
-                      style: kTitle,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  Center(
-                      child: Text(
-                    'Selamat Datang',
-                    style: kHeading5,
+                  const Center(
+                      child: TitlePage(
+                    heading: 'Selamat Datang',
+                    subHeading: 'Silahkan masuk untuk melanjutkan',
                   )),
-                  const SizedBox(height: 5),
-                  Center(
-                      child: Text(
-                    'Silahkan masuk untuk melanjutkan',
-                    style: kBodyText,
-                  )),
-                  const SizedBox(height: 26),
-                  Text(
-                    'Email',
-                    style: kHeading7,
-                  ),
-                  const SizedBox(height: 5),
-                  TextField(
-                    controller: _emailController,
-                    onChanged: (query) {},
-                    decoration: const InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: kGrey)),
-                    ),
-                    textInputAction: TextInputAction.search,
-                  ),
+                  TextFormEmail(emailController: _emailController),
                   const SizedBox(height: 20),
-                  Text(
-                    'Kata Sandi',
-                    style: kHeading7,
-                  ),
-                  const SizedBox(height: 5),
-                  TextField(
-                    controller: _passwordController,
-                    onChanged: (query) {},
-                    obscureText: !_isPasswordShow,
-                    decoration: InputDecoration(
-                      hintText: 'Kata Sandi',
-                      border: const OutlineInputBorder(
-                          borderSide: BorderSide(color: kGrey)),
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordShow = !_isPasswordShow;
-                            });
-                          },
-                          icon: Icon(_isPasswordShow
-                              ? Icons.visibility_off
-                              : Icons.visibility)),
-                    ),
+                  TextFormPassword(
+                    passwordController: _passwordController,
+                    isPasswordShow: _isPasswordShow,
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordShow = !_isPasswordShow;
+                      });
+                    },
                   ),
                   const SizedBox(height: 7),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _isAgree,
-                            onChanged: (value) {
-                              setState(() {
-                                _isAgree = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'Ingat saya',
-                            style: kBodyText,
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Lupa kata sandi?',
-                        style: kBodyText,
-                      )
-                    ],
+                  CheckBoxLogIn(
+                    isAgree: _isAgree,
+                    onChanged: (value) {
+                      setState(() {
+                        _isAgree = value;
+                      });
+                    },
                   ),
                   const SizedBox(height: 22),
-                  SizedBox(
-                    width: double.infinity,
-                    child: BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        return state is AuthLoading
-                            ? ElevatedButton.icon(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: kGreen),
-                                icon: Container(
-                                  width: 24,
-                                  height: 24,
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 3,
-                                  ),
-                                ),
-                                label: const SizedBox())
-                            : ElevatedButton.icon(
-                                onPressed: () {
-                                  _signInEmailAndPassword(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: kGreen),
-                                icon: const SizedBox(),
-                                label: const Text('Masuk'),
-                              );
-                      },
-                    ),
-                  ),
+                  buttonLogIn(),
                   const SizedBox(height: 50),
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text('atau'),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+                  dividerCustom(),
                   const SizedBox(height: 40),
-                  InkWell(
-                    onTap: () {
-                      _signInWithGoogle(context);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(6)),
-                      child: BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image.network(
-                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                  fit: BoxFit.cover),
-                              state is AuthLoadingGoogle
-                                  ? Container(
-                                      width: 24,
-                                      height: 24,
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: const CircularProgressIndicator(
-                                        color: kGreen,
-                                        strokeWidth: 3,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Masuk dengan Google',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                              const SizedBox(
-                                width: 0,
-                              )
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  buttonLogInWithGoogle(),
                   const SizedBox(height: 100),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Belum memiliki akun?',
-                        style: kBodyText,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, RegisterPage.routeName);
-                        },
-                        child: const Text(
-                          'Daftar',
-                          style: TextStyle(
-                            color: kGreen,
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  const LogInQuestion(),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -285,6 +86,107 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buttonLogIn() {
+    return SizedBox(
+      width: double.infinity,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return state is AuthLoading
+              ? ElevatedButton.icon(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(backgroundColor: kGreen),
+                  icon: Container(
+                    width: 24,
+                    height: 24,
+                    padding: const EdgeInsets.all(2.0),
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  ),
+                  label: const SizedBox())
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    _signInEmailAndPassword(context);
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: kGreen),
+                  icon: const SizedBox(),
+                  label: const Text('Masuk'),
+                );
+        },
+      ),
+    );
+  }
+
+  Widget buttonLogInWithGoogle() {
+    return InkWell(
+      onTap: () {
+        _signInWithGoogle(context);
+      },
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(6)),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.network(
+                    'http://pngimg.com/uploads/google/google_PNG19635.png',
+                    fit: BoxFit.cover),
+                state is AuthLoadingGoogle
+                    ? Container(
+                        width: 24,
+                        height: 24,
+                        padding: const EdgeInsets.all(2.0),
+                        child: const CircularProgressIndicator(
+                          color: kGreen,
+                          strokeWidth: 3,
+                        ),
+                      )
+                    : const Text(
+                        'Masuk dengan Google',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                const SizedBox(
+                  width: 0,
+                )
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _signInEmailAndPassword(context) {
+    if (_emailController.text.isEmpty) {
+      const snackbar = SnackBar(content: Text('Email belum di isi'));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else if (_passwordController.text.isEmpty) {
+      const snackbar = SnackBar(content: Text('Password belum di isi'));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else {
+      BlocProvider.of<AuthBloc>(context).add(
+        LogInRequested(_emailController.text, _passwordController.text),
+      );
+    }
+  }
+
+  void _signInWithGoogle(context) {
+    BlocProvider.of<AuthBloc>(context).add(
+      GoogleLogInRequested(),
     );
   }
 }

@@ -124,89 +124,128 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultMargin,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: const [
-                          Expanded(
-                              child: AddCard(
-                            iconPath: 'assets/icon_income.png',
-                            subtitle: 'Income',
-                            textColor: kGreen,
-                          )),
-                          SizedBox(width: 20),
-                          Expanded(
-                              child: AddCard(
-                            iconPath: 'assets/icon_expense.png',
-                            subtitle: 'Expense',
-                            textColor: kRed,
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 25),
-                      Text(
-                        "Recent Transaction",
-                        style: kHeading5.copyWith(color: kSoftBlack),
-                      ),
-                      const SizedBox(height: 25),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 8,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 55,
-                                  width: 55,
-                                  decoration: BoxDecoration(
-                                    color: kSoftGreen,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Image.asset(
-                                    'assets/icon_up.png',
-                                    scale: 2,
-                                  ),
-                                ),
-                                const SizedBox(width: 15),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Salary", style: kHeading7),
-                                    const SizedBox(height: 5),
-                                    Text("Nov, 18 2022", style: kBodyText),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "+ IDR 20.000",
-                                  style: kHeading6.copyWith(
-                                    color: kGreen,
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
+                )
               ],
             ),
           ),
         ],
       ),
     ));
+  }
+
+  Container buildOverviewChart() {
+    return Container(
+        margin: const EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: kWhite,
+        ),
+        child: Row(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Row(
+              //   children: [
+              //     const Text('Income Overview'),
+              //     const SizedBox(width: 10),
+              //     Image.asset('assets/icon-trending-up.png'),
+              //   ],
+              // ),
+              Text(
+                '+ IDR 400K',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: kGreen,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '30% from transfer',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xff6C6C6C),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: defaultMargin,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Expanded(
+                            child: AddCard(
+                          iconPath: 'assets/icon_income.png',
+                          subtitle: 'Income',
+                          textColor: kGreen,
+                        )),
+                        SizedBox(width: 20),
+                        Expanded(
+                            child: AddCard(
+                          iconPath: 'assets/icon_expense.png',
+                          subtitle: 'Expense',
+                          textColor: kRed,
+                        )),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Text(
+                      "Recent Transaction",
+                      style: kHeading5.copyWith(color: kSoftBlack),
+                    ),
+                    const SizedBox(height: 25),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 8,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 55,
+                                width: 55,
+                                decoration: BoxDecoration(
+                                  color: kSoftGreen,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Image.asset(
+                                  'assets/icon_up.png',
+                                  scale: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Salary", style: kHeading7),
+                                  const SizedBox(height: 5),
+                                  Text("Nov, 18 2022", style: kBodyText),
+                                ],
+                              ),
+                              const Spacer(),
+                              Text(
+                                "+ IDR 20.000",
+                                style: kHeading6.copyWith(
+                                  color: kGreen,
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]));
   }
 }
