@@ -26,5 +26,6 @@ final kTextTheme = TextTheme(
 
 // margin
 const double defaultMargin = 20.0;
+
 // padding
 const double defaultPadding = 20.0;

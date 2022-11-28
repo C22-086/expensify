@@ -12,6 +12,7 @@ Future<void> init() async {
       register: locator()));
 
   locator.registerFactory(() => SetPage());
+  locator.registerFactory(() => SetCategory());
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(

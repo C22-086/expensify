@@ -7,3 +7,11 @@ class SetPage extends Cubit<int> {
     emit(newPage);
   }
 }
+
+class SetCategory extends Cubit<int> {
+  SetCategory() : super(0);
+
+  void setCategory(int newCategory) {
+    emit(newCategory);
+  }
+}
