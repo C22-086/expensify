@@ -18,6 +18,7 @@ export 'presentation/pages/register_page.dart';
 export 'presentation/pages/home_page.dart';
 export 'presentation/pages/main_page.dart';
 export 'presentation/pages/detail_income_page.dart';
+export 'presentation/pages/detail_expense_page.dart';
 
 // Data
 export 'data/repository/auth_repository.dart';

@@ -5,7 +5,16 @@ import '../../core.dart';
 class IncomeTailCard extends StatelessWidget {
   const IncomeTailCard({
     Key? key,
+    required this.iconPath,
+    this.color = kSoftGreen,
+    this.currencyColor = kGreen,
+    this.label = '+',
   }) : super(key: key);
+
+  final String iconPath;
+  final Color color;
+  final Color currencyColor;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +26,11 @@ class IncomeTailCard extends StatelessWidget {
             height: 55,
             width: 55,
             decoration: BoxDecoration(
-              color: kSoftGreen,
+              color: color,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Image.asset(
-              'assets/icon_up.png',
+              iconPath,
               scale: 2,
             ),
           ),
@@ -37,9 +46,9 @@ class IncomeTailCard extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            "+ IDR 20.000",
+            "$label IDR 20.000",
             style: kHeading6.copyWith(
-              color: kGreen,
+              color: currencyColor,
             ),
           )
         ],

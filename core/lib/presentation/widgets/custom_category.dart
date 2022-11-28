@@ -8,10 +8,12 @@ class CustomeCategory extends StatelessWidget {
     Key? key,
     required this.title,
     required this.index,
+    this.titleColor = kGreen,
   }) : super(key: key);
 
   final String title;
   final int index;
+  final Color titleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,8 @@ class CustomeCategory extends StatelessWidget {
       child: Text(
         "Last Year",
         style: kHeading7.copyWith(
-          color: context.watch<SetCategory>().state == index ? kGreen : kGrey,
+          color:
+              context.watch<SetCategory>().state == index ? titleColor : kGrey,
         ),
       ),
     );
