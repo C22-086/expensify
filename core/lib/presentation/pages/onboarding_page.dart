@@ -88,7 +88,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (state.pageIndex == pageContent.length - 1) {
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.pushNamed(context, '/set-balance');
                           }
                           context.read<OnboardingCubit>().nextPage();
                           _pageController.animateToPage(
