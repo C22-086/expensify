@@ -41,6 +41,14 @@ dependencies:
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.3
   dartz: ^0.10.1
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  image_path_android: "assets/app_icon.png"
+  image_path_ios: "assets/app_icon.png"
+  android: true
+  ios: true
+
 
 dev_dependencies:
   flutter_test:
