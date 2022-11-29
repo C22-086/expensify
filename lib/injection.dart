@@ -30,5 +30,5 @@ Future<void> init() async {
     () => FirebaseAuth.instance,
   );
 
-  locator.registerFactory(() => OnboardingCubit());
+  locator.registerFactory(() => OnboardingCubit(0));
 }

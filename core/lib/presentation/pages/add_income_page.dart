@@ -76,15 +76,107 @@ class _AddIncomePageState extends State<AddIncomePage> {
   Widget buildBody() {
     return ListView(
       children: [
-        FormInputData(
-          controller: _incomeTextController,
-          chipLabel: 'Income',
-          hintText: 'Masukkan jumlah income',
-        ),
-        FormInputData(
-          controller: _noteTextController,
-          chipLabel: 'Note',
-          hintText: 'Tambahkan catatan',
+        Form(
+          child: Column(
+            children: [
+              FormInputData(
+                controller: _incomeTextController,
+                chipLabel: 'Income',
+                hintText: 'Masukkan jumlah income',
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: kWhite,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(3, 3),
+                      spreadRadius: -10,
+                      blurRadius: 49,
+                      color: Color.fromARGB(255, 169, 169, 169),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Chip(
+                      backgroundColor: Colors.transparent,
+                      labelStyle: GoogleFonts.poppins(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: kGreen,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        side: BorderSide(color: kGreen, width: 2),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      label: const Text('Kategori'),
+                    ),
+                    const SizedBox(height: 9),
+                    DropdownButtonFormField(
+                      icon: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: kGreen,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: kWhite,
+                        ),
+                      ),
+                      hint: const Text('Pilih kategori'),
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: kRichBlack,
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xffF7F8F8),
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          enabled: false,
+                          child: Text('Pilih kategori'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Gaji',
+                          child: Text('Gaji'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Penjualan',
+                          child: Text('Penjualan'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Tabungan',
+                          child: Text('Tabungan'),
+                        ),
+                      ],
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ),
+              ),
+              FormInputData(
+                controller: _noteTextController,
+                chipLabel: 'Note',
+                hintText: 'Tambahkan catatan',
+              )
+            ],
+          ),
         )
       ],
     );
@@ -99,6 +191,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
         top: 50,
       ),
       decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+        ),
         color: kGreen,
         image: DecorationImage(
             image: AssetImage('assets/green_substract.png'), fit: BoxFit.cover),

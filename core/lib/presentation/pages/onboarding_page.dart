@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/onboarding_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/dots_indicator.dart';
 
@@ -44,17 +43,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    OnboardingCubit onboardingCubit = OnboardingCubit(0);
     return Scaffold(
-      body: BlocBuilder<OnboardingCubit, OnboardingState>(
-        builder: (context, state) {
+      body: StreamBuilder<int>(
+        initialData: 0,
+        stream: onboardingCubit.stream,
+        builder: (context, snapshot) {
           return SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Stack(
               children: [
                 PageView.builder(
-                  onPageChanged: (value) {
-                    state.pageIndex = value;
-                  },
                   controller: _pageController,
                   scrollDirection: Axis.horizontal,
                   physics: const NeverScrollableScrollPhysics(),
@@ -79,7 +78,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               padding: const EdgeInsets.all(8),
                               child: DotsIndicator(
                                 backgroundColor:
-                                    state.pageIndex == i ? kGreen : kGrey,
+                                    snapshot.data == i ? kGreen : kGrey,
                               ),
                             ),
                         ],
@@ -87,15 +86,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       const SizedBox(height: 28),
                       ElevatedButton(
                         onPressed: () {
-                          if (state.pageIndex == pageContent.length - 1) {
-                            Navigator.pushNamed(context, '/home');
+                          if (snapshot.data == pageContent.length - 1) {
+                            Navigator.pushNamed(context, '/set-balance');
                           }
-                          context.read<OnboardingCubit>().nextPage();
+
                           _pageController.animateToPage(
-                            state.pageIndex + 1,
+                            snapshot.data! + 1,
                             duration: const Duration(milliseconds: 400),
                             curve: Curves.easeIn,
                           );
+                          onboardingCubit.nextPage();
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(22),
