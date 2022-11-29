@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                       heading: 'Selamat Datang',
                       subHeading: 'Silahkan masuk untuk melanjutkan',
                     )),
-                    TextFormEmail(emailController: _emailController),
+                    TextFormEmail(controller: _emailController),
                     const SizedBox(height: 20),
                     TextFormPassword(
                       passwordController: _passwordController,
@@ -87,6 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                     buttonLogInWithGoogle(),
                     const SizedBox(height: 25),
                     LogInQuestion(
+                      text: 'Belum punya akun?',
+                      buttonText: 'Masuk',
                       onPressed: () {
                         Navigator.pushNamed(
                           context,

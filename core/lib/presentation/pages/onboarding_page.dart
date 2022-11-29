@@ -19,19 +19,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final pageContent = [
     const OnboardingContent(
         imageUrl: 'assets/onboarding_1.png',
-        title: 'Track your daily Expenses  ',
+        title: 'Lacak Pengeluaran harian Anda',
         description:
-            'Daily note down your expenses to help you manage your income '),
+            'Catat setiap hari pengeluaran Anda untuk membantu Anda mengelola uang Anda'),
     const OnboardingContent(
         imageUrl: 'assets/onboarding_2.png',
-        title: 'Expenses Statistics',
+        title: 'Statistik Pengeluaran',
         description:
-            'Expense patterns are plotted in different types of chart based on date and time for easy understanding '),
+            'Pola pengeluaran diplot dalam berbagai jenis bagan berdasarkan tanggal dan waktu agar mudah dipahami.'),
     const OnboardingContent(
       imageUrl: 'assets/onboarding_3.png',
-      title: 'Plan for your future',
+      title: 'Rencanakan Masa Depan Anda',
       description:
-          'Build healthy financial habits. Control unnecessary expenses',
+          'Bangun kebiasaan finansial yang sehat. Kontrol pengeluaran yang tidak perlu',
     ),
   ];
 
@@ -87,8 +87,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (snapshot.data == pageContent.length - 1) {
-                            Navigator.pushNamed(
-                                context, SetBalancePage.routeName);
+                            Navigator.pushReplacementNamed(context, '/login');
                           }
 
                           _pageController.animateToPage(

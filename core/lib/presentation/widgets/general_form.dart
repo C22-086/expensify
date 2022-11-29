@@ -1,18 +1,28 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-class TextFormEmail extends StatelessWidget {
-  const TextFormEmail({super.key, required this.controller});
+class GeneralForm extends StatelessWidget {
+  const GeneralForm(
+      {super.key,
+      required this.controller,
+      required this.label,
+      required this.hint,
+      required this.textInputType,
+      required this.icon});
 
   final TextEditingController controller;
 
+  final String label;
+  final String hint;
+  final TextInputType textInputType;
+  final Widget icon;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Email',
+          label,
           style: kHeading7,
         ),
         const SizedBox(height: 5),
@@ -20,8 +30,8 @@ class TextFormEmail extends StatelessWidget {
           controller: controller,
           onChanged: (query) {},
           decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.email_outlined),
-            hintText: 'Email',
+            prefixIcon: icon,
+            hintText: hint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(defaultRadius),
               borderSide: const BorderSide(
@@ -29,7 +39,7 @@ class TextFormEmail extends StatelessWidget {
               ),
             ),
           ),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: textInputType,
         ),
       ],
     );
