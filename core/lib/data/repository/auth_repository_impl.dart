@@ -6,11 +6,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
-  final FirebaseDatabase database;
 
   AuthRepositoryImpl({
     required this.firebaseAuth,
-    required this.database,
   });
 
   @override
@@ -22,16 +20,13 @@ class AuthRepositoryImpl implements AuthRepository {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      final DatabaseReference ref =
-          FirebaseDatabase.instance.ref().child('users');
-
       if (userCredential.user != null) {
-        String userId = userCredential.user!.uid;
-        await ref.child(userId).set({
+        final ref =
+            FirebaseDatabase.instance.ref('users/${userCredential.user!.uid}');
+        await ref.set({
           'name': name,
           'email': email,
-          'password': password,
-          'uid': userId,
+          'balance': 0,
         });
       }
 

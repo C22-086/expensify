@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:dartz/dartz.dart';
 
 class Register {
-  final AuthRepository repository;
+  final AuthRepositoryImpl repository;
 
   Register(this.repository);
 

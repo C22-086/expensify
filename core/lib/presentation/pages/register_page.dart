@@ -34,10 +34,10 @@ class _RegisterPageState extends State<RegisterPage> {
         resizeToAvoidBottomInset: false,
         body: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is Authenticated) {
+            if (state is Registered) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const MainPage(),
+                  builder: (context) => const SetBalancePage(),
                 ),
               );
             }

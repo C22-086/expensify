@@ -14,12 +14,12 @@ Future<void> init() async {
 
   locator.registerFactory(() => SetPage());
   locator.registerFactory(() => SetCategory());
+  locator.registerFactory(() => AuthRepositoryImpl(firebaseAuth: locator()));
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       firebaseAuth: locator(),
-      database: locator(),
     ),
   );
 
