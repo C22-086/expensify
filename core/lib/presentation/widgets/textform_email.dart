@@ -19,10 +19,15 @@ class TextFormEmail extends StatelessWidget {
         TextField(
           controller: emailController,
           onChanged: (query) {},
-          decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.email_outlined),
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.email_outlined),
             hintText: 'Email',
-            border: OutlineInputBorder(borderSide: BorderSide(color: kGrey)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(defaultRadius),
+              borderSide: const BorderSide(
+                color: kGrey,
+              ),
+            ),
           ),
           keyboardType: TextInputType.emailAddress,
         ),

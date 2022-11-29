@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is Authenticated) {
@@ -42,48 +44,58 @@ class _RegisterPageState extends State<RegisterPage> {
                   .showSnackBar(SnackBar(content: Text(state.error)));
             }
           },
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                      child: TitlePage(
-                    heading: 'Buat Akun',
-                    subHeading: 'Mulai kelola keuangan anda sekarang!',
-                  )),
-                  TextFormEmail(emailController: _emailController),
-                  const SizedBox(height: 20),
-                  TextFormPassword(
-                    passwordController: _passwordController,
-                    isPasswordShow: _isPasswordShow,
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordShow = !_isPasswordShow;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 7),
-                  CheckBoxRegister(
-                    isAgree: _isAgree,
-                    onChanged: (value) {
-                      setState(() {
-                        _isAgree = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 22),
-                  buttonRegister(),
-                  const SizedBox(height: 50),
-                  dividerCustom(),
-                  const SizedBox(height: 40),
-                  buttonLogInWithGoogle(),
-                  const SizedBox(height: 100),
-                  const LogInQuestion(),
-                  const SizedBox(height: 100),
-                ],
-              ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                        child: TitlePage(
+                      heading: 'Buat Akun',
+                      subHeading: 'Mulai kelola keuangan anda sekarang!',
+                    )),
+                    TextFormEmail(emailController: _emailController),
+                    const SizedBox(height: 20),
+                    TextFormPassword(
+                      passwordController: _passwordController,
+                      isPasswordShow: _isPasswordShow,
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordShow = !_isPasswordShow;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 7),
+                    CheckBoxRegister(
+                      isAgree: _isAgree,
+                      onChanged: (value) {
+                        setState(() {
+                          _isAgree = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    buttonRegister(),
+                    const SizedBox(height: 25),
+                    dividerCustom(),
+                    const SizedBox(height: 25),
+                    buttonLogInWithGoogle(),
+                    const SizedBox(height: 25),
+                    LogInQuestion(
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoginPage.routeName);
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -93,34 +105,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget buttonRegister() {
     return SizedBox(
-        width: double.infinity,
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            return state is AuthLoading
-                ? ElevatedButton.icon(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(backgroundColor: kGreen),
-                    icon: Container(
-                      width: 24,
-                      height: 24,
-                      padding: const EdgeInsets.all(2.0),
-                      child: const CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 3,
-                      ),
-                    ),
-                    label: const SizedBox(),
-                  )
-                : ElevatedButton.icon(
-                    onPressed: () {
-                      _signUpEmailAndPassword(context);
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: kGreen),
-                    icon: const SizedBox(),
-                    label: const Text('Daftar'),
-                  );
-          },
-        ));
+      width: double.infinity,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return state is AuthLoading
+              ? const CustomLoadingButton()
+              : CustomButton(
+                  title: "Daftar",
+                  onPressed: () {
+                    _signUpEmailAndPassword(context);
+                  },
+                );
+        },
+      ),
+    );
   }
 
   Widget buttonLogInWithGoogle() {
@@ -129,21 +127,22 @@ class _RegisterPageState extends State<RegisterPage> {
         _signInWithGoogle(context);
       },
       child: Container(
-        height: 50,
+        height: defaultButtonHeight,
         width: double.infinity,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(6)),
+            borderRadius: BorderRadius.circular(defaultRadius)),
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.network(
-                    'http://pngimg.com/uploads/google/google_PNG19635.png',
-                    fit: BoxFit.cover),
+              children: [
+                Image.asset(
+                  'assets/icon_google.png',
+                  scale: 2,
+                ),
                 state is AuthLoadingGoogle
                     ? Container(
                         width: 24,

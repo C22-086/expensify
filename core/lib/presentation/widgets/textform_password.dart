@@ -2,11 +2,12 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 class TextFormPassword extends StatelessWidget {
-  const TextFormPassword(
-      {super.key,
-      required this.passwordController,
-      required this.isPasswordShow,
-      required this.onPressed});
+  const TextFormPassword({
+    super.key,
+    required this.passwordController,
+    required this.isPasswordShow,
+    required this.onPressed,
+  });
 
   final TextEditingController passwordController;
   final bool isPasswordShow;
@@ -29,12 +30,15 @@ class TextFormPassword extends StatelessWidget {
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.lock_outline_rounded),
             hintText: 'Kata Sandi',
-            border:
-                const OutlineInputBorder(borderSide: BorderSide(color: kGrey)),
+            border: OutlineInputBorder(
+                borderSide: const BorderSide(color: kGrey),
+                borderRadius: BorderRadius.circular(defaultRadius)),
             suffixIcon: IconButton(
-                onPressed: onPressed,
-                icon: Icon(
-                    isPasswordShow ? Icons.visibility_off : Icons.visibility)),
+              onPressed: onPressed,
+              icon: Icon(
+                isPasswordShow ? Icons.visibility_off : Icons.visibility,
+              ),
+            ),
           ),
           keyboardType: TextInputType.emailAddress,
         ),

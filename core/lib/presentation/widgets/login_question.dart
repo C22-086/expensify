@@ -2,7 +2,9 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 class LogInQuestion extends StatelessWidget {
-  const LogInQuestion({super.key});
+  final Function() onPressed;
+
+  const LogInQuestion({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -11,21 +13,17 @@ class LogInQuestion extends StatelessWidget {
       children: [
         Text(
           'Belum memiliki akun?',
-          style: kBodyText,
+          style: kSubtitle,
         ),
         const SizedBox(
           width: 5,
         ),
         InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, RegisterPage.routeName);
-          },
-          child: const Text(
+          onTap: onPressed,
+          child: Text(
             'Daftar',
-            style: TextStyle(
+            style: kSubtitle.copyWith(
               color: kGreen,
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
             ),
           ),
         )
