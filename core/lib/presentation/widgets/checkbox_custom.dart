@@ -44,59 +44,45 @@ class CheckBoxRegister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Checkbox(value: isAgree, onChanged: onChanged),
-            Column(
-              children: [
-                Row(
-                  children: const [
-                    Text(
-                      'Saya menyutujui segala isi ',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      'syarat',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: kGreen),
-                    ),
-                  ],
+        Checkbox(value: isAgree, onChanged: onChanged),
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 8),
+            child: RichText(
+              maxLines: 2,
+              text: TextSpan(
+                text: 'Saya menyetujui segala isi ',
+                style: kBodyText.copyWith(
+                  fontSize: 16,
                 ),
-                Row(
-                  children: const [
-                    Text(
-                      'penggunaan ',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: kGreen),
+                children: [
+                  TextSpan(
+                    text: 'syarat penggunaan ',
+                    style: kBodyText.copyWith(
+                      color: kGreen,
+                      fontSize: 16,
                     ),
-                    Text(
-                      'dan ',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                  ),
+                  TextSpan(
+                    text: 'dan ',
+                    style: kBodyText.copyWith(
+                      fontSize: 16,
                     ),
-                    Text(
-                      'kebijakan privasi',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: kGreen),
+                  ),
+                  TextSpan(
+                    text: 'kebijakan privasi',
+                    style: kBodyText.copyWith(
+                      fontSize: 16,
+                      color: kGreen,
                     ),
-                  ],
-                )
-              ],
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ],
     );

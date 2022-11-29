@@ -87,7 +87,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (snapshot.data == pageContent.length - 1) {
-                            Navigator.pushNamed(context, '/set-balance');
+                            Navigator.pushNamed(
+                                context, SetBalancePage.routeName);
                           }
 
                           _pageController.animateToPage(

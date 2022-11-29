@@ -11,7 +11,7 @@ class TitlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 50),
+        const SizedBox(height: 40),
         Text(
           'Expensify',
           style: kTitle,

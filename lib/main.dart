@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/pages/onboarding_page.dart';
 import 'package:expensify/firebase_options.dart';
 import 'package:expensify/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         title: 'Expensify',
         theme: ThemeData(colorScheme: kColorScheme),
         navigatorObservers: [routeObserver],
-        home: const LoginPage(),
+        home: const OnboardingPage(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':
@@ -50,6 +51,10 @@ class MyApp extends StatelessWidget {
             case SetBalancePage.routeName:
               return MaterialPageRoute(
                 builder: (_) => const SetBalancePage(),
+              );
+            case LoginPage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const LoginPage(),
               );
             case RegisterPage.routeName:
               return MaterialPageRoute(
