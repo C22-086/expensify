@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 class LogInQuestion extends StatelessWidget {
   final Function() onPressed;
 
-  const LogInQuestion(
-      {super.key,
-      required this.onPressed,
-      required this.text,
-      required this.buttonText});
+  const LogInQuestion({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    required this.buttonText,
+  });
   final String text;
   final String buttonText;
   @override

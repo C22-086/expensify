@@ -56,7 +56,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     const Center(
                       child: TitlePage(
-                        heading: 'Buat Akun',
                         subHeading: 'Mulai kelola keuangan anda sekarang!',
                       ),
                     ),
@@ -67,9 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputType: TextInputType.name,
                       icon: const Icon(Icons.person_outline),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     TextFormEmail(controller: _emailController),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     TextFormPassword(
                       passwordController: _passwordController,
                       isPasswordShow: _isPasswordShow,
@@ -93,11 +92,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 Column(
                   children: [
                     buttonRegister(),
-                    const SizedBox(height: 25),
-                    dividerCustom(),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 15),
                     buttonLogInWithGoogle(),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 20),
                     LogInQuestion(
                       text: 'Sudah punya akun?',
                       buttonText: 'Masuk',
@@ -105,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pushNamed(context, LoginPage.routeName);
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ],

@@ -13,7 +13,7 @@ class TextFormEmail extends StatelessWidget {
       children: [
         Text(
           'Email',
-          style: kHeading7,
+          style: kHeading7.copyWith(color: kSoftBlack),
         ),
         const SizedBox(height: 5),
         TextField(

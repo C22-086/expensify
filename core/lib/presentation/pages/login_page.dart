@@ -53,11 +53,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Center(
                         child: TitlePage(
-                      heading: 'Selamat Datang',
                       subHeading: 'Silahkan masuk untuk melanjutkan',
                     )),
                     TextFormEmail(controller: _emailController),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                     TextFormPassword(
                       passwordController: _passwordController,
                       isPasswordShow: _isPasswordShow,
@@ -81,11 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     buttonLogIn(),
-                    const SizedBox(height: 25),
-                    dividerCustom(),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 15),
                     buttonLogInWithGoogle(),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 30),
                     LogInQuestion(
                       text: 'Belum punya akun?',
                       buttonText: 'Daftar',
@@ -96,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ],

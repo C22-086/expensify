@@ -2,13 +2,14 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 class GeneralForm extends StatelessWidget {
-  const GeneralForm(
-      {super.key,
-      required this.controller,
-      required this.label,
-      required this.hint,
-      required this.textInputType,
-      required this.icon});
+  const GeneralForm({
+    super.key,
+    required this.controller,
+    required this.label,
+    required this.hint,
+    required this.textInputType,
+    required this.icon,
+  });
 
   final TextEditingController controller;
 
@@ -23,7 +24,7 @@ class GeneralForm extends StatelessWidget {
       children: [
         Text(
           label,
-          style: kHeading7,
+          style: kHeading7.copyWith(color: kSoftBlack),
         ),
         const SizedBox(height: 5),
         TextField(
