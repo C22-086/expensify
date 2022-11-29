@@ -27,6 +27,11 @@ class UnAuthenticated extends AuthState {
   List<Object?> get props => [];
 }
 
+class Registered extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
 class AuthError extends AuthState {
   final String error;
 

@@ -20,7 +20,7 @@ class TextFormPassword extends StatelessWidget {
       children: [
         Text(
           'Kata Sandi',
-          style: kHeading7,
+          style: kHeading7.copyWith(color: kSoftBlack),
         ),
         const SizedBox(height: 5),
         TextField(

@@ -40,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthError(l.message)),
           emit(UnAuthenticated()),
         },
-        (r) => emit(Authenticated()),
+        (r) => emit(Registered()),
       );
     });
     on<GoogleLogInRequested>((event, emit) async {

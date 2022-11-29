@@ -27,7 +27,10 @@ class CheckBoxLogIn extends StatelessWidget {
         ),
         Text(
           'Lupa kata sandi?',
-          style: kBodyText,
+          style: kSubtitle.copyWith(
+            fontSize: 14,
+            color: kGreen,
+          ),
         )
       ],
     );

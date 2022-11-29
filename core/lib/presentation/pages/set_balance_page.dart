@@ -1,10 +1,15 @@
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SetBalancePage extends StatelessWidget {
   static const routeName = '/set-balance';
-  const SetBalancePage({super.key});
+
+  const SetBalancePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,13 @@ class SetBalancePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  final ref = FirebaseDatabase.instance
+                      .ref()
+                      .child('users/${FirebaseAuth.instance.currentUser!.uid}');
+
+                  await ref.update({'balance': balanceController.text});
+
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
                     return const MainPage();

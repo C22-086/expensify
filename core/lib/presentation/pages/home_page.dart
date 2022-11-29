@@ -1,16 +1,39 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_header_app.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
 import '../widgets/income_tail_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
 
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late User user;
+  late var userData;
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+
+  void getUserInfo() async {
+    user = FirebaseAuth.instance.currentUser!;
+    final ref = FirebaseDatabase.instance.ref('users/${user.uid}');
+
+    await ref.once().then((value) => userData = value.snapshot.value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +67,21 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'IDR 5.000.000',
+                    'Rp. ${userData['balance']}',
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, SetBalancePage.routeName);
+                    },
+                    child: Chip(
+                      backgroundColor: Colors.transparent,
+                      labelStyle: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
+                      label: const Text('Ubah saldo'),
+                    ),
+                  )
                 ],
               ),
               const CircleAvatar(

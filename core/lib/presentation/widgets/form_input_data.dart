@@ -8,11 +8,12 @@ class FormInputData extends StatelessWidget {
   final String chipLabel;
   final String? hintText;
 
-  const FormInputData(
-      {super.key,
-      required this.controller,
-      required this.chipLabel,
-      this.hintText});
+  const FormInputData({
+    super.key,
+    required this.controller,
+    required this.chipLabel,
+    this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
