@@ -19,7 +19,7 @@ class RegisterRequested extends AuthEvent {
   final String name;
   final String email;
   final String password;
-  int? balance;
+  final int? balance;
 
   RegisterRequested(this.balance,
       {required this.email, required this.password, required this.name});

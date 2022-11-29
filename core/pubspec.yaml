@@ -18,6 +18,8 @@ dependencies:
   dartz: ^0.10.1
   fl_chart: ^0.55.2
   firebase_database: ^10.0.6
+  shared_preferences: ^2.0.15
+  cloud_firestore: ^4.1.0
 
 dev_dependencies:
   flutter_test:

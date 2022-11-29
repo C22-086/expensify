@@ -24,6 +24,7 @@ export 'presentation/pages/set_balance_page.dart';
 
 // Data
 export 'data/repository/auth_repository_impl.dart';
+export 'data/models/user_model.dart';
 
 // Domain
 export 'domain/repository/auth_repository.dart';
@@ -31,6 +32,7 @@ export 'domain/usecases/auth/register.dart';
 export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';
 export 'domain/usecases/auth/login.dart';
+export 'domain/repository/database_repository.dart';
 
 // Widgets
 export 'presentation/widgets/divider_custom.dart';
