@@ -23,7 +23,7 @@ export 'presentation/pages/add_income_page.dart';
 export 'presentation/pages/set_balance_page.dart';
 
 // Data
-export 'data/repository/auth_repository.dart';
+export 'data/repository/auth_repository_impl.dart';
 
 // Domain
 export 'domain/repository/auth_repository.dart';

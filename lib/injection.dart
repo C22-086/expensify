@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
@@ -16,7 +17,10 @@ Future<void> init() async {
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(firebaseAuth: locator()),
+    () => AuthRepositoryImpl(
+      firebaseAuth: locator(),
+      database: locator(),
+    ),
   );
 
   // USECASE
@@ -29,6 +33,9 @@ Future<void> init() async {
   locator.registerLazySingleton<FirebaseAuth>(
     () => FirebaseAuth.instance,
   );
+
+  locator
+      .registerLazySingleton<FirebaseDatabase>(() => FirebaseDatabase.instance);
 
   locator.registerFactory(() => OnboardingCubit(0));
 }

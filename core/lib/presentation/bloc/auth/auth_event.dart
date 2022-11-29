@@ -9,14 +9,20 @@ class LogInRequested extends AuthEvent {
   final String email;
   final String password;
 
-  LogInRequested(this.email, this.password);
+  LogInRequested({
+    required this.email,
+    required this.password,
+  });
 }
 
 class RegisterRequested extends AuthEvent {
+  final String name;
   final String email;
   final String password;
+  int? balance;
 
-  RegisterRequested(this.email, this.password);
+  RegisterRequested(this.balance,
+      {required this.email, required this.password, required this.name});
 }
 
 class GoogleLogInRequested extends AuthEvent {}

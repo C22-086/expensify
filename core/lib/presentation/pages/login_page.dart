@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 25),
                     LogInQuestion(
                       text: 'Belum punya akun?',
-                      buttonText: 'Masuk',
+                      buttonText: 'Daftar',
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
@@ -181,7 +181,8 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       BlocProvider.of<AuthBloc>(context).add(
-        LogInRequested(_emailController.text, _passwordController.text),
+        LogInRequested(
+            email: _emailController.text, password: _passwordController.text),
       );
     }
   }

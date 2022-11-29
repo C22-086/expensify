@@ -193,7 +193,10 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       BlocProvider.of<AuthBloc>(context).add(
-        RegisterRequested(_emailController.text, _passwordController.text),
+        RegisterRequested(0,
+            email: _emailController.text,
+            name: _nameController.text,
+            password: _passwordController.text),
       );
     }
   }

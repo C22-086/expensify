@@ -170,6 +170,24 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "firebase_database",
+      "rootUri": "file:///home/nocturnal/.pub-cache/hosted/pub.dartlang.org/firebase_database-10.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_database_platform_interface",
+      "rootUri": "file:///home/nocturnal/.pub-cache/hosted/pub.dartlang.org/firebase_database_platform_interface-0.2.2+14",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_database_web",
+      "rootUri": "file:///home/nocturnal/.pub-cache/hosted/pub.dartlang.org/firebase_database_web-0.2.1+16",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "fl_chart",
       "rootUri": "file:///home/nocturnal/.pub-cache/hosted/pub.dartlang.org/fl_chart-0.55.2",
       "packageUri": "lib/",
@@ -494,7 +512,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-11-29T10:11:31.965968Z",
+  "generated": "2022-11-29T11:19:07.440191Z",
   "generator": "pub",
   "generatorVersion": "2.18.4"
 }

@@ -30,7 +30,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<RegisterRequested>((event, emit) async {
       emit(AuthLoading());
-      final result = await register.execute(event.email, event.password);
+      final result = await register.execute(
+        event.name,
+        event.email,
+        event.password,
+      );
       result.fold(
         (l) => {
           emit(AuthError(l.message)),

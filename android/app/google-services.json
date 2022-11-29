@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "6551562988-ec75n107tgi2adldrp4lp69no26penoc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expensify",
+            "certificate_hash": "09b039a95d940d94396b5224fc2ad350ad995bef"
+          }
+        },
+        {
           "client_id": "6551562988-bhiebb6dqo3peqg9tqndf59a2lvvinel.apps.googleusercontent.com",
           "client_type": 3
         }

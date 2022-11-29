@@ -6,7 +6,8 @@ class Register {
 
   Register(this.repository);
 
-  Future<Either<Failure, void>> execute(String email, String password) {
-    return repository.register(email: email, password: password);
+  Future<Either<Failure, void>> execute(
+      String name, String email, String password) {
+    return repository.register(email: email, password: password, name: name);
   }
 }

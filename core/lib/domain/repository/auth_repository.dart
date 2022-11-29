@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, void>> register(
-      {required String email, required String password});
+      {required String name, required String email, required String password});
   Future<Either<Failure, void>> logIn(
       {required String email, required String password});
   Future<Either<Failure, void>> logInWithGoogle();
