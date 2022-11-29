@@ -47,30 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBioqqIVGQoxfx5fyeDC7xl4zIFXACoubs',
-    appId: '1:496886854887:web:3885d4a5132cbe30ce1e42',
-    messagingSenderId: '496886854887',
-    projectId: 'expensify-a0254',
-    authDomain: 'expensify-a0254.firebaseapp.com',
-    storageBucket: 'expensify-a0254.appspot.com',
-    measurementId: 'G-EYQXXPQCN7',
+    apiKey: 'AIzaSyAZHFGxfq1eS89gjixncMHgzhQc3LB-ck4',
+    appId: '1:6551562988:web:16cc2a8194015cf2cc13c9',
+    messagingSenderId: '6551562988',
+    projectId: 'expensify-3fd31',
+    authDomain: 'expensify-3fd31.firebaseapp.com',
+    storageBucket: 'expensify-3fd31.appspot.com',
+    measurementId: 'G-N13F1CVZV3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBPRIW88OVhNHJ4wRXkJxRrEW4_KCu-Zf8',
-    appId: '1:496886854887:android:273404f35f0abcbcce1e42',
-    messagingSenderId: '496886854887',
-    projectId: 'expensify-a0254',
-    storageBucket: 'expensify-a0254.appspot.com',
+    apiKey: 'AIzaSyCGk_mToJ4oMh_4hiTkowaDt5wxI-YfQ4g',
+    appId: '1:6551562988:android:be6dceb45ad12f23cc13c9',
+    messagingSenderId: '6551562988',
+    projectId: 'expensify-3fd31',
+    storageBucket: 'expensify-3fd31.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBa0lXIItB1soLbfmvz0je2vwvyw6QJ9DQ',
-    appId: '1:496886854887:ios:f04dc834c795f1a7ce1e42',
-    messagingSenderId: '496886854887',
-    projectId: 'expensify-a0254',
-    storageBucket: 'expensify-a0254.appspot.com',
-    iosClientId: '496886854887-8tp85lb9ind8fpdiugo1ei0ul2jsl411.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBv3hTk3uMWCdKNY6HwTUljMsF-uBDGX4E',
+    appId: '1:6551562988:ios:e315f1e56e3641d7cc13c9',
+    messagingSenderId: '6551562988',
+    projectId: 'expensify-3fd31',
+    storageBucket: 'expensify-3fd31.appspot.com',
+    iosClientId: '6551562988-ekt0jom96p9hci29l3erd6mu5oplbr0p.apps.googleusercontent.com',
     iosBundleId: 'com.example.expensify',
   );
 }

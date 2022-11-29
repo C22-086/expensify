@@ -1,45 +1,37 @@
 {
   "project_info": {
-    "project_number": "496886854887",
-    "project_id": "expensify-a0254",
-    "storage_bucket": "expensify-a0254.appspot.com"
+    "project_number": "6551562988",
+    "project_id": "expensify-3fd31",
+    "storage_bucket": "expensify-3fd31.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:496886854887:android:273404f35f0abcbcce1e42",
+        "mobilesdk_app_id": "1:6551562988:android:be6dceb45ad12f23cc13c9",
         "android_client_info": {
           "package_name": "com.example.expensify"
         }
       },
       "oauth_client": [
         {
-          "client_id": "496886854887-tbudaipstsl1bcbocm26gjl340v372kd.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.expensify",
-            "certificate_hash": "a078edcc7871af51bd16d20bedc70ed141874b83"
-          }
-        },
-        {
-          "client_id": "496886854887-8j0q2gummmfhesi1tvf7j473vkd4k1pt.apps.googleusercontent.com",
+          "client_id": "6551562988-bhiebb6dqo3peqg9tqndf59a2lvvinel.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBPRIW88OVhNHJ4wRXkJxRrEW4_KCu-Zf8"
+          "current_key": "AIzaSyCGk_mToJ4oMh_4hiTkowaDt5wxI-YfQ4g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "496886854887-8j0q2gummmfhesi1tvf7j473vkd4k1pt.apps.googleusercontent.com",
+              "client_id": "6551562988-bhiebb6dqo3peqg9tqndf59a2lvvinel.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "496886854887-8tp85lb9ind8fpdiugo1ei0ul2jsl411.apps.googleusercontent.com",
+              "client_id": "6551562988-ekt0jom96p9hci29l3erd6mu5oplbr0p.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.expensify"

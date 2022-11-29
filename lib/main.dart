@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         title: 'Expensify',
         theme: ThemeData(colorScheme: kColorScheme),
         navigatorObservers: [routeObserver],
+        home: const LoginPage(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':

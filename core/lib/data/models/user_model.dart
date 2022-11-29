@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:core/data/models/income_model.dart';
 import 'package:equatable/equatable.dart';
 
