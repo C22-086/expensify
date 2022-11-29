@@ -5,23 +5,26 @@ class OnboardingContent extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String description;
-  const OnboardingContent(
-      {required this.imageUrl,
-      required this.title,
-      required this.description,
-      super.key});
+  const OnboardingContent({
+    required this.imageUrl,
+    required this.title,
+    required this.description,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset(
           imageUrl,
+          scale: 2,
         ),
-        const SizedBox(
-          height: 40,
+        SizedBox(
+          height: height * 0.01,
         ),
         Text(
           title,
@@ -30,7 +33,7 @@ class OnboardingContent extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 30),
+        SizedBox(height: height * 0.01),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Text(
@@ -39,7 +42,7 @@ class OnboardingContent extends StatelessWidget {
             style: GoogleFonts.poppins(fontSize: 16),
           ),
         ),
-        const SizedBox(height: 81),
+        SizedBox(height: height * 0.3),
       ],
     );
   }
