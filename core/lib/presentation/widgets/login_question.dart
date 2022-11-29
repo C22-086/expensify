@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 class LogInQuestion extends StatelessWidget {
   final Function() onPressed;
 
-  const LogInQuestion({super.key, required this.onPressed});
-
+  const LogInQuestion(
+      {super.key,
+      required this.onPressed,
+      required this.text,
+      required this.buttonText});
+  final String text;
+  final String buttonText;
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Belum memiliki akun?',
+          text,
           style: kSubtitle,
         ),
         const SizedBox(
@@ -21,7 +26,7 @@ class LogInQuestion extends StatelessWidget {
         InkWell(
           onTap: onPressed,
           child: Text(
-            'Daftar',
+            buttonText,
             style: kSubtitle.copyWith(
               color: kGreen,
             ),

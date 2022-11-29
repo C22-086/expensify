@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'Expensify',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         home: const OnboardingPage(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
-            case '/home':
+            case '/login':
               return MaterialPageRoute(
                 builder: (_) => const LoginPage(),
               );

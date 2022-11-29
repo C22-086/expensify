@@ -56,26 +56,26 @@ class CheckBoxRegister extends StatelessWidget {
               text: TextSpan(
                 text: 'Saya menyetujui segala isi ',
                 style: kBodyText.copyWith(
-                  fontSize: 16,
+                  fontSize: 12,
                 ),
                 children: [
                   TextSpan(
                     text: 'syarat penggunaan ',
                     style: kBodyText.copyWith(
                       color: kGreen,
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
                   TextSpan(
                     text: 'dan ',
                     style: kBodyText.copyWith(
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
                   TextSpan(
                     text: 'kebijakan privasi',
                     style: kBodyText.copyWith(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: kGreen,
                     ),
                   ),

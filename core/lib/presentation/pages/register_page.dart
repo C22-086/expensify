@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:core/presentation/widgets/general_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool? _isAgree = false;
   bool _isPasswordShow = false;
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void dispose() {
@@ -53,11 +55,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Center(
-                        child: TitlePage(
-                      heading: 'Buat Akun',
-                      subHeading: 'Mulai kelola keuangan anda sekarang!',
-                    )),
-                    TextFormEmail(emailController: _emailController),
+                      child: TitlePage(
+                        heading: 'Buat Akun',
+                        subHeading: 'Mulai kelola keuangan anda sekarang!',
+                      ),
+                    ),
+                    GeneralForm(
+                      controller: _nameController,
+                      label: 'Full name',
+                      hint: 'Full name',
+                      textInputType: TextInputType.name,
+                      icon: const Icon(Icons.person_outline),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormEmail(controller: _emailController),
                     const SizedBox(height: 20),
                     TextFormPassword(
                       passwordController: _passwordController,
@@ -88,6 +99,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     buttonLogInWithGoogle(),
                     const SizedBox(height: 25),
                     LogInQuestion(
+                      text: 'Sudah punya akun?',
+                      buttonText: 'Masuk',
                       onPressed: () {
                         Navigator.pushNamed(context, LoginPage.routeName);
                       },
