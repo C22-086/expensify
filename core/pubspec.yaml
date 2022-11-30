@@ -17,6 +17,7 @@ dependencies:
   google_sign_in: ^5.4.2
   dartz: ^0.10.1
   fl_chart: ^0.55.2
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:
