@@ -259,7 +259,7 @@ packages:
     source: hosted
     version: "2.0.1"
   flutter_switch:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_switch
       url: "https://pub.dartlang.org"

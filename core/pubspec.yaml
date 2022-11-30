@@ -20,6 +20,7 @@ dependencies:
   firebase_database: ^10.0.6
   shared_preferences: ^2.0.15
   cloud_firestore: ^4.1.0
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:

@@ -67,16 +67,16 @@ class SetBalancePage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
                   final ref = FirebaseDatabase.instance
                       .ref()
                       .child('users/${FirebaseAuth.instance.currentUser!.uid}');
 
                   await ref.update({'balance': balanceController.text});
 
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return const MainPage();
-                  }));
+                  navigator.pushReplacement(MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  ));
                 },
                 child: Text(
                   'Set Saldo',

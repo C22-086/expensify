@@ -105,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     fontWeight: FontWeight.w600,
                     color: kSoftBlack),
               ),
-              trailing: Container(
+              trailing: SizedBox(
                 width: 100,
                 child: FlutterSwitch(
                   width: 105.0,
