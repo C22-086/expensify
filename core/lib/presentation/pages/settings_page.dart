@@ -45,7 +45,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     radius: 36,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        EditProfilePage.routeName,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.fromLTRB(20, 17, 20, 17),
                       shape: RoundedRectangleBorder(
