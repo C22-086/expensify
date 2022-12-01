@@ -1,18 +1,18 @@
 import 'package:core/core.dart';
+import 'package:core/data/repository/database_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
+  final DatabaseRepositoryImpl databaseRepositoryImpl;
 
-  AuthRepositoryImpl({
-    required this.firebaseAuth,
-  });
+  AuthRepositoryImpl(
+      {required this.firebaseAuth, required this.databaseRepositoryImpl});
 
   @override
-  Future<Either<Failure, void>> register(
+  Future<Either<Failure, UserCredential>> register(
       {required String name,
       required String email,
       required String password}) async {
@@ -21,16 +21,11 @@ class AuthRepositoryImpl implements AuthRepository {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user != null) {
-        final ref =
-            FirebaseDatabase.instance.ref('users/${userCredential.user!.uid}');
-        await ref.set({
-          'name': name,
-          'email': email,
-          'balance': 0,
-        });
+        databaseRepositoryImpl.saveUserData(
+            name: name, email: email, uid: userCredential.user!.uid);
       }
 
-      return const Right(null);
+      return Right(userCredential);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

@@ -28,8 +28,12 @@ class UnAuthenticated extends AuthState {
 }
 
 class Registered extends AuthState {
+  final UserCredential userCredential;
+
+  Registered({required this.userCredential});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [userCredential];
 }
 
 class AuthError extends AuthState {

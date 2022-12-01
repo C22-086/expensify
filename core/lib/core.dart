@@ -34,6 +34,7 @@ export 'domain/usecases/auth/register.dart';
 export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';
 export 'domain/usecases/auth/login.dart';
+export 'domain/usecases/database/save_user_data.dart';
 export 'domain/repository/database_repository.dart';
 
 // Widgets
