@@ -56,17 +56,22 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  FutureBuilder<DatabaseEvent?>(
+                  FutureBuilder(
                       future: dbRef,
-                      builder: (context, snapshot) {
-                        Map? user = snapshot.data!.snapshot.value as Map;
-                        user['key'] = snapshot.data!.snapshot.key;
-
-                        return Text(
-                          'Rp. ${user['balance']}',
-                          style:
-                              kHeading6.copyWith(color: kWhite, fontSize: 22),
-                        );
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text('Loading...');
+                        }
+                        final result = snapshot.data;
+                        final balance = result.snapshot.value;
+                        return snapshot.hasData
+                            ? Text(
+                                'Rp. ${balance['balance']}',
+                                style: kHeading6.copyWith(
+                                    color: kWhite, fontSize: 22),
+                              )
+                            : const Text('Loading...');
                       }),
                   InkWell(
                     onTap: () {
