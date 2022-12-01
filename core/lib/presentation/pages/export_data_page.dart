@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -126,9 +128,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                       setState(() {
                         dateController.text = formattedDate.toString();
                       });
-                    } else {
-                      print("Not selected");
-                    }
+                    } else {}
                   },
                 ))),
             const SizedBox(

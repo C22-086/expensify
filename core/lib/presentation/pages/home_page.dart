@@ -22,24 +22,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late User user;
-  late var userData;
-  @override
-  void initState() {
-    super.initState();
-    getUserInfo();
-  }
-
-  void getUserInfo() async {
-    user = FirebaseAuth.instance.currentUser!;
-    final ref = FirebaseDatabase.instance.ref('users/${user.uid}');
-
-    await ref.once().then((value) => userData = value.snapshot.value);
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    final dbRef = FirebaseDatabase.instance
+        .ref('users/${FirebaseAuth.instance.currentUser!.uid}')
+        .once();
 
     buildHeader() {
       return SafeArea(
@@ -68,10 +56,18 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    'Rp. ${userData['balance']}',
-                    style: kHeading6.copyWith(color: kWhite, fontSize: 22),
-                  ),
+                  FutureBuilder<DatabaseEvent?>(
+                      future: dbRef,
+                      builder: (context, snapshot) {
+                        Map? user = snapshot.data!.snapshot.value as Map;
+                        user['key'] = snapshot.data!.snapshot.key;
+
+                        return Text(
+                          'Rp. ${user['balance']}',
+                          style:
+                              kHeading6.copyWith(color: kWhite, fontSize: 22),
+                        );
+                      }),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, SetBalancePage.routeName);
