@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_event.dart';
@@ -10,12 +11,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogOut logOut;
   final LogInGoogle logInGoogle;
   final LogIn logIn;
+  final SaveUserData saveUserData;
 
   AuthBloc(
       {required this.register,
       required this.logOut,
       required this.logInGoogle,
-      required this.logIn})
+      required this.logIn,
+      required this.saveUserData})
       : super(UnAuthenticated()) {
     on<LogInRequested>((event, emit) async {
       emit(AuthLoading());
@@ -40,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthError(l.message)),
           emit(UnAuthenticated()),
         },
-        (r) => emit(Registered()),
+        (r) => emit(Registered(userCredential: r)),
       );
     });
     on<GoogleLogInRequested>((event, emit) async {

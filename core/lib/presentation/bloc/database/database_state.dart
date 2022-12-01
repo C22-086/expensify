@@ -9,16 +9,7 @@ abstract class DatabaseState extends Equatable {
 
 class DatabaseInitial extends DatabaseState {}
 
-class DatabaseSuccess extends DatabaseState {
-  final Either<Failure, List<UserModel>> listOfUserData;
-  final String? displayName;
-  const DatabaseSuccess(this.listOfUserData, this.displayName);
-
-  @override
-  List<Object?> get props => [listOfUserData, displayName];
-}
-
-class DatabaseError extends DatabaseState {
+class DatabaseLoading extends DatabaseState {
   @override
   List<Object?> get props => [];
 }

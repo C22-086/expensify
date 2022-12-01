@@ -8,17 +8,20 @@ import 'expanse_model.dart';
 class UserModel extends Equatable {
   UserModel(
     this.userId,
+    this.name,
     this.email,
     this.password,
-    this.expanses, {
+    this.expanses,
+    this.incomes, {
     this.balance = 0,
   });
 
   int userId;
+  String name;
   String email;
   String password;
-  List<ExpanseModel>? expanses;
-  List<IncomeModel>? incomes;
+  List<ExpanseModel> expanses;
+  List<IncomeModel> incomes;
   int balance;
 
   @override

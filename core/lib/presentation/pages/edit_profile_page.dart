@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
-import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -40,7 +39,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget buildBody() {
     return Container(
-      padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+      padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -67,7 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                           color: kDarkGreen,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.camera_alt_rounded,
                           color: Colors.white,
                         ),
@@ -75,7 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             SizedBox(
@@ -98,7 +97,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
             buildTextField("alexd@gmail.com"),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Row(
@@ -113,7 +112,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       backgroundColor: kWhite,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(defaultRadius),
-                          side: BorderSide(color: kGrey, width: 2)),
+                          side: const BorderSide(color: kGrey, width: 2)),
                     ),
                     child: Text(
                       "Cancel",
@@ -145,14 +144,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: kRichBlack, width: 2),
+              borderSide: const BorderSide(color: kRichBlack, width: 2),
               borderRadius: BorderRadius.circular(14),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(14),
             ),
-            fillColor: Color.fromARGB(255, 231, 231, 231),
+            fillColor: const Color.fromARGB(255, 231, 231, 231),
             hintText: placeholder,
             filled: true,
             hintStyle:

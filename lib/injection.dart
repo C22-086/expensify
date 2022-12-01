@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/data/repository/database_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
@@ -7,20 +8,28 @@ final locator = GetIt.instance;
 Future<void> init() async {
   // BLOC
   locator.registerFactory(() => AuthBloc(
-      logIn: locator(),
-      logOut: locator(),
-      logInGoogle: locator(),
-      register: locator()));
+        logIn: locator(),
+        logOut: locator(),
+        logInGoogle: locator(),
+        register: locator(),
+        saveUserData: locator(),
+      ));
 
   locator.registerFactory(() => SetPage());
   locator.registerFactory(() => SetCategory());
-  locator.registerFactory(() => AuthRepositoryImpl(firebaseAuth: locator()));
+  locator.registerFactory(() => AuthRepositoryImpl(
+      firebaseAuth: locator(), databaseRepositoryImpl: locator()));
+  locator.registerFactory(() => DatabaseRepositoryImpl());
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       firebaseAuth: locator(),
+      databaseRepositoryImpl: locator(),
     ),
+  );
+  locator.registerLazySingleton<DatabaseRepository>(
+    () => DatabaseRepositoryImpl(),
   );
 
   // USECASE
@@ -28,6 +37,7 @@ Future<void> init() async {
   locator.registerLazySingleton(() => LogOut(locator()));
   locator.registerLazySingleton(() => LogInGoogle(locator()));
   locator.registerLazySingleton(() => LogIn(locator()));
+  locator.registerLazySingleton(() => SaveUserData(locator()));
 
   // FIREBASE
   locator.registerLazySingleton<FirebaseAuth>(
