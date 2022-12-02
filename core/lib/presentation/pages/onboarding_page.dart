@@ -1,10 +1,12 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/onboarding_content.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/dots_indicator.dart';
 
 class OnboardingPage extends StatefulWidget {
+  static const routeName = '/onboarding';
   const OnboardingPage({super.key});
 
   @override
@@ -83,9 +85,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
                     const SizedBox(height: 28),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (snapshot.data == pageContent.length - 1) {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          final navigator = Navigator.of(context);
+                          final pref = await SharedPreferences.getInstance();
+                          await pref.setBool('onboardingPassed', true);
+
+                          navigator.pushReplacementNamed(LoginPage.routeName);
                         }
 
                         _pageController.animateToPage(

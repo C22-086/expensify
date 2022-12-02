@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login-page';
@@ -113,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
               ? const CustomLoadingButton()
               : CustomButton(
                   title: "Masuk",
-                  onPressed: () {
+                  onPressed: () async {
                     _signInEmailAndPassword(context);
                   },
                 );
@@ -169,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _signInEmailAndPassword(context) {
+  Future<void> _signInEmailAndPassword(context) async {
     if (_emailController.text.isEmpty) {
       const snackbar = SnackBar(content: Text('Email belum di isi'));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -181,6 +182,8 @@ class _LoginPageState extends State<LoginPage> {
         LogInRequested(
             email: _emailController.text, password: _passwordController.text),
       );
+      final pref = await SharedPreferences.getInstance();
+      pref.setBool('isLogin', true);
     }
   }
 

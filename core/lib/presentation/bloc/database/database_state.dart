@@ -13,3 +13,16 @@ class DatabaseLoading extends DatabaseState {
   @override
   List<Object?> get props => [];
 }
+
+class DatabaseSuccess extends DatabaseState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DatabaseError extends DatabaseState {
+  final String error;
+
+  const DatabaseError(this.error);
+  @override
+  List<Object?> get props => [error];
+}

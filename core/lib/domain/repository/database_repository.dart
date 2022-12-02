@@ -6,4 +6,6 @@ abstract class DatabaseRepository {
       {required String name, required String email, required String uid});
   Future<Either<Failure, void>> getUserData(
       {required String name, required String email, required String uid});
+  Future<Either<Failure, void>> editUserData(
+      {required String name, required String uid});
 }

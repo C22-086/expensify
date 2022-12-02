@@ -7,8 +7,11 @@ part 'database_state.dart';
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   final SaveUserData saveUserData;
-  DatabaseBloc(this.saveUserData) : super(DatabaseInitial()) {
+  final EditUserData editUserData;
+  DatabaseBloc({required this.saveUserData, required this.editUserData})
+      : super(DatabaseInitial()) {
     on<DatabaseSaveUser>(_saveUserData);
+    on<DatabaseEditUser>(_editUserData);
   }
 
   _saveUserData(DatabaseSaveUser event, Emitter<DatabaseState> emit) async {
@@ -16,5 +19,12 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     final listofUserData =
         await saveUserData.execute(event.email, event.name, event.uid);
     listofUserData.fold((l) => null, (r) => null);
+  }
+
+  _editUserData(DatabaseEditUser event, Emitter<DatabaseState> emit) async {
+    emit(DatabaseLoading());
+    final editData = await editUserData.execute(event.name, event.uid);
+    editData.fold(
+        (l) => emit(DatabaseError(l.message)), (r) => emit(DatabaseSuccess()));
   }
 }

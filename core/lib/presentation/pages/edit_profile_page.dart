@@ -1,43 +1,58 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfilePage extends StatelessWidget {
   static const routeName = '/edit-profile';
-  const EditProfilePage({super.key});
 
-  @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
-}
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
 
-class _EditProfilePageState extends State<EditProfilePage> {
-  final TextEditingController _editTextController = TextEditingController();
+  final dynamic user;
+
   bool showPassword = false;
+
+  EditProfilePage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
+      body: BlocListener<DatabaseBloc, DatabaseState>(
+        listener: (context, state) {
+          if (state is DatabaseSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: SingleChildScrollView(
+          child: Stack(
             children: [
-              buildHeader(context),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: buildBody(),
-                ),
+              Column(
+                children: [
+                  _buildHeader(context),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height - 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: _buildBody(context),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget buildBody() {
+  Widget _buildBody(context) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
     return Container(
       padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
       child: GestureDetector(
@@ -86,7 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-            buildTextField("Anne fox"),
+            _buildTextField(user['name'], false),
             SizedBox(
               height: 46,
               child: Text(
@@ -96,7 +111,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-            buildTextField("alexd@gmail.com"),
+            _buildTextField(user['email'], true),
             const SizedBox(
               height: 80,
             ),
@@ -127,7 +142,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(
                   width: 150,
                   height: 50,
-                  child: CustomButton(title: "Save", onPressed: () {}),
+                  child: CustomButton(
+                      title: "Save",
+                      onPressed: () {
+                        BlocProvider.of<DatabaseBloc>(context).add(
+                          DatabaseEditUser(
+                              name: _nameController.text, uid: uid),
+                        );
+                      }),
                 ),
               ],
             )
@@ -137,11 +159,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildTextField(String placeholder) {
+  Widget _buildTextField(String placeholder, readOnly) {
     return Container(
         padding: const EdgeInsets.only(bottom: 35.0),
         child: TextFormField(
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.name,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: const BorderSide(color: kRichBlack, width: 2),
@@ -157,11 +179,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             hintStyle:
                 GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600),
           ),
-          controller: _editTextController,
+          controller: readOnly ? _emailController : _nameController,
+          readOnly: readOnly,
         ));
   }
 
-  Container buildHeader(BuildContext context) {
+  Container _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(
         right: 30,

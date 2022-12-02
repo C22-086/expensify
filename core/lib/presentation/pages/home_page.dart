@@ -33,68 +33,76 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: defaultMargin, vertical: 25),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/icon_wallet.png',
-                        scale: 2.5,
-                        color: kWhite,
-                      ),
-                      const SizedBox(width: 9),
-                      Text(
-                        'Balance',
-                        style: kHeading7.copyWith(color: kWhite),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  FutureBuilder(
-                      future: dbRef,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text('Loading...');
-                        }
-                        final result = snapshot.data;
-                        final balance = result.snapshot.value;
-                        return snapshot.hasData
-                            ? Text(
-                                'Rp. ${balance['balance']}',
-                                style: kHeading6.copyWith(
-                                    color: kWhite, fontSize: 22),
-                              )
-                            : const Text('Loading...');
-                      }),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, SetBalancePage.routeName);
-                    },
-                    child: Chip(
-                      backgroundColor: Colors.transparent,
-                      labelStyle: GoogleFonts.poppins(
-                        fontSize: 12,
-                      ),
-                      label: const Text('Ubah saldo'),
+          child: FutureBuilder(
+              future: dbRef,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text('Loading...');
+                }
+                final result = snapshot.data;
+                final user = result.snapshot.value;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hello, ${user['name']}',
+                          style: kHeading6.copyWith(
+                            color: kWhite,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icon_wallet.png',
+                              scale: 2.5,
+                              color: kWhite,
+                            ),
+                            const SizedBox(width: 9),
+                            Text(
+                              'Balance',
+                              style: kHeading7.copyWith(color: kWhite),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Rp. ${user['balance']}',
+                          style:
+                              kHeading6.copyWith(color: kWhite, fontSize: 22),
+                        ),
+                        const SizedBox(height: 5),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, SetBalancePage.routeName);
+                          },
+                          child: Chip(
+                            backgroundColor: Colors.transparent,
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 12,
+                            ),
+                            label: const Text('Ubah saldo'),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-              const CircleAvatar(
-                radius: 30,
-                backgroundColor: kWhite,
-                child: CircleAvatar(
-                  radius: 25,
-                ),
-              ),
-            ],
-          ),
+                    const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: kWhite,
+                      child: CircleAvatar(
+                        radius: 25,
+                      ),
+                    ),
+                  ],
+                );
+              }),
         ),
       );
     }
