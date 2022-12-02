@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/custom_nav_item.dart';
 
 class MainPage extends StatelessWidget {
+  static const routeName = '/main';
   const MainPage({super.key});
 
   @override
