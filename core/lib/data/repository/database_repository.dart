@@ -11,6 +11,25 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
     try {
       final ref = FirebaseDatabase.instance.ref('users/$uid');
       await ref.set({
+        'uid': uid,
+        'name': name,
+        'email': email,
+        'balance': 0,
+      });
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> getUserData(
+      {required String name,
+      required String email,
+      required String uid}) async {
+    try {
+      final ref = FirebaseDatabase.instance.ref('users/$uid');
+      await ref.set({
         'name': name,
         'email': email,
         'balance': 0,

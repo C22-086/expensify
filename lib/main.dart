@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/presentation/pages/onboarding_page.dart';
 import 'package:expensify/firebase_options.dart';
 import 'package:expensify/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
         title: 'Expensify',
         theme: ThemeData(colorScheme: kColorScheme),
         navigatorObservers: [routeObserver],
-        home: const OnboardingPage(),
+        home: const LoginPage(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/login':
@@ -83,7 +82,10 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const EditProfilePage(),
               );
-
+            case ExportDataPage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const ExportDataPage(),
+              );
             default:
               return MaterialPageRoute(
                 builder: (_) {

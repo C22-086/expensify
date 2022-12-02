@@ -22,24 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late User user;
-  late var userData;
-  @override
-  void initState() {
-    super.initState();
-    getUserInfo();
-  }
-
-  void getUserInfo() async {
-    user = FirebaseAuth.instance.currentUser!;
-    final ref = FirebaseDatabase.instance.ref('users/${user.uid}');
-
-    await ref.once().then((value) => userData = value.snapshot.value);
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     buildHeader() {
       return SafeArea(
@@ -68,10 +55,23 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    'Rp. ${userData['balance']}',
-                    style: kHeading6.copyWith(color: kWhite, fontSize: 22),
-                  ),
+                  FutureBuilder(
+                      future: dbRef,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text('Loading...');
+                        }
+                        final result = snapshot.data;
+                        final balance = result.snapshot.value;
+                        return snapshot.hasData
+                            ? Text(
+                                'Rp. ${balance['balance']}',
+                                style: kHeading6.copyWith(
+                                    color: kWhite, fontSize: 22),
+                              )
+                            : const Text('Loading...');
+                      }),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, SetBalancePage.routeName);
