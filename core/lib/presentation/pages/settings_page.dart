@@ -1,4 +1,6 @@
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool status = false;
+
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
+
     buildAppBar() => SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -35,52 +41,65 @@ class _SettingsPageState extends State<SettingsPage> {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CircleAvatar(
-                    radius: 36,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        EditProfilePage.routeName,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.fromLTRB(20, 17, 20, 17),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      'Edit Profil',
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 13,
-              ),
-              Text(
-                'Anne Fox',
-                style: kHeading6.copyWith(color: kSoftBlack),
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              Text('annefox@gmail.com', style: kSubtitle),
-            ],
-          ),
+          child: FutureBuilder(
+              future: dbRef,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text('Loading...');
+                }
+                final result = snapshot.data;
+                final user = result.snapshot.value;
+                return snapshot.hasData
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const CircleAvatar(
+                                radius: 36,
+                                child: Text('No Image'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    EditProfilePage.routeName,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 17, 20, 17),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Edit Profil',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: kWhite,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          Text(
+                            user['name'],
+                            style: kHeading6.copyWith(color: kSoftBlack),
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(user['email'], style: kSubtitle),
+                        ],
+                      )
+                    : const Text('Loading...');
+              }),
         ),
       );
     }

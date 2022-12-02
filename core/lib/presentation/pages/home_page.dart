@@ -87,10 +87,12 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const CircleAvatar(
-                radius: 30,
+                radius: 40,
                 backgroundColor: kWhite,
                 child: CircleAvatar(
-                  radius: 25,
+                  radius: 35,
+                  child: Padding(
+                      padding: EdgeInsets.all(10), child: Text('No Image')),
                 ),
               ),
             ],
