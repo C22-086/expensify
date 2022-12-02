@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/presentation/pages/onboarding_page.dart';
 import 'package:expensify/firebase_options.dart';
 import 'package:expensify/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';

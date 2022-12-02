@@ -171,29 +171,32 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 33,
             ),
             ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(13),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: kGrey,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(15))),
-                  child: Image.asset(
-                    'assets/logout.png',
-                  ),
+              onTap: () {
+                BlocProvider.of<AuthBloc>(context).add(LogOutRequested());
+              },
+              leading: Container(
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: kGrey,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15))),
+                child: Image.asset(
+                  'assets/logout.png',
                 ),
-                title: Text(
-                  'Log Out',
-                  style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: kSoftBlack),
-                ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
-                ))
+              ),
+              title: Text(
+                'Log Out',
+                style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: kSoftBlack),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 20,
+              ),
+            )
           ],
         ),
       );

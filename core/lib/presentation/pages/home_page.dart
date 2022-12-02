@@ -25,9 +25,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    final dbRef = FirebaseDatabase.instance
-        .ref('users/${FirebaseAuth.instance.currentUser!.uid}')
-        .once();
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     buildHeader() {
       return SafeArea(
