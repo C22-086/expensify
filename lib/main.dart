@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
               );
             case EditProfilePage.routeName:
               return MaterialPageRoute(
-                builder: (_) => const EditProfilePage(),
+                builder: (_) => EditProfilePage(),
               );
             case ExportDataPage.routeName:
               return MaterialPageRoute(

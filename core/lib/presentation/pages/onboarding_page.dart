@@ -87,11 +87,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ElevatedButton(
                       onPressed: () async {
                         if (snapshot.data == pageContent.length - 1) {
+                          final navigator = Navigator.of(context);
                           final pref = await SharedPreferences.getInstance();
                           await pref.setBool('onboardingPassed', true);
 
-                          Navigator.pushReplacementNamed(
-                              context, LoginPage.routeName);
+                          navigator.pushReplacementNamed(LoginPage.routeName);
                         }
 
                         _pageController.animateToPage(

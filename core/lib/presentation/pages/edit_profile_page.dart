@@ -1,140 +1,154 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfilePage extends StatelessWidget {
   static const routeName = '/edit-profile';
-  const EditProfilePage({super.key});
 
-  @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _editTextController = TextEditingController();
   bool showPassword = false;
 
+  EditProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              buildHeader(context),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: buildBody(),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
-  Widget buildBody() {
-    return Container(
-      padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: ListView(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Stack(
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 43,
-                        width: 43,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: kDarkGreen,
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt_rounded,
-                          color: Colors.white,
-                        ),
-                      )),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            SizedBox(
-              height: 46,
-              child: Text(
-                "Nama",
-                style: kHeading6.copyWith(
-                  color: kSoftBlack,
-                ),
-              ),
-            ),
-            buildTextField("Anne fox"),
-            SizedBox(
-              height: 46,
-              child: Text(
-                "Email",
-                style: kHeading6.copyWith(
-                  color: kSoftBlack,
-                ),
-              ),
-            ),
-            buildTextField("alexd@gmail.com"),
-            const SizedBox(
-              height: 80,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
+                buildHeader(context),
                 SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: TextButton(
-                    onPressed: (() {}),
-                    style: TextButton.styleFrom(
-                      backgroundColor: kWhite,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(defaultRadius),
-                          side: const BorderSide(color: kGrey, width: 2)),
-                    ),
-                    child: Text(
-                      "Cancel",
-                      style: kSubtitle.copyWith(
-                        color: kSoftBlack,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
+                  height: MediaQuery.of(context).size.height - 130,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: buildBody(dbRef),
                   ),
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: CustomButton(title: "Save", onPressed: () {}),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildBody(dbRef) {
+    return FutureBuilder(
+        future: dbRef,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          }
+          final user = snapshot.data.snapshot.value;
+          return snapshot.hasData
+              ? Container(
+                  padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
+                  child: ListView(
+                    children: [
+                      Center(
+                        child: Stack(
+                          children: [
+                            const CircleAvatar(
+                              radius: 50,
+                            ),
+                            Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 43,
+                                  width: 43,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 4,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                    ),
+                                    color: kDarkGreen,
+                                  ),
+                                  child: const Icon(
+                                    Icons.camera_alt_rounded,
+                                    color: Colors.white,
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        height: 46,
+                        child: Text(
+                          "Nama",
+                          style: kHeading6.copyWith(
+                            color: kSoftBlack,
+                          ),
+                        ),
+                      ),
+                      buildTextField(user['name']),
+                      SizedBox(
+                        height: 46,
+                        child: Text(
+                          "Email",
+                          style: kHeading6.copyWith(
+                            color: kSoftBlack,
+                          ),
+                        ),
+                      ),
+                      buildTextField(user['email']),
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            height: 50,
+                            child: TextButton(
+                              onPressed: (() {}),
+                              style: TextButton.styleFrom(
+                                backgroundColor: kWhite,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(defaultRadius),
+                                    side: const BorderSide(
+                                        color: kGrey, width: 2)),
+                              ),
+                              child: Text(
+                                "Cancel",
+                                style: kSubtitle.copyWith(
+                                  color: kSoftBlack,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 150,
+                            height: 50,
+                            child:
+                                CustomButton(title: "Save", onPressed: () {}),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              : Container();
+        });
   }
 
   Widget buildTextField(String placeholder) {

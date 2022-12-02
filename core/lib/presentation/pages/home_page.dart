@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
