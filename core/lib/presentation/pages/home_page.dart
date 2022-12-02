@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
-    buildHeader() {
+    buildHeader(user) {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -40,6 +40,16 @@ class _HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Hello, ${user['name']}',
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.poppins(
+                      color: kWhite,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
                       Image.asset(
@@ -55,23 +65,10 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  FutureBuilder(
-                      future: dbRef,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text('Loading...');
-                        }
-                        final result = snapshot.data;
-                        final balance = result.snapshot.value;
-                        return snapshot.hasData
-                            ? Text(
-                                'Rp. ${balance['balance']}',
-                                style: kHeading6.copyWith(
-                                    color: kWhite, fontSize: 22),
-                              )
-                            : const Text('Loading...');
-                      }),
+                  Text(
+                    'Rp. ${user['balance']}',
+                    style: kHeading6.copyWith(color: kWhite, fontSize: 22),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, SetBalancePage.routeName);
@@ -101,7 +98,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildCard() {
+    buildCard(user) {
       return ListView(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
@@ -160,7 +157,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildMainFuture() {
+    buildMainFuture(user) {
       return Padding(
         padding: EdgeInsets.only(
           left: defaultMargin,
@@ -229,35 +226,44 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             const BackgroundHeader(height: 0.32),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildHeader(),
-                buildCard(),
-                buildMainFuture(),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Text(
-                    "Recent Transaction",
-                    style: kHeading5.copyWith(
-                      color: kSoftBlack,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    child: ListView(
-                      shrinkWrap: false,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        buildContent(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+            FutureBuilder(
+                future: dbRef,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text('Loading...');
+                  }
+                  final result = snapshot.data;
+                  final user = result.snapshot.value;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildHeader(user),
+                      buildCard(user),
+                      buildMainFuture(user),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        child: Text(
+                          "Recent Transaction",
+                          style: kHeading5.copyWith(
+                            color: kSoftBlack,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          child: ListView(
+                            shrinkWrap: false,
+                            physics: const BouncingScrollPhysics(),
+                            children: [
+                              buildContent(),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }),
           ],
         ),
       ),

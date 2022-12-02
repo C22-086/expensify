@@ -10,13 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 bool? initializeApp;
 bool? isLogin;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'Expensify',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  // Initializing Dependecy Injection
   await di.init();
 
   SystemChrome.setSystemUIOverlayStyle(

@@ -1,11 +1,14 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends StatelessWidget {
   static const routeName = '/edit-profile';
@@ -64,8 +67,14 @@ class EditProfilePage extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
+                  InkWell(
+                    onTap: () async {
+                      final file = await ImagePicker.platform
+                          .pickImage(source: ImageSource.gallery);
+                    },
+                    child: const CircleAvatar(
+                      radius: 50,
+                    ),
                   ),
                   Positioned(
                       bottom: 0,
