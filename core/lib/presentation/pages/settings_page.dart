@@ -1,9 +1,9 @@
 import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -62,9 +62,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
+                                  Navigator.push(
                                     context,
-                                    EditProfilePage.routeName,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditProfilePage(user: user),
+                                    ),
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -222,15 +225,27 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is UnAuthenticated) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-              (route) => false,
-            );
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is UnAuthenticated) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (route) => false,
+                );
+              }
+            },
+          ),
+          BlocListener<DatabaseBloc, DatabaseState>(
+            listener: (context, state) {
+              if (state is DatabaseSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Success mengedit profile')));
+              }
+            },
+          )
+        ],
         child: Stack(
           children: [
             Column(

@@ -39,4 +39,18 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> editUserData(
+      {required String name, required String uid}) async {
+    try {
+      final ref = FirebaseDatabase.instance.ref('users/$uid');
+      await ref.update({
+        'name': name,
+      });
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<SetCategory>()),
         BlocProvider(create: (_) => di.locator<AuthBloc>()),
         BlocProvider(create: (_) => di.locator<OnboardingCubit>()),
+        BlocProvider(create: (_) => di.locator<DatabaseBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -96,7 +97,9 @@ class MyApp extends StatelessWidget {
               );
             case EditProfilePage.routeName:
               return MaterialPageRoute(
-                builder: (_) => EditProfilePage(),
+                builder: (_) => EditProfilePage(
+                  user: settings.arguments,
+                ),
               );
             case ExportDataPage.routeName:
               return MaterialPageRoute(

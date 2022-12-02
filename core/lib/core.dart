@@ -8,6 +8,7 @@ export 'styles/text_styles.dart';
 export 'presentation/bloc/auth/auth_bloc.dart';
 export 'presentation/bloc/page/set_page_bloc.dart';
 export 'presentation/bloc/onboarding/onboarding_bloc.dart';
+export 'presentation/bloc/database/database_bloc.dart';
 
 // Pages
 export 'presentation/pages/login_page.dart';
@@ -31,12 +32,13 @@ export 'data/models/user_model.dart';
 
 // Domain
 export 'domain/repository/auth_repository.dart';
+export 'domain/repository/database_repository.dart';
 export 'domain/usecases/auth/register.dart';
 export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';
 export 'domain/usecases/auth/login.dart';
 export 'domain/usecases/database/save_user_data.dart';
-export 'domain/repository/database_repository.dart';
+export 'domain/usecases/database/edit_user_data.dart';
 
 // Widgets
 export 'presentation/widgets/divider_custom.dart';

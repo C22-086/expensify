@@ -14,12 +14,13 @@ Future<void> init() async {
         register: locator(),
         saveUserData: locator(),
       ));
-
+  locator.registerFactory(() => DatabaseBloc(
+        saveUserData: locator(),
+        editUserData: locator(),
+      ));
+  locator.registerFactory(() => OnboardingCubit(0));
   locator.registerFactory(() => SetPage());
   locator.registerFactory(() => SetCategory());
-  locator.registerFactory(() => AuthRepositoryImpl(
-      firebaseAuth: locator(), databaseRepositoryImpl: locator()));
-  locator.registerFactory(() => DatabaseRepositoryImpl());
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(
@@ -28,9 +29,14 @@ Future<void> init() async {
       databaseRepositoryImpl: locator(),
     ),
   );
+  locator.registerFactory(() => AuthRepositoryImpl(
+        firebaseAuth: locator(),
+        databaseRepositoryImpl: locator(),
+      ));
   locator.registerLazySingleton<DatabaseRepository>(
     () => DatabaseRepositoryImpl(),
   );
+  locator.registerFactory(() => DatabaseRepositoryImpl());
 
   // USECASE
   locator.registerLazySingleton(() => Register(locator()));
@@ -38,14 +44,12 @@ Future<void> init() async {
   locator.registerLazySingleton(() => LogInGoogle(locator()));
   locator.registerLazySingleton(() => LogIn(locator()));
   locator.registerLazySingleton(() => SaveUserData(locator()));
+  locator.registerLazySingleton(() => EditUserData(locator()));
 
   // FIREBASE
   locator.registerLazySingleton<FirebaseAuth>(
     () => FirebaseAuth.instance,
   );
-
   locator
       .registerLazySingleton<FirebaseDatabase>(() => FirebaseDatabase.instance);
-
-  locator.registerFactory(() => OnboardingCubit(0));
 }
