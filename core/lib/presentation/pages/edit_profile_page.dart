@@ -1,7 +1,3 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:io';
-
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class EditProfilePage extends StatelessWidget {
   static const routeName = '/edit-profile';
 
