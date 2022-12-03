@@ -24,6 +24,9 @@ dependencies:
   firebase_storage: ^11.0.6
   image_picker: ^0.8.6
   path: ^1.8.2
+  dropdown_search: ^5.0.3
+  percent_indicator: ^4.2.2
+
 
 dev_dependencies:
   flutter_test:

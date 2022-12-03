@@ -14,6 +14,7 @@ const Color kSoftRed = Color(0xFFFCDADA);
 const Color kDarkRed = Color(0xFFC80137);
 const Color kDavysGrey = Color(0xFF4B5358);
 const Color kGrey = Color(0xFFD9D9D9);
+const Color kSoftGrey = Color(0xFFF4F4F4);
 
 const kColorScheme = ColorScheme(
   primary: kGreen,

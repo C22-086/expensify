@@ -35,3 +35,6 @@ const double defaultRadius = 14.0;
 
 // Button Height
 const double defaultButtonHeight = 52.0;
+
+// ChartRadius
+const double defaultChartRadius = 50;
