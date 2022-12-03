@@ -75,7 +75,6 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const SetBalancePage(),
               );
-
             case RegisterPage.routeName:
               return MaterialPageRoute(
                 builder: (_) => const RegisterPage(),
@@ -87,6 +86,10 @@ class MyApp extends StatelessWidget {
             case AddIncomePage.routeName:
               return MaterialPageRoute(
                 builder: (_) => const AddIncomePage(),
+              );
+            case AddExpensePage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const AddExpensePage(),
               );
             case DetailIncomePage.routeName:
               return MaterialPageRoute(

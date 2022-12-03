@@ -181,7 +181,9 @@ class _HomePageState extends State<HomePage> {
                 iconPath: 'assets/icon_expense.png',
                 subtitle: 'Expense',
                 textColor: kRed,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, AddExpensePage.routeName);
+                },
               ),
             ),
           ],

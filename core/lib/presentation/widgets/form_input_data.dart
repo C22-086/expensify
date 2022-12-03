@@ -7,12 +7,16 @@ class FormInputData extends StatelessWidget {
   final TextEditingController controller;
   final String chipLabel;
   final String? hintText;
+  final Color boderColor;
+  final Color textColor;
 
   const FormInputData({
     super.key,
     required this.controller,
     required this.chipLabel,
     this.hintText,
+    this.boderColor = kGreen,
+    this.textColor = kGreen,
   });
 
   @override
@@ -43,11 +47,11 @@ class FormInputData extends StatelessWidget {
             labelStyle: GoogleFonts.poppins(
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: kGreen,
+              color: textColor,
             ),
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(color: kGreen, width: 2),
-              borderRadius: BorderRadius.all(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: boderColor, width: 2),
+              borderRadius: const BorderRadius.all(
                 Radius.circular(30),
               ),
             ),
