@@ -28,86 +28,77 @@ class _HomePageState extends State<HomePage> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
-    buildHeader() {
+    buildHeader(user) {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: defaultMargin, vertical: 25),
-          child: FutureBuilder(
-              future: dbRef,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text('Loading...');
-                }
-                final result = snapshot.data;
-                final user = result.snapshot.value;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Hello, ${user['name']}',
-                          style: kHeading6.copyWith(
-                            color: kWhite,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/icon_wallet.png',
-                              scale: 2.5,
-                              color: kWhite,
-                            ),
-                            const SizedBox(width: 9),
-                            Text(
-                              'Balance',
-                              style: kHeading7.copyWith(color: kWhite),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Rp. ${user['balance']}',
-                          style:
-                              kHeading6.copyWith(color: kWhite, fontSize: 22),
-                        ),
-                        const SizedBox(height: 5),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, SetBalancePage.routeName);
-                          },
-                          child: Chip(
-                            backgroundColor: Colors.transparent,
-                            labelStyle: GoogleFonts.poppins(
-                              fontSize: 12,
-                            ),
-                            label: const Text('Ubah saldo'),
-                          ),
-                        )
-                      ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello, ${user['name']}',
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.poppins(
+                      color: kWhite,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundColor: kWhite,
-                      child: CircleAvatar(
-                        radius: 25,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/icon_wallet.png',
+                        scale: 2.5,
+                        color: kWhite,
                       ),
+                      const SizedBox(width: 9),
+                      Text(
+                        'Balance',
+                        style: kHeading7.copyWith(color: kWhite),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Rp. ${user['balance']}',
+                    style: kHeading6.copyWith(color: kWhite, fontSize: 22),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, SetBalancePage.routeName);
+                    },
+                    child: Chip(
+                      backgroundColor: Colors.transparent,
+                      labelStyle: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
+                      label: const Text('Ubah saldo'),
                     ),
-                  ],
-                );
-              }),
+                  )
+                ],
+              ),
+              const CircleAvatar(
+                radius: 40,
+                backgroundColor: kWhite,
+                child: CircleAvatar(
+                  radius: 35,
+                  child: Padding(
+                      padding: EdgeInsets.all(5), child: Text('No Image')),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    buildCard() {
+    buildCard(user) {
       return ListView(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
@@ -166,7 +157,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildMainFuture() {
+    buildMainFuture(user) {
       return Padding(
         padding: EdgeInsets.only(
           left: defaultMargin,
@@ -190,7 +181,9 @@ class _HomePageState extends State<HomePage> {
                 iconPath: 'assets/icon_expense.png',
                 subtitle: 'Expense',
                 textColor: kRed,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, AddExpensePage.routeName);
+                },
               ),
             ),
           ],
@@ -235,35 +228,44 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             const BackgroundHeader(height: 0.32),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildHeader(),
-                buildCard(),
-                buildMainFuture(),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Text(
-                    "Recent Transaction",
-                    style: kHeading5.copyWith(
-                      color: kSoftBlack,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    child: ListView(
-                      shrinkWrap: false,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        buildContent(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+            FutureBuilder(
+                future: dbRef,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text('Loading...');
+                  }
+                  final result = snapshot.data;
+                  final user = result.snapshot.value;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildHeader(user),
+                      buildCard(user),
+                      buildMainFuture(user),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        child: Text(
+                          "Recent Transaction",
+                          style: kHeading5.copyWith(
+                            color: kSoftBlack,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          child: ListView(
+                            shrinkWrap: false,
+                            physics: const BouncingScrollPhysics(),
+                            children: [
+                              buildContent(),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }),
           ],
         ),
       ),

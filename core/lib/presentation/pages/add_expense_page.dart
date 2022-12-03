@@ -3,15 +3,15 @@ import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddIncomePage extends StatefulWidget {
-  static const routeName = '/add_income_page';
-  const AddIncomePage({super.key});
+class AddExpensePage extends StatefulWidget {
+  static const routeName = '/add_expense_page';
+  const AddExpensePage({super.key});
 
   @override
-  State<AddIncomePage> createState() => _AddIncomePageState();
+  State<AddExpensePage> createState() => _AddExpensePageState();
 }
 
-class _AddIncomePageState extends State<AddIncomePage> {
+class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController _incomeTextController = TextEditingController();
   final TextEditingController _noteTextController = TextEditingController();
   @override
@@ -51,6 +51,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: kRed,
                       padding: const EdgeInsets.all(14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -82,8 +83,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
             children: [
               FormInputData(
                 controller: _incomeTextController,
-                chipLabel: 'Income',
-                hintText: 'Masukkan jumlah income',
+                chipLabel: 'Expense',
+                hintText: 'Masukkan jumlah Pengeluaran',
+                boderColor: kRed,
+                textColor: kRed,
               ),
               Container(
                 margin: const EdgeInsets.only(top: 24),
@@ -111,10 +114,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                       labelStyle: GoogleFonts.poppins(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: kGreen,
+                        color: kRed,
                       ),
                       shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: kGreen, width: 2),
+                        side: BorderSide(color: kRed, width: 2),
                         borderRadius: BorderRadius.all(
                           Radius.circular(30),
                         ),
@@ -124,10 +127,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                     const SizedBox(height: 9),
                     DropdownButtonFormField(
                       icon: Container(
-                        padding: const EdgeInsets.all(3),
+                        width: 40,
                         decoration: BoxDecoration(
-                          color: kGreen,
-                          borderRadius: BorderRadius.circular(10),
+                          color: kRed,
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: const Icon(
                           Icons.keyboard_arrow_down,
@@ -175,6 +178,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 controller: _noteTextController,
                 chipLabel: 'Note',
                 hintText: 'Tambahkan catatan',
+                boderColor: kRed,
+                textColor: kRed,
               )
             ],
           ),
@@ -195,9 +200,11 @@ class _AddIncomePageState extends State<AddIncomePage> {
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30),
         ),
-        color: kGreen,
+        color: kDarkRed,
         image: DecorationImage(
-            image: AssetImage('assets/green_substract.png'), fit: BoxFit.cover),
+          image: AssetImage('assets/red_substract.png'),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,7 +223,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
             ),
           ),
           Text(
-            'Add Income',
+            'Add Expense',
             style: kHeading6.copyWith(color: kWhite),
           ),
           const SizedBox(width: 24),
