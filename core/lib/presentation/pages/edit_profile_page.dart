@@ -1,6 +1,4 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:io';
+// ignore_for_file: must_be_immutable, invalid_use_of_visible_for_testing_member
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
@@ -64,38 +62,39 @@ class EditProfilePage extends StatelessWidget {
         },
         child: ListView(
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final file = await ImagePicker.platform
-                          .pickImage(source: ImageSource.gallery);
-                    },
-                    child: const CircleAvatar(
+            InkWell(
+              onTap: () async {
+                final result = await ImagePicker.platform
+                    .pickImage(source: ImageSource.gallery);
+                print(result!.path);
+              },
+              child: Center(
+                child: Stack(
+                  children: [
+                    const CircleAvatar(
                       radius: 50,
                     ),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 43,
-                        width: 43,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 43,
+                          width: 43,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            color: kDarkGreen,
                           ),
-                          color: kDarkGreen,
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt_rounded,
-                          color: Colors.white,
-                        ),
-                      )),
-                ],
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: Colors.white,
+                          ),
+                        )),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -131,7 +130,9 @@ class EditProfilePage extends StatelessWidget {
                   width: 150,
                   height: 50,
                   child: TextButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
                     style: TextButton.styleFrom(
                       backgroundColor: kWhite,
                       shape: RoundedRectangleBorder(

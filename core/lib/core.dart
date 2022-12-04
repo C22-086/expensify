@@ -40,6 +40,7 @@ export 'domain/usecases/auth/login_google.dart';
 export 'domain/usecases/auth/login.dart';
 export 'domain/usecases/database/save_user_data.dart';
 export 'domain/usecases/database/edit_user_data.dart';
+export 'domain/usecases/database/upload_image_user.dart';
 
 // Widgets
 export 'presentation/widgets/divider_custom.dart';

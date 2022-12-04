@@ -236,35 +236,37 @@ class _HomePageState extends State<HomePage> {
                   }
                   final result = snapshot.data;
                   final user = result.snapshot.value;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildHeader(user),
-                      buildCard(user),
-                      buildMainFuture(user),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: Text(
-                          "Recent Transaction",
-                          style: kHeading5.copyWith(
-                            color: kSoftBlack,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          child: ListView(
-                            shrinkWrap: false,
-                            physics: const BouncingScrollPhysics(),
-                            children: [
-                              buildContent(),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  );
+                  return snapshot.hasData
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildHeader(user),
+                            buildCard(user),
+                            buildMainFuture(user),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              child: Text(
+                                "Recent Transaction",
+                                style: kHeading5.copyWith(
+                                  color: kSoftBlack,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                child: ListView(
+                                  shrinkWrap: false,
+                                  physics: const BouncingScrollPhysics(),
+                                  children: [
+                                    buildContent(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : const Center(child: Text('Loading...'));
                 }),
           ],
         ),

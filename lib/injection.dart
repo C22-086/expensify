@@ -17,6 +17,7 @@ Future<void> init() async {
   locator.registerFactory(() => DatabaseBloc(
         saveUserData: locator(),
         editUserData: locator(),
+        uploadImageUser: locator(),
       ));
   locator.registerFactory(() => OnboardingCubit(0));
   locator.registerFactory(() => SetPage());
@@ -45,6 +46,7 @@ Future<void> init() async {
   locator.registerLazySingleton(() => LogIn(locator()));
   locator.registerLazySingleton(() => SaveUserData(locator()));
   locator.registerLazySingleton(() => EditUserData(locator()));
+  locator.registerLazySingleton(() => UploadImageUser(locator()));
 
   // FIREBASE
   locator.registerLazySingleton<FirebaseAuth>(
