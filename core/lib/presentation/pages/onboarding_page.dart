@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:core/presentation/widgets/onboarding_content.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/dots_indicator.dart';
 
@@ -73,14 +74,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (int i = 0; i < 3; i++)
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: DotsIndicator(
-                              backgroundColor:
-                                  snapshot.data == i ? kGreen : kGrey,
-                            ),
+                        SmoothPageIndicator(
+                          controller: _pageController,
+                          count: 3,
+                          effect: const SwapEffect(
+                            activeDotColor: kGreen,
+                            dotColor: kGrey,
+                            dotHeight: 3,
+                            dotWidth: 20,
+                            type: SwapType.yRotation,
                           ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 28),

@@ -566,6 +566,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "smooth_page_indicator",
+      "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/smooth_page_indicator-1.0.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "source_span",
       "rootUri": "file:///Users/macuser/Flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0",
       "packageUri": "lib/",
@@ -644,7 +650,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-12-04T09:37:30.294414Z",
+  "generated": "2022-12-04T09:41:50.847739Z",
   "generator": "pub",
   "generatorVersion": "2.18.5"
 }
