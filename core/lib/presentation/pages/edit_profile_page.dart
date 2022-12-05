@@ -166,7 +166,10 @@ class EditProfilePage extends StatelessWidget {
                       onPressed: () {
                         BlocProvider.of<DatabaseBloc>(context).add(
                           DatabaseEditUser(
-                              name: _nameController.text, uid: uid),
+                              name: _nameController.text.isEmpty
+                                  ? user['name']
+                                  : _nameController.text,
+                              uid: uid),
                         );
                       }),
                 ),

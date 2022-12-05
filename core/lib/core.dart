@@ -34,6 +34,7 @@ export 'data/models/user_model.dart';
 // Domain
 export 'domain/repository/auth_repository.dart';
 export 'domain/repository/database_repository.dart';
+export 'domain/repository/user_repository.dart';
 export 'domain/usecases/auth/register.dart';
 export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';

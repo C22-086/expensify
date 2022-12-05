@@ -1,8 +1,3 @@
+import 'package:core/core.dart';
 
-// class UserRepositoryImpl implements UserRepository {
-//   @override
-//   Future<void> prefStartApp() async {
-//     final pref = await SharedPreferences.getInstance();
-//     pref.setBool('onboardingPassed', true);
-//   }
-// }
+class UserRepositoryImpl implements UserRepository {}
