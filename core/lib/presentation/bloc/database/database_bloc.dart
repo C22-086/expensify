@@ -39,8 +39,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   _uploadUserImage(
       DatabaseUploadImage event, Emitter<DatabaseState> emit) async {
     emit(DatabaseLoading());
-    final editData =
-        await uploadImageUser.execute(event.name, event.uid, event.image);
+    final editData = await uploadImageUser.execute(event.uid, event.image);
     editData.fold(
         (l) => emit(DatabaseError(l.message)), (r) => emit(DatabaseSuccess()));
   }

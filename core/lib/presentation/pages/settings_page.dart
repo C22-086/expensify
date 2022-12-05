@@ -56,10 +56,16 @@ class _SettingsPageState extends State<SettingsPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const CircleAvatar(
-                                radius: 36,
-                                child: Text('No Image'),
-                              ),
+                              user['imageProfile'] == ''
+                                  ? const CircleAvatar(
+                                      radius: 36,
+                                      child: Text('No Image'),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 36,
+                                      backgroundImage:
+                                          NetworkImage(user['imageProfile']),
+                                    ),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
