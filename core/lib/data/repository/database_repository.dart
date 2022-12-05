@@ -62,18 +62,22 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
 
   @override
   Future<Either<Failure, String>> uploadImage(
-      {required String name, required String uid, required File image}) async {
+      {required String uid, required File image}) async {
     try {
       late String imageUrl;
       String fileName = basename(image.path);
       final storage = FirebaseStorage.instance.ref();
 
       final imageRef = storage.child('images/$uid/$fileName');
+      final ref = FirebaseDatabase.instance.ref('users/$uid');
 
       final upload = imageRef.putFile(image);
       upload.snapshotEvents.listen((event) async {
         if (event.state == TaskState.success) {
           imageUrl = await imageRef.getDownloadURL();
+          await ref.update({
+            'imageProfile': imageUrl,
+          });
         }
       });
       return Right(imageUrl);

@@ -83,15 +83,21 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              const CircleAvatar(
-                radius: 40,
-                backgroundColor: kWhite,
-                child: CircleAvatar(
-                  radius: 35,
-                  child: Padding(
-                      padding: EdgeInsets.all(5), child: Text('No Image')),
-                ),
-              ),
+              user['imageProfile'] == ''
+                  ? const CircleAvatar(
+                      radius: 40,
+                      backgroundColor: kWhite,
+                      child: CircleAvatar(
+                        radius: 35,
+                        child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Text('No Image')),
+                      ),
+                    )
+                  : CircleAvatar(
+                      radius: 36,
+                      backgroundImage: NetworkImage(user['imageProfile']),
+                    ),
             ],
           ),
         ),

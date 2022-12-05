@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, invalid_use_of_visible_for_testing_member
 
+import 'dart:io';
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -64,16 +66,23 @@ class EditProfilePage extends StatelessWidget {
           children: [
             InkWell(
               onTap: () async {
-                final result = await ImagePicker.platform
+                final image = await ImagePicker.platform
                     .pickImage(source: ImageSource.gallery);
-                print(result!.path);
+                BlocProvider.of<DatabaseBloc>(context).add(
+                    DatabaseUploadImage(uid: uid, image: File(image!.path)));
               },
               child: Center(
                 child: Stack(
                   children: [
-                    const CircleAvatar(
-                      radius: 50,
-                    ),
+                    user['imageProfile'] == ''
+                        ? const CircleAvatar(
+                            radius: 56,
+                            child: Text('No Image'),
+                          )
+                        : CircleAvatar(
+                            radius: 56,
+                            backgroundImage: NetworkImage(user['imageProfile']),
+                          ),
                     Positioned(
                         bottom: 0,
                         right: 0,

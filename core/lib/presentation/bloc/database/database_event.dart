@@ -27,12 +27,10 @@ class DatabaseEditUser extends DatabaseEvent {
 }
 
 class DatabaseUploadImage extends DatabaseEvent {
-  final String name;
   final String uid;
   final File image;
-  const DatabaseUploadImage(
-      {required this.name, required this.uid, required this.image});
+  const DatabaseUploadImage({required this.uid, required this.image});
 
   @override
-  List<Object?> get props => [name, uid];
+  List<Object?> get props => [image, uid];
 }

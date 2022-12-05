@@ -11,5 +11,5 @@ abstract class DatabaseRepository {
   Future<Either<Failure, void>> editUserData(
       {required String name, required String uid});
   Future<Either<Failure, String>> uploadImage(
-      {required String name, required String uid, required File image});
+      {required String uid, required File image});
 }
