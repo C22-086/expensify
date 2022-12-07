@@ -3,6 +3,7 @@ import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class AddExpensePage extends StatefulWidget {
   static const routeName = '/add_expense_page';
@@ -18,7 +19,14 @@ class AddExpensePage extends StatefulWidget {
 class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController _incomeTextController = TextEditingController();
   final TextEditingController _noteTextController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   dynamic category;
+
+  @override
+  void initState() {
+    super.initState();
+    dateController.text = "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +49,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
             Column(
               children: [
                 buildHeader(context),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - 130,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: buildBody(),
+                Expanded(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - 130,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [buildBody()],
+                    ),
                   ),
                 ),
               ],
@@ -104,118 +114,220 @@ class _AddExpensePageState extends State<AddExpensePage> {
   }
 
   Widget buildBody() {
-    return ListView(
+    return Column(
       children: [
-        Form(
-          child: Column(
-            children: [
-              FormInputData(
-                controller: _incomeTextController,
-                chipLabel: 'Expense',
-                hintText: 'Masukkan jumlah Pengeluaran',
-                boderColor: kRed,
-                textColor: kRed,
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 24),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                decoration: BoxDecoration(
-                  color: kWhite,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(3, 3),
-                      spreadRadius: -10,
-                      blurRadius: 49,
-                      color: Color.fromARGB(255, 169, 169, 169),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Chip(
-                      backgroundColor: Colors.transparent,
-                      labelStyle: GoogleFonts.poppins(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: kRed,
-                      ),
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: kRed, width: 2),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      ),
-                      label: const Text('Kategori'),
-                    ),
-                    const SizedBox(height: 9),
-                    DropdownButtonFormField(
-                      icon: Container(
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: kRed,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: kWhite,
-                        ),
-                      ),
-                      hint: const Text('Pilih kategori'),
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: kRichBlack,
-                      ),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xffF7F8F8),
-                      ),
-                      items: const [
-                        DropdownMenuItem(
-                          enabled: false,
-                          child: Text('Pilih kategori'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Gaji',
-                          child: Text('Gaji'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Penjualan',
-                          child: Text('Penjualan'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Tabungan',
-                          child: Text('Tabungan'),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          category = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              FormInputData(
-                controller: _noteTextController,
-                chipLabel: 'Note',
-                hintText: 'Tambahkan catatan',
-                boderColor: kRed,
-                textColor: kRed,
-              )
-            ],
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 12,
           ),
-        )
+          child: Form(
+            child: Column(
+              children: [
+                FormInputData(
+                  controller: _incomeTextController,
+                  chipLabel: 'Expense',
+                  hintText: 'Masukkan jumlah Pengeluaran',
+                  boderColor: kRed,
+                  textColor: kRed,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: kWhite,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(3, 3),
+                        spreadRadius: -10,
+                        blurRadius: 49,
+                        color: Color.fromARGB(255, 169, 169, 169),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Chip(
+                        backgroundColor: Colors.transparent,
+                        labelStyle: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: kRed,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: kRed, width: 2),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        label: const Text('Kategori'),
+                      ),
+                      const SizedBox(height: 9),
+                      DropdownButtonFormField(
+                        icon: Container(
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: kRed,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: kWhite,
+                          ),
+                        ),
+                        hint: const Text('Pilih kategori'),
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: kRichBlack,
+                        ),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xffF7F8F8),
+                        ),
+                        items: const [
+                          DropdownMenuItem(
+                            enabled: false,
+                            child: Text('Pilih kategori'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Gaji',
+                            child: Text('Gaji'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Penjualan',
+                            child: Text('Penjualan'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Tabungan',
+                            child: Text('Tabungan'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            category = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                FormInputData(
+                  controller: _noteTextController,
+                  chipLabel: 'Note',
+                  hintText: 'Tambahkan catatan',
+                  boderColor: kRed,
+                  textColor: kRed,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: kWhite,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(3, 3),
+                        spreadRadius: -10,
+                        blurRadius: 49,
+                        color: Color.fromARGB(255, 169, 169, 169),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Chip(
+                        backgroundColor: Colors.transparent,
+                        labelStyle: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: kRed,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: kRed, width: 2),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        label: const Text('Tanggal'),
+                      ),
+                      const SizedBox(height: 9),
+                      TextFormField(
+                        controller: dateController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            color: kRed,
+                          ),
+                          hintText: "Pilih Tanggal",
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xffF7F8F8),
+                        ),
+                        readOnly: true,
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101),
+                            builder: (context, child) {
+                              return Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: kRed, // header background color
+                                    onPrimary: kWhite, // header text color
+                                    onSurface: kRed, // body text color
+                                  ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      primary: kRed, // button text color
+                                    ),
+                                  ),
+                                ),
+                                child: child!,
+                              );
+                            },
+                          );
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat("yyyy-MM-dd").format(pickedDate);
+
+                            setState(() {
+                              dateController.text = formattedDate.toString();
+                            });
+                          } else {}
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 150,
+                )
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
