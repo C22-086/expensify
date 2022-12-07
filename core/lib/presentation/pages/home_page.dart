@@ -1,12 +1,10 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:core/core.dart';
-import 'package:core/presentation/widgets/custom_header_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
@@ -28,11 +26,67 @@ class _HomePageState extends State<HomePage> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
+    final pageController = PageController(
+      viewportFraction: 0.75,
+      keepPage: true,
+    );
+
+    List cardItem = [
+      Padding(
+        padding: const EdgeInsets.only(left: 20, right: 15),
+        child: OverviewCard(
+          titleImageUrl: 'assets/icon-trending-up.png',
+          color: kGreen,
+          secColor: kSoftGreen,
+          title: 'Income',
+          label: "+",
+          amount: 400,
+          subMinPercent: "30% from tranfer",
+          subMaxPercent: "70% from salary",
+          valueChartOne: 70,
+          valueChartTwo: 30,
+          chartOneTitle: "70%",
+          chartTwoTitle: "30%",
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              DetailIncomePage.routeName,
+            );
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: OverviewCard(
+          titleImageUrl: 'assets/icon-trending-down.png',
+          color: kRed,
+          secColor: kSoftRed,
+          title: 'Expense',
+          label: "-",
+          amount: 700,
+          subMinPercent: "30% from tranfer",
+          subMaxPercent: "70% from salary",
+          valueChartOne: 65,
+          valueChartTwo: 35,
+          chartOneTitle: "65%",
+          chartTwoTitle: "35%",
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              DetailExpensePage.routeName,
+            );
+          },
+        ),
+      ),
+    ];
+
     buildHeader(user) {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: defaultMargin, vertical: 25),
+            horizontal: defaultMargin,
+            vertical: 25,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Image.asset(
@@ -69,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                     'Rp. ${user['balance']}',
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
+                  const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, SetBalancePage.routeName);
@@ -84,14 +139,18 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               user['imageProfile'] == ''
-                  ? const CircleAvatar(
+                  ? CircleAvatar(
                       radius: 40,
                       backgroundColor: kWhite,
                       child: CircleAvatar(
                         radius: 35,
                         child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text('No Image')),
+                            padding: const EdgeInsets.all(5),
+                            child: Text(
+                              'No Image',
+                              style: kSubtitle.copyWith(fontSize: 10),
+                              textAlign: TextAlign.center,
+                            )),
                       ),
                     )
                   : CircleAvatar(
@@ -105,58 +164,43 @@ class _HomePageState extends State<HomePage> {
     }
 
     buildCard(user) {
-      return ListView(
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
+      return Column(
         children: [
-          SizedBox(height: height * 0.025),
-          SizedBox(
-            height: 146,
-            child: ListView(
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            height: 195,
+            width: double.infinity,
+            child: PageView.builder(
+              padEnds: false,
+              controller: pageController,
               physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              children: [
-                OverviewCard(
-                  titleImageUrl: 'assets/icon-trending-up.png',
-                  color: kGreen,
-                  secColor: kSoftGreen,
-                  title: 'Income',
-                  label: "+",
-                  amount: 400,
-                  subMinPercent: "30% from tranfer",
-                  subMaxPercent: "70% from salary",
-                  valueChartOne: 70,
-                  valueChartTwo: 30,
-                  chartOneTitle: "70%",
-                  chartTwoTitle: "30%",
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      DetailIncomePage.routeName,
-                    );
-                  },
-                ),
-                OverviewCard(
-                  titleImageUrl: 'assets/icon-trending-down.png',
-                  color: kRed,
-                  secColor: kSoftRed,
-                  title: 'Expense',
-                  label: "-",
-                  amount: 700,
-                  subMinPercent: "30% from tranfer",
-                  subMaxPercent: "70% from salary",
-                  valueChartOne: 65,
-                  valueChartTwo: 35,
-                  chartOneTitle: "65%",
-                  chartTwoTitle: "35%",
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      DetailExpensePage.routeName,
-                    );
-                  },
-                ),
-              ],
+              itemCount: cardItem.length,
+              itemBuilder: (context, index) {
+                return cardItem[index];
+              },
+            ),
+          ),
+          const SizedBox(height: 10),
+          SmoothPageIndicator(
+            controller: pageController,
+            count: cardItem.length,
+            effect: CustomizableEffect(
+              activeDotDecoration: DotDecoration(
+                width: 35,
+                height: 8,
+                color: kGreen,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              dotDecoration: DotDecoration(
+                width: 15,
+                height: 8,
+                color: kSoftGreen,
+                borderRadius: BorderRadius.circular(16),
+                verticalOffset: 0,
+              ),
+              spacing: 6.0,
             ),
           ),
         ],
@@ -168,7 +212,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.only(
           left: defaultMargin,
           right: defaultMargin,
-          top: height * 0.04,
+          top: height * 0.03,
         ),
         child: Row(
           children: [
@@ -231,52 +275,119 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        child: Stack(
-          children: [
-            const BackgroundHeader(height: 0.32),
-            FutureBuilder(
-                future: dbRef,
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text('Loading...');
-                  }
-                  final result = snapshot.data;
-                  final user = result.snapshot.value;
-                  return snapshot.hasData
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildHeader(user),
-                            buildCard(user),
-                            buildMainFuture(user),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              child: Text(
-                                "Recent Transaction",
-                                style: kHeading5.copyWith(
-                                  color: kSoftBlack,
-                                ),
+        child: FutureBuilder(
+          future: dbRef,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: Text('Loading...'),
+              );
+            }
+            final result = snapshot.data;
+            final user = result.snapshot.value;
+            return snapshot.hasData
+                ? CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverAppBar(
+                        floating: true,
+                        snap: true,
+                        stretch: true,
+                        elevation: 0,
+                        leading: Container(),
+                        bottom: const PreferredSize(
+                          preferredSize: Size.fromHeight(155),
+                          child: SizedBox(),
+                        ),
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: Container(
+                            decoration: const BoxDecoration(
+                              color: kGreen,
+                              image: DecorationImage(
+                                image: AssetImage('assets/green_substract.png'),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            Expanded(
-                              child: SizedBox(
-                                child: ListView(
-                                  shrinkWrap: false,
-                                  physics: const BouncingScrollPhysics(),
-                                  children: [
-                                    buildContent(),
-                                  ],
-                                ),
+                            child: buildHeader(user),
+                          ),
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate([
+                          buildCard(user),
+                          buildMainFuture(user),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 20,
+                            ),
+                            child: Text(
+                              "Recent Transaction",
+                              style: kHeading5.copyWith(
+                                color: kSoftBlack,
                               ),
-                            )
-                          ],
-                        )
-                      : const Center(child: Text('Loading...'));
-                }),
-          ],
+                            ),
+                          ),
+                          buildContent(),
+                        ]),
+                      ),
+                    ],
+                  )
+                : const Center(
+                    child: Text('Loading...'),
+                  );
+          },
         ),
       ),
     );
+
+    // return Scaffold(
+    //   body: BlocListener<AuthBloc, AuthState>(
+    //     listener: (context, state) {
+    //       if (state is UnAuthenticated) {
+    //         Navigator.of(context).pushAndRemoveUntil(
+    //           MaterialPageRoute(builder: (context) => const LoginPage()),
+    //           (route) => false,
+    //         );
+    //       }
+    //     },
+    //     child: Stack(
+    //       children: [
+    //         const BackgroundHeader(height: 0.32),
+    //         FutureBuilder(
+    //             future: dbRef,
+    //             builder: (context, AsyncSnapshot snapshot) {
+    //               if (snapshot.connectionState == ConnectionState.waiting) {
+    //                 return const Text('Loading...');
+    //               }
+    //               final result = snapshot.data;
+    //               final user = result.snapshot.value;
+    //               return snapshot.hasData
+    //                   ? Column(
+    //                       crossAxisAlignment: CrossAxisAlignment.start,
+    //                       children: [
+    //                         buildHeader(user),
+    //                         buildCard(user),
+    //                         buildMainFuture(user),
+    //
+    //                         Expanded(
+    //                           child: SizedBox(
+    //                             child: ListView(
+    //                               shrinkWrap: false,
+    //                               physics: const BouncingScrollPhysics(),
+    //                               children: [
+    //                                 buildContent(),
+    //                               ],
+    //                             ),
+    //                           ),
+    //                         )
+    //                       ],
+    //                     )
+    //                   : const Center(child: Text('Loading...'));
+    //             }),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
