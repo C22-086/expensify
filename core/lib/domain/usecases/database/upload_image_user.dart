@@ -8,7 +8,7 @@ class UploadImageUser {
 
   UploadImageUser(this.repository);
 
-  Future<Either<Failure, String>> execute(String uid, File image) {
+  Future<Either<Failure, void>> execute(String uid, File image) {
     return repository.uploadImage(uid: uid, image: image);
   }
 }

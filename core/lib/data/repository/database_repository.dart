@@ -65,7 +65,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, String>> uploadImage(
+  Future<Either<Failure, void>> uploadImage(
       {required String uid, required File image}) async {
     try {
       late String imageUrl;
@@ -84,7 +84,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
           });
         }
       });
-      return Right(imageUrl);
+      return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
