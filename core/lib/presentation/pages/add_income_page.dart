@@ -120,7 +120,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
       children: [
         Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 12,
+              horizontal: 20,
             ),
             child: Form(
               child: Column(

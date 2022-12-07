@@ -118,7 +118,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 12,
+            horizontal: 20,
           ),
           child: Form(
             child: Column(
