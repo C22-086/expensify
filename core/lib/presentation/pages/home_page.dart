@@ -222,7 +222,14 @@ class _HomePageState extends State<HomePage> {
               subtitle: 'Income',
               textColor: kGreen,
               onTap: () {
-                Navigator.pushNamed(context, AddIncomePage.routeName);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddIncomePage(
+                      user: user,
+                    ),
+                  ),
+                );
               },
             )),
             const SizedBox(width: 20),
@@ -232,7 +239,14 @@ class _HomePageState extends State<HomePage> {
                 subtitle: 'Expense',
                 textColor: kRed,
                 onTap: () {
-                  Navigator.pushNamed(context, AddExpensePage.routeName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExpensePage(
+                        user: user,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
@@ -340,54 +354,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   body: BlocListener<AuthBloc, AuthState>(
-    //     listener: (context, state) {
-    //       if (state is UnAuthenticated) {
-    //         Navigator.of(context).pushAndRemoveUntil(
-    //           MaterialPageRoute(builder: (context) => const LoginPage()),
-    //           (route) => false,
-    //         );
-    //       }
-    //     },
-    //     child: Stack(
-    //       children: [
-    //         const BackgroundHeader(height: 0.32),
-    //         FutureBuilder(
-    //             future: dbRef,
-    //             builder: (context, AsyncSnapshot snapshot) {
-    //               if (snapshot.connectionState == ConnectionState.waiting) {
-    //                 return const Text('Loading...');
-    //               }
-    //               final result = snapshot.data;
-    //               final user = result.snapshot.value;
-    //               return snapshot.hasData
-    //                   ? Column(
-    //                       crossAxisAlignment: CrossAxisAlignment.start,
-    //                       children: [
-    //                         buildHeader(user),
-    //                         buildCard(user),
-    //                         buildMainFuture(user),
-    //
-    //                         Expanded(
-    //                           child: SizedBox(
-    //                             child: ListView(
-    //                               shrinkWrap: false,
-    //                               physics: const BouncingScrollPhysics(),
-    //                               children: [
-    //                                 buildContent(),
-    //                               ],
-    //                             ),
-    //                           ),
-    //                         )
-    //                       ],
-    //                     )
-    //                   : const Center(child: Text('Loading...'));
-    //             }),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

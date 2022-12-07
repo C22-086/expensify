@@ -1,11 +1,15 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddExpensePage extends StatefulWidget {
   static const routeName = '/add_expense_page';
-  const AddExpensePage({super.key});
+
+  final dynamic user;
+
+  const AddExpensePage({super.key, required this.user});
 
   @override
   State<AddExpensePage> createState() => _AddExpensePageState();
@@ -14,63 +18,87 @@ class AddExpensePage extends StatefulWidget {
 class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController _incomeTextController = TextEditingController();
   final TextEditingController _noteTextController = TextEditingController();
+  dynamic category;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              buildHeader(context),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: buildBody(),
+      body: BlocListener<DatabaseBloc, DatabaseState>(
+        listener: (context, state) {
+          if (state is DatabaseSuccess) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Success menambah expanse')));
+          }
+          if (state is DatabaseError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
+          }
+        },
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                buildHeader(context),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 130,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: buildBody(),
+                  ),
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                width: double.infinity,
+                decoration: const BoxDecoration(color: kWhite, boxShadow: [
+                  BoxShadow(
+                    offset: Offset(3, 15),
+                    spreadRadius: -17,
+                    blurRadius: 49,
+                    color: Color.fromRGBO(139, 139, 139, 1),
+                  )
+                ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<DatabaseBloc>(context).add(
+                            DatabasePushExpanseUser(
+                                name: widget.user['name'],
+                                uid: widget.user['uid'],
+                                category: category,
+                                nominal: int.parse(_incomeTextController.text),
+                                note: _noteTextController.text));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: kRed,
+                        padding: const EdgeInsets.all(14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: Text(
+                        'Tambahkan',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: kWhite,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-              width: double.infinity,
-              decoration: const BoxDecoration(color: kWhite, boxShadow: [
-                BoxShadow(
-                  offset: Offset(3, 15),
-                  spreadRadius: -17,
-                  blurRadius: 49,
-                  color: Color.fromRGBO(139, 139, 139, 1),
-                )
-              ]),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kRed,
-                      padding: const EdgeInsets.all(14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: Text(
-                      'Tambahkan',
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -169,7 +197,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           child: Text('Tabungan'),
                         ),
                       ],
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+                          category = value;
+                        });
+                      },
                     ),
                   ],
                 ),

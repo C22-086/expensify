@@ -7,7 +7,7 @@ class Income extends Equatable {
   final String category;
   final int nominal;
   final String note;
-  final DateTime expanseDate;
+  final String expanseDate;
 
   const Income(
       {required this.incomeId,

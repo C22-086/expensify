@@ -20,6 +20,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'email': email,
         'balance': 0,
         'imageProfile': '',
+        'incomes': '',
+        'expanses': ''
       });
       return const Right(null);
     } catch (e) {
@@ -39,6 +41,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'email': email,
         'balance': 0,
         'imageProfile': '',
+        'incomes': '',
+        'expanses': '',
       });
       return const Right(null);
     } catch (e) {
@@ -61,7 +65,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, String>> uploadImage(
+  Future<Either<Failure, void>> uploadImage(
       {required String uid, required File image}) async {
     try {
       late String imageUrl;
@@ -80,7 +84,57 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
           });
         }
       });
-      return Right(imageUrl);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> pushIncomeUser(
+      {required String name,
+      required String uid,
+      required String category,
+      required int nominal,
+      required String note}) async {
+    try {
+      final ref = FirebaseDatabase.instance.ref('users/$uid/incomes');
+      final push = ref.push();
+      await push.set({
+        'incomeId': push.key!,
+        'userId': uid,
+        'name': name,
+        'category': category,
+        'nominal': nominal,
+        'note': note,
+        'expanseDate': DateTime.now().toString()
+      });
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> pushExpanseUser(
+      {required String name,
+      required String uid,
+      required String category,
+      required int nominal,
+      required String note}) async {
+    try {
+      final ref = FirebaseDatabase.instance.ref('users/$uid/expanses');
+      final push = ref.push();
+      await push.set({
+        'expanseId': push.key!,
+        'userId': uid,
+        'name': name,
+        'category': category,
+        'nominal': nominal,
+        'note': note,
+        'expanseDate': DateTime.now().toString()
+      });
+      return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

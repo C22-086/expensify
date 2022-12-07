@@ -42,6 +42,8 @@ export 'domain/usecases/auth/login.dart';
 export 'domain/usecases/database/save_user_data.dart';
 export 'domain/usecases/database/edit_user_data.dart';
 export 'domain/usecases/database/upload_image_user.dart';
+export 'domain/usecases/database/push_income_user.dart';
+export 'domain/usecases/database/push_expanse_user.dart';
 
 // Widgets
 export 'presentation/widgets/divider_custom.dart';

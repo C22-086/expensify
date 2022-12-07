@@ -85,11 +85,15 @@ class MyApp extends StatelessWidget {
               );
             case AddIncomePage.routeName:
               return MaterialPageRoute(
-                builder: (_) => const AddIncomePage(),
+                builder: (_) => AddIncomePage(
+                  user: settings.arguments,
+                ),
               );
             case AddExpensePage.routeName:
               return MaterialPageRoute(
-                builder: (_) => const AddExpensePage(),
+                builder: (_) => AddExpensePage(
+                  user: settings.arguments,
+                ),
               );
             case DetailIncomePage.routeName:
               return MaterialPageRoute(

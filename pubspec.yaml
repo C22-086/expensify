@@ -49,7 +49,6 @@ dependencies:
   percent_indicator: ^4.2.2
   smooth_page_indicator: ^1.0.0+2
 
-
 flutter_icons:
   image_path_android: "assets/app_icon.png"
   image_path_ios: "assets/app_icon.png"

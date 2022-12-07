@@ -10,6 +10,20 @@ abstract class DatabaseRepository {
       {required String name, required String email, required String uid});
   Future<Either<Failure, void>> editUserData(
       {required String name, required String uid});
-  Future<Either<Failure, String>> uploadImage(
+  Future<Either<Failure, void>> uploadImage(
       {required String uid, required File image});
+  Future<Either<Failure, void>> pushIncomeUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int nominal,
+    required String note,
+  });
+  Future<Either<Failure, void>> pushExpanseUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int nominal,
+    required String note,
+  });
 }
