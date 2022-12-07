@@ -178,7 +178,14 @@ class _HomePageState extends State<HomePage> {
               subtitle: 'Income',
               textColor: kGreen,
               onTap: () {
-                Navigator.pushNamed(context, AddIncomePage.routeName);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddIncomePage(
+                      user: user,
+                    ),
+                  ),
+                );
               },
             )),
             const SizedBox(width: 20),
@@ -188,7 +195,14 @@ class _HomePageState extends State<HomePage> {
                 subtitle: 'Expense',
                 textColor: kRed,
                 onTap: () {
-                  Navigator.pushNamed(context, AddExpensePage.routeName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExpensePage(
+                        user: user,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

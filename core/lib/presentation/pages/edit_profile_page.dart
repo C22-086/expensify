@@ -67,7 +67,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _buildBody(context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    print(imageUpdate);
 
     return Container(
       padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
