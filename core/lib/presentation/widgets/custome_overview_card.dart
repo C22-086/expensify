@@ -4,21 +4,22 @@ import 'package:flutter/material.dart';
 import '../../core.dart';
 
 class OverviewCard extends StatelessWidget {
-  const OverviewCard(
-      {super.key,
-      required this.title,
-      required this.subMinPercent,
-      required this.subMaxPercent,
-      required this.chartOneTitle,
-      required this.chartTwoTitle,
-      required this.valueChartOne,
-      required this.valueChartTwo,
-      required this.amount,
-      required this.color,
-      required this.label,
-      required this.secColor,
-      required this.onTap,
-      required this.titleImageUrl});
+  const OverviewCard({
+    super.key,
+    required this.title,
+    required this.subMinPercent,
+    required this.subMaxPercent,
+    required this.chartOneTitle,
+    required this.chartTwoTitle,
+    required this.valueChartOne,
+    required this.valueChartTwo,
+    required this.amount,
+    required this.color,
+    required this.label,
+    required this.secColor,
+    required this.onTap,
+    required this.titleImageUrl,
+  });
 
   final Color color;
   final Color secColor;
@@ -36,16 +37,16 @@ class OverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
         onTap: onTap,
         child: Container(
-          margin: const EdgeInsets.only(left: defaultMargin),
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             color: kWhite,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
