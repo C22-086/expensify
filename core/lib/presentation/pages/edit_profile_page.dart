@@ -10,17 +10,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   static const routeName = '/edit-profile';
-
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
 
   final dynamic user;
 
+  const EditProfilePage({super.key, required this.user});
+
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final _nameController = TextEditingController();
+
+  final _emailController = TextEditingController();
+
   bool showPassword = false;
 
-  EditProfilePage({super.key, required this.user});
+  PickedFile? imageUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -72,21 +80,28 @@ class EditProfilePage extends StatelessWidget {
               onTap: () async {
                 final image = await ImagePicker.platform
                     .pickImage(source: ImageSource.gallery);
-                BlocProvider.of<DatabaseBloc>(context).add(
-                    DatabaseUploadImage(uid: uid, image: File(image!.path)));
+                setState(() {
+                  imageUpdate = image;
+                });
               },
               child: Center(
                 child: Stack(
                   children: [
-                    user['imageProfile'] == ''
+                    widget.user['imageProfile'] == ''
                         ? const CircleAvatar(
                             radius: 56,
                             child: Text('No Image'),
                           )
-                        : CircleAvatar(
-                            radius: 56,
-                            backgroundImage: NetworkImage(user['imageProfile']),
-                          ),
+                        : imageUpdate == null
+                            ? CircleAvatar(
+                                radius: 56,
+                                backgroundImage:
+                                    NetworkImage(widget.user['imageProfile']),
+                              )
+                            : CircleAvatar(
+                                radius: 56,
+                                backgroundImage:
+                                    FileImage(File(imageUpdate!.path))),
                     Positioned(
                         bottom: 0,
                         right: 0,
@@ -122,7 +137,7 @@ class EditProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            _buildTextField(user['name'], false),
+            _buildTextField(widget.user['name'], false),
             SizedBox(
               height: 46,
               child: Text(
@@ -132,7 +147,7 @@ class EditProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            _buildTextField(user['email'], true),
+            _buildTextField(widget.user['email'], true),
             const SizedBox(
               height: 80,
             ),
@@ -171,10 +186,13 @@ class EditProfilePage extends StatelessWidget {
                         BlocProvider.of<DatabaseBloc>(context).add(
                           DatabaseEditUser(
                               name: _nameController.text.isEmpty
-                                  ? user['name']
+                                  ? widget.user['name']
                                   : _nameController.text,
                               uid: uid),
                         );
+                        BlocProvider.of<DatabaseBloc>(context).add(
+                            DatabaseUploadImage(
+                                uid: uid, image: File(imageUpdate!.path)));
                       }),
                 ),
               ],
