@@ -138,43 +138,19 @@ class _ExportDataPageState extends State<ExportDataPage> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 17, vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: kGrey, width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8))),
-                    child: Text(
-                      "PDF",
-                      style: kHeading7.copyWith(color: kSoftBlack),
-                    ),
-                  ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(color: kGrey, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: Text(
+                  ".XLSX",
+                  style: kHeading7.copyWith(color: kSoftBlack),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 17, vertical: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: kGrey, width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8))),
-                    child: Text(
-                      ".XLSX",
-                      style: kHeading7.copyWith(color: kSoftBlack),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
             const SizedBox(
               height: 100,
