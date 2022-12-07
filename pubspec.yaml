@@ -48,7 +48,7 @@ dependencies:
   dropdown_search: ^5.0.3
   percent_indicator: ^4.2.2
   smooth_page_indicator: ^1.0.0+2
-
+  uuid: ^3.0.7
 
 flutter_icons:
   image_path_android: "assets/app_icon.png"

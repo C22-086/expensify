@@ -18,6 +18,16 @@ class ExpanseModel extends Equatable {
       required this.note,
       required this.expanseDate});
 
+  Map<String, dynamic> toJson() => {
+        "expanseId": expanseId,
+        "userId": userId,
+        "name": name,
+        "category": category,
+        "nominal": nominal,
+        "note": note,
+        "expanseDate": expanseDate,
+      };
+
   @override
   List<Object?> get props => [
         expanseId,

@@ -30,6 +30,10 @@ class EditProfilePage extends StatelessWidget {
           if (state is DatabaseSuccess) {
             Navigator.of(context).pop();
           }
+          if (state is DatabaseError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
+          }
         },
         child: SingleChildScrollView(
           child: Stack(
