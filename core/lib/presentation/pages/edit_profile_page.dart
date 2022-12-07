@@ -30,6 +30,10 @@ class EditProfilePage extends StatelessWidget {
           if (state is DatabaseSuccess) {
             Navigator.of(context).pop();
           }
+          if (state is DatabaseError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
+          }
         },
         child: SingleChildScrollView(
           child: Stack(
@@ -166,7 +170,10 @@ class EditProfilePage extends StatelessWidget {
                       onPressed: () {
                         BlocProvider.of<DatabaseBloc>(context).add(
                           DatabaseEditUser(
-                              name: _nameController.text, uid: uid),
+                              name: _nameController.text.isEmpty
+                                  ? user['name']
+                                  : _nameController.text,
+                              uid: uid),
                         );
                       }),
                 ),

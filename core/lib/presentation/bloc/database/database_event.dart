@@ -34,3 +34,41 @@ class DatabaseUploadImage extends DatabaseEvent {
   @override
   List<Object?> get props => [image, uid];
 }
+
+class DatabasePushIncomeUser extends DatabaseEvent {
+  final String name;
+  final String uid;
+  final String category;
+  final int nominal;
+  final String note;
+
+  const DatabasePushIncomeUser({
+    required this.name,
+    required this.uid,
+    required this.category,
+    required this.nominal,
+    required this.note,
+  });
+
+  @override
+  List<Object?> get props => [name, uid];
+}
+
+class DatabasePushExpanseUser extends DatabaseEvent {
+  final String name;
+  final String uid;
+  final String category;
+  final int nominal;
+  final String note;
+
+  const DatabasePushExpanseUser({
+    required this.name,
+    required this.uid,
+    required this.category,
+    required this.nominal,
+    required this.note,
+  });
+
+  @override
+  List<Object?> get props => [name, uid];
+}

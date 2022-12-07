@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                 future: dbRef,
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text('Loading...');
+                    return const Center(child: Text('Loading...'));
                   }
                   final result = snapshot.data;
                   final user = result.snapshot.value;

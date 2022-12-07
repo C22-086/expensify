@@ -7,18 +7,36 @@ class IncomeModel extends Equatable {
   final String category;
   final int nominal;
   final String note;
-  final DateTime expanseDate;
+  final String expanseDate;
 
-  const IncomeModel(
-      {required this.incomeId,
-      required this.userId,
-      required this.name,
-      required this.category,
-      required this.nominal,
-      required this.note,
-      required this.expanseDate});
+  const IncomeModel({
+    required this.incomeId,
+    required this.userId,
+    required this.name,
+    required this.category,
+    required this.nominal,
+    required this.note,
+    required this.expanseDate,
+  });
+
+  Map<String, dynamic> toJson() => {
+        "incomeId": incomeId,
+        "userId": userId,
+        "name": name,
+        "category": category,
+        "nominal": nominal,
+        "note": note,
+        "expanseDate": expanseDate,
+      };
 
   @override
-  List<Object?> get props =>
-      [incomeId, userId, name, category, nominal, note, expanseDate];
+  List<Object?> get props => [
+        incomeId,
+        userId,
+        name,
+        category,
+        nominal,
+        note,
+        expanseDate,
+      ];
 }
