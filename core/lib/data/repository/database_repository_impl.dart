@@ -20,8 +20,6 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'email': email,
         'balance': 0,
         'imageProfile': '',
-        // 'incomes': '',
-        // 'expanses': ''
       });
       return const Right(null);
     } catch (e) {
