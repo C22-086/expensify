@@ -126,7 +126,31 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, SetBalancePage.routeName);
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: const Text(
+                                  'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Batal')),
+                                TextButton(
+                                    onPressed: () async {
+                                      final ref = FirebaseDatabase.instance
+                                          .ref('transaction/$uid');
+                                      await ref.remove();
+                                      if (!mounted) return;
+                                      Navigator.pushNamed(
+                                          context, SetBalancePage.routeName);
+                                    },
+                                    child: const Text('Lanjutkan'))
+                              ],
+                            );
+                          });
                     },
                     child: Chip(
                       backgroundColor: Colors.transparent,

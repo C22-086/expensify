@@ -72,7 +72,8 @@ class SetBalancePage extends StatelessWidget {
                       .ref()
                       .child('users/${FirebaseAuth.instance.currentUser!.uid}');
 
-                  await ref.update({'balance': balanceController.text});
+                  await ref
+                      .update({'balance': int.parse(balanceController.text)});
 
                   navigator.pushReplacement(MaterialPageRoute(
                     builder: (context) => const MainPage(),
