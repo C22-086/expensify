@@ -20,29 +20,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'email': email,
         'balance': 0,
         'imageProfile': '',
-        'incomes': '',
-        'expanses': ''
-      });
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> getUserData(
-      {required String name,
-      required String email,
-      required String uid}) async {
-    try {
-      final ref = FirebaseDatabase.instance.ref('users/$uid');
-      await ref.set({
-        'name': name,
-        'email': email,
-        'balance': 0,
-        'imageProfile': '',
-        'incomes': '',
-        'expanses': '',
+        // 'incomes': '',
+        // 'expanses': ''
       });
       return const Right(null);
     } catch (e) {
@@ -98,7 +77,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       required int nominal,
       required String note}) async {
     try {
-      final ref = FirebaseDatabase.instance.ref('users/$uid/incomes');
+      final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
         'incomeId': push.key!,
@@ -107,7 +86,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'category': category,
         'nominal': nominal,
         'note': note,
-        'expanseDate': DateTime.now().toString()
+        'incomeDate': DateTime.now().toString()
       });
       return const Right(null);
     } catch (e) {
@@ -123,7 +102,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       required int nominal,
       required String note}) async {
     try {
-      final ref = FirebaseDatabase.instance.ref('users/$uid/expanses');
+      final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
         'expanseId': push.key!,

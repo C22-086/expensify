@@ -9,6 +9,7 @@ class FormInputData extends StatelessWidget {
   final String? hintText;
   final Color boderColor;
   final Color textColor;
+  final TextInputType keyboardType;
 
   const FormInputData({
     super.key,
@@ -17,6 +18,7 @@ class FormInputData extends StatelessWidget {
     this.hintText,
     this.boderColor = kGreen,
     this.textColor = kGreen,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -59,7 +61,7 @@ class FormInputData extends StatelessWidget {
           ),
           const SizedBox(height: 9),
           TextFormField(
-            keyboardType: TextInputType.number,
+            keyboardType: keyboardType,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),

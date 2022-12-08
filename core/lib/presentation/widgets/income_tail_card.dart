@@ -6,15 +6,21 @@ class IncomeTailCard extends StatelessWidget {
   const IncomeTailCard({
     Key? key,
     required this.iconPath,
-    this.color = kSoftGreen,
-    this.currencyColor = kGreen,
-    this.label = '+',
+    required this.nominal,
+    required this.category,
+    required this.date,
+    required this.label,
+    required this.color,
+    required this.currencyColor,
   }) : super(key: key);
 
   final String iconPath;
   final Color color;
   final Color currencyColor;
   final String label;
+  final int nominal;
+  final String category;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +45,14 @@ class IncomeTailCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Salary", style: kHeading7),
+              Text(category, style: kHeading7),
               const SizedBox(height: 5),
-              Text("Nov, 18 2022", style: kBodyText),
+              Text(date, style: kBodyText),
             ],
           ),
           const Spacer(),
           Text(
-            "$label IDR 20.000",
+            "$label $nominal",
             style: kHeading6.copyWith(
               color: currencyColor,
             ),

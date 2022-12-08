@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
@@ -117,8 +119,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
           ),
           child: Form(
             child: Column(
@@ -129,6 +131,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   hintText: 'Masukkan jumlah Pengeluaran',
                   boderColor: kRed,
                   textColor: kRed,
+                  keyboardType: TextInputType.number,
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 24),
@@ -267,7 +270,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       TextFormField(
                         controller: dateController,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.calendar_today,
                             color: kRed,
                           ),
@@ -293,14 +296,15 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             builder: (context, child) {
                               return Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: ColorScheme.light(
+                                  colorScheme: const ColorScheme.light(
                                     primary: kRed, // header background color
                                     onPrimary: kWhite, // header text color
                                     onSurface: kRed, // body text color
                                   ),
                                   textButtonTheme: TextButtonThemeData(
                                     style: TextButton.styleFrom(
-                                      primary: kRed, // button text color
+                                      foregroundColor:
+                                          kRed, // button text color
                                     ),
                                   ),
                                 ),
@@ -321,7 +325,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 150,
                 )
               ],
