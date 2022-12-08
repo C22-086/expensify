@@ -143,6 +143,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
             child: Column(
               children: [
                 FormInputData(
+                  controller: _noteTextController,
+                  chipLabel: 'Judul',
+                  hintText: 'Tambahkan judul , contoh: Es-krim',
+                  boderColor: kRed,
+                  textColor: kRed,
+                ),
+                FormInputData(
                   controller: _incomeTextController,
                   chipLabel: 'Expense',
                   hintText: 'Masukkan jumlah Pengeluaran',
@@ -213,22 +220,57 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           filled: true,
                           fillColor: const Color(0xffF7F8F8),
                         ),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             enabled: false,
-                            child: Text('Pilih kategori'),
+                            child: Text(
+                              'Pilih kategori',
+                              style: GoogleFonts.poppins(color: Colors.grey),
+                            ),
                           ),
-                          DropdownMenuItem(
-                            value: 'Gaji',
-                            child: Text('Gaji'),
+                          const DropdownMenuItem(
+                            value: 'Pembelian Makanan',
+                            child: Text('Pembelian Makanan'),
                           ),
-                          DropdownMenuItem(
-                            value: 'Penjualan',
-                            child: Text('Penjualan'),
+                          const DropdownMenuItem(
+                            value: 'Pembelian Pakaian',
+                            child: Text('Pembelian Pakaian'),
                           ),
-                          DropdownMenuItem(
-                            value: 'Tabungan',
-                            child: Text('Tabungan'),
+                          const DropdownMenuItem(
+                            value: 'Pembayaran Hutang',
+                            child: Text('Pembayaran Hutang'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pinjaman/kasbon',
+                            child: Text('Pinjaman/kasbon'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembayaran Pulsa/internet',
+                            child: Text('Pembayaran Pulsa/Internet'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembelian Persediaan',
+                            child: Text('Pembelian Persediaan'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembayaran Listrik',
+                            child: Text('Pembayaran Listrik'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembayaran Air',
+                            child: Text('Pembayaran Air'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembelian Barang Dagangan',
+                            child: Text('Pembelian Barang Dagangan'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Pembelian Barang Elektronik',
+                            child: Text('Pembelian Barang Elektronik'),
+                          ),
+                          const DropdownMenuItem(
+                            value: 'Lainnya',
+                            child: Text('Lainnya'),
                           ),
                         ],
                         onChanged: (value) {
@@ -239,13 +281,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       ),
                     ],
                   ),
-                ),
-                FormInputData(
-                  controller: _noteTextController,
-                  chipLabel: 'Note',
-                  hintText: 'Tambahkan catatan',
-                  boderColor: kRed,
-                  textColor: kRed,
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 24),

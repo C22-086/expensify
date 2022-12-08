@@ -153,6 +153,11 @@ class _AddIncomePageState extends State<AddIncomePage> {
               child: Column(
                 children: [
                   FormInputData(
+                    controller: _noteTextController,
+                    chipLabel: 'Judul',
+                    hintText: 'Tambahkan judul, contoh: Jual Motor',
+                  ),
+                  FormInputData(
                     controller: _incomeTextController,
                     chipLabel: 'Income',
                     hintText: 'Masukkan jumlah income',
@@ -221,22 +226,49 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             filled: true,
                             fillColor: const Color(0xffF7F8F8),
                           ),
-                          items: const [
+                          items: [
                             DropdownMenuItem(
                               enabled: false,
-                              child: Text('Pilih kategori'),
+                              child: Text(
+                                'Pilih kategori',
+                                style: GoogleFonts.poppins(color: Colors.grey),
+                              ),
                             ),
-                            DropdownMenuItem(
+                            const DropdownMenuItem(
                               value: 'Gaji',
                               child: Text('Gaji'),
                             ),
-                            DropdownMenuItem(
-                              value: 'Penjualan',
+                            const DropdownMenuItem(
+                              value: 'Penjualan Barang',
                               child: Text('Penjualan'),
                             ),
-                            DropdownMenuItem(
+                            const DropdownMenuItem(
                               value: 'Tabungan',
                               child: Text('Tabungan'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Penerimaan Piutang',
+                              child: Text('Penerimaan Piutang'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Komisi',
+                              child: Text('Komisi'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Jasa',
+                              child: Text('Pendapatan Jasa'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Bunga',
+                              child: Text('Pendapatan Bunga'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Sewa',
+                              child: Text('Pendapatan Sewa'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan lain',
+                              child: Text('Pendapatan lain'),
                             ),
                           ],
                           onChanged: (value) {
@@ -247,11 +279,6 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ),
                       ],
                     ),
-                  ),
-                  FormInputData(
-                    controller: _noteTextController,
-                    chipLabel: 'Note',
-                    hintText: 'Tambahkan catatan',
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 24),
