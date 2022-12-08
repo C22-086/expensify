@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildContent() {
+    Widget buildContent() {
       return Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: defaultMargin,
@@ -268,24 +268,69 @@ class _HomePageState extends State<HomePage> {
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
-                    child: Text('Loading...'),
+                    child: CircularProgressIndicator(),
                   );
-                }
+                } else {
+                  if (snapshot.hasError) {
+                    return const Center(
+                        child: Text('Kamu belum melakukan transaksi'));
+                  } else if (snapshot.hasData) {
+                    Map<dynamic, dynamic> transaction =
+                        snapshot.data.snapshot.value == null
+                            ? {}
+                            : snapshot.data!.snapshot!.value;
 
-                Map<dynamic, dynamic> transaction =
-                    snapshot.data.snapshot.value == null
-                        ? {}
-                        : snapshot.data!.snapshot!.value;
+                    List<dynamic> list = transaction.values.toList();
 
-                List<dynamic> list = transaction.values.toList();
-
-                return snapshot.hasData
-                    ? ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          return IncomeTailCard(
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text('Detail '),
+                                    content: SizedBox(
+                                      height: 100,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              'Nominal \t\t:${list[index]['nominal']}'),
+                                          Text(
+                                              'Category \t:${list[index]['category']}'),
+                                          Text(
+                                              'Catatan \t\t:${list[index]['note']}')
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          // FirebaseDatabase.instance
+                                          //     .ref('transaction/$uid')
+                                          //     .child(list[index].key.)
+                                          //     .remove();
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Delete'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: IncomeTailCard(
                             iconPath: list[index].keys.contains('incomeId')
                                 ? 'assets/icon_up.png'
                                 : 'assets/icon_down.png',
@@ -303,10 +348,14 @@ class _HomePageState extends State<HomePage> {
                             currencyColor: list[index].keys.contains('incomeId')
                                 ? kGreen
                                 : kRed,
-                          );
-                        },
-                      )
-                    : Container();
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return const Text('data kosong');
+                  }
+                }
               },
             ),
           ],

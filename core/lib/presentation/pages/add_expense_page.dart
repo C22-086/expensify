@@ -2,6 +2,8 @@
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/form_input_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,7 +82,22 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final ref = FirebaseDatabase.instance.ref(
+                            'users/${FirebaseAuth.instance.currentUser!.uid}');
+                        final snapshot = await FirebaseDatabase.instance
+                            .ref(
+                                'users/${FirebaseAuth.instance.currentUser!.uid}')
+                            .child('balance')
+                            .get();
+                        if (snapshot.exists) {
+                          final balance = snapshot.value as int;
+                          ref.update({
+                            'balance':
+                                balance - int.parse(_incomeTextController.text)
+                          });
+                        }
+                        if (!mounted) return;
                         BlocProvider.of<DatabaseBloc>(context).add(
                             DatabasePushExpanseUser(
                                 name: widget.user['name'],
