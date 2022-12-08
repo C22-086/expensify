@@ -27,6 +27,7 @@ dependencies:
   dropdown_search: ^5.0.3
   percent_indicator: ^4.2.2
   smooth_page_indicator: ^1.0.0+2
+  lottie: ^2.0.0
 
 dev_dependencies:
   flutter_test:

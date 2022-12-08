@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class SetBalancePage extends StatelessWidget {
   static const routeName = '/set-balance';
@@ -78,6 +79,37 @@ class SetBalancePage extends StatelessWidget {
                   navigator.pushReplacement(MaterialPageRoute(
                     builder: (context) => const MainPage(),
                   ));
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        Future.delayed(const Duration(seconds: 4), () {
+                          Navigator.of(context).pop(true);
+                        });
+                        return AlertDialog(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Lottie.asset(
+                                'assets/sukses.json',
+                                repeat: false,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Saldo anda berhasil ditambahkan",
+                                style: GoogleFonts.poppins(
+                                  color: kSoftBlack,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              )
+                            ],
+                          ),
+                        );
+                      });
                 },
                 child: Text(
                   'Set Saldo',
