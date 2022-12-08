@@ -271,8 +271,11 @@ class _HomePageState extends State<HomePage> {
                     child: Text('Loading...'),
                   );
                 }
+
                 Map<dynamic, dynamic> transaction =
-                    snapshot.data.snapshot.value;
+                    snapshot.data.snapshot.value == null
+                        ? {}
+                        : snapshot.data!.snapshot!.value;
 
                 List<dynamic> list = transaction.values.toList();
 
