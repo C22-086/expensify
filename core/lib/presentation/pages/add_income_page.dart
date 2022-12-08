@@ -2,6 +2,8 @@
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/form_input_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,14 +25,22 @@ class _AddIncomePageState extends State<AddIncomePage> {
 
   final TextEditingController _noteTextController = TextEditingController();
 
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   dynamic category;
 
   @override
   void initState() {
     super.initState();
-    dateController.text = "";
+    _dateController.text = "";
+  }
+
+  @override
+  void dispose() {
+    _incomeTextController.dispose();
+    _noteTextController.dispose();
+    _dateController.dispose();
+    super.dispose();
   }
 
   @override
@@ -83,7 +93,22 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final ref = FirebaseDatabase.instance.ref(
+                            'users/${FirebaseAuth.instance.currentUser!.uid}');
+                        final snapshot = await FirebaseDatabase.instance
+                            .ref(
+                                'users/${FirebaseAuth.instance.currentUser!.uid}')
+                            .child('balance')
+                            .get();
+                        if (snapshot.exists) {
+                          final balance = snapshot.value as int;
+                          ref.update({
+                            'balance':
+                                balance + int.parse(_incomeTextController.text)
+                          });
+                        }
+                        if (!mounted) return;
                         BlocProvider.of<DatabaseBloc>(context).add(
                             DatabasePushIncomeUser(
                                 name: widget.user['name'],
@@ -127,6 +152,11 @@ class _AddIncomePageState extends State<AddIncomePage> {
             child: Form(
               child: Column(
                 children: [
+                  FormInputData(
+                    controller: _noteTextController,
+                    chipLabel: 'Judul',
+                    hintText: 'Tambahkan judul, contoh: Jual Motor',
+                  ),
                   FormInputData(
                     controller: _incomeTextController,
                     chipLabel: 'Income',
@@ -196,22 +226,49 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             filled: true,
                             fillColor: const Color(0xffF7F8F8),
                           ),
-                          items: const [
+                          items: [
                             DropdownMenuItem(
                               enabled: false,
-                              child: Text('Pilih kategori'),
+                              child: Text(
+                                'Pilih kategori',
+                                style: GoogleFonts.poppins(color: Colors.grey),
+                              ),
                             ),
-                            DropdownMenuItem(
+                            const DropdownMenuItem(
                               value: 'Gaji',
                               child: Text('Gaji'),
                             ),
-                            DropdownMenuItem(
-                              value: 'Penjualan',
+                            const DropdownMenuItem(
+                              value: 'Penjualan Barang',
                               child: Text('Penjualan'),
                             ),
-                            DropdownMenuItem(
+                            const DropdownMenuItem(
                               value: 'Tabungan',
                               child: Text('Tabungan'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Penerimaan Piutang',
+                              child: Text('Penerimaan Piutang'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Komisi',
+                              child: Text('Komisi'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Jasa',
+                              child: Text('Pendapatan Jasa'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Bunga',
+                              child: Text('Pendapatan Bunga'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan Sewa',
+                              child: Text('Pendapatan Sewa'),
+                            ),
+                            const DropdownMenuItem(
+                              value: 'Pendapatan lain',
+                              child: Text('Pendapatan lain'),
                             ),
                           ],
                           onChanged: (value) {
@@ -222,11 +279,6 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ),
                       ],
                     ),
-                  ),
-                  FormInputData(
-                    controller: _noteTextController,
-                    chipLabel: 'Note',
-                    hintText: 'Tambahkan catatan',
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 24),
@@ -266,7 +318,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ),
                         const SizedBox(height: 9),
                         TextFormField(
-                          controller: dateController,
+                          controller: _dateController,
                           decoration: InputDecoration(
                             prefixIcon: const Icon(
                               Icons.calendar_today,
@@ -316,7 +368,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                   DateFormat("yyyy-MM-dd").format(pickedDate);
 
                               setState(() {
-                                dateController.text = formattedDate.toString();
+                                _dateController.text = formattedDate.toString();
                               });
                             } else {}
                           },
