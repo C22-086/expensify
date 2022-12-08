@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/income_tail_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
-import '../widgets/income_tail_card.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     final pageController = PageController(
-      viewportFraction: 0.75,
+      viewportFraction: 0.8,
       keepPage: true,
     );
 
@@ -263,17 +263,49 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 8,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return const IncomeTailCard(
-                  iconPath: 'assets/icon_up.png',
-                  color: kSoftGreen,
-                );
+            StreamBuilder(
+              stream: FirebaseDatabase.instance.ref('transaction/$uid').onValue,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: Text('Loading...'),
+                  );
+                }
+                Map<dynamic, dynamic> transaction =
+                    snapshot.data.snapshot.value;
+
+                List<dynamic> list = transaction.values.toList();
+
+                return snapshot.hasData
+                    ? ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          return IncomeTailCard(
+                            iconPath: list[index].keys.contains('incomeId')
+                                ? 'assets/icon_up.png'
+                                : 'assets/icon_down.png',
+                            color: list[index].keys.contains('incomeId')
+                                ? kSoftGreen
+                                : kSoftRed,
+                            category: list[index]['category'],
+                            nominal: list[index]['nominal'],
+                            date: list[index].keys.contains('incomeId')
+                                ? list[index]['incomeDate'].split(' ')[0]
+                                : list[index]['expanseDate'].split(' ')[0],
+                            label: list[index].keys.contains('incomeId')
+                                ? '+'
+                                : '-',
+                            currencyColor: list[index].keys.contains('incomeId')
+                                ? kGreen
+                                : kRed,
+                          );
+                        },
+                      )
+                    : Container();
               },
-            )
+            ),
           ],
         ),
       );

@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/data/repository/database_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';

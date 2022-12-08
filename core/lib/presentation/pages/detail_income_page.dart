@@ -166,6 +166,11 @@ class DetailIncomePage extends StatelessWidget {
                   return const IncomeTailCard(
                     iconPath: 'assets/icon_up.png',
                     color: kSoftGreen,
+                    category: '',
+                    nominal: 1,
+                    date: '',
+                    label: '+',
+                    currencyColor: kSoftGreen,
                   );
                 },
               ),
@@ -179,6 +184,11 @@ class DetailIncomePage extends StatelessWidget {
                   return const IncomeTailCard(
                     iconPath: 'assets/icon_up.png',
                     color: kSoftGreen,
+                    category: '',
+                    nominal: 1,
+                    date: '',
+                    label: '+',
+                    currencyColor: kSoftGreen,
                   );
                 },
               )

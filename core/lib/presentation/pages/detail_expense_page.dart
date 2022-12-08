@@ -168,10 +168,13 @@ class DetailExpensePage extends StatelessWidget {
                 itemCount: 2,
                 itemBuilder: (context, index) {
                   return const IncomeTailCard(
-                    iconPath: 'assets/icon_down.png',
-                    color: kSoftRed,
-                    currencyColor: kRed,
-                    label: "-",
+                    iconPath: 'assets/icon_up.png',
+                    color: kSoftGreen,
+                    category: '',
+                    nominal: 1,
+                    date: '',
+                    label: '+',
+                    currencyColor: kSoftGreen,
                   );
                 },
               ),
@@ -183,10 +186,13 @@ class DetailExpensePage extends StatelessWidget {
                 itemCount: 8,
                 itemBuilder: (context, index) {
                   return const IncomeTailCard(
-                    iconPath: 'assets/icon_down.png',
-                    color: kSoftRed,
-                    currencyColor: kRed,
-                    label: "-",
+                    iconPath: 'assets/icon_up.png',
+                    color: kSoftGreen,
+                    category: '',
+                    nominal: 1,
+                    date: '',
+                    label: '+',
+                    currencyColor: kSoftGreen,
                   );
                 },
               )

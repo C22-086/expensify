@@ -29,12 +29,14 @@ export 'presentation/pages/add_expense_page.dart';
 
 // Data
 export 'data/repository/auth_repository_impl.dart';
+export 'data/repository/database_repository_impl.dart';
 export 'data/models/user_model.dart';
+export 'data/models/income_model.dart';
+export 'data/models/expanse_model.dart';
 
 // Domain
 export 'domain/repository/auth_repository.dart';
 export 'domain/repository/database_repository.dart';
-export 'domain/repository/user_repository.dart';
 export 'domain/usecases/auth/register.dart';
 export 'domain/usecases/auth/logout.dart';
 export 'domain/usecases/auth/login_google.dart';

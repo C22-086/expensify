@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/form_input_data.dart';
 import 'package:flutter/material.dart';
@@ -119,8 +121,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
             ),
             child: Form(
               child: Column(
@@ -129,6 +131,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                     controller: _incomeTextController,
                     chipLabel: 'Income',
                     hintText: 'Masukkan jumlah income',
+                    keyboardType: TextInputType.number,
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 24),
@@ -265,7 +268,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         TextFormField(
                           controller: dateController,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.calendar_today,
                               color: kGreen,
                             ),
@@ -291,7 +294,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               builder: (context, child) {
                                 return Theme(
                                   data: Theme.of(context).copyWith(
-                                    colorScheme: ColorScheme.light(
+                                    colorScheme: const ColorScheme.light(
                                       primary:
                                           kGreen, // header background color
                                       onPrimary: kWhite, // header text color
@@ -299,7 +302,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                     ),
                                     textButtonTheme: TextButtonThemeData(
                                       style: TextButton.styleFrom(
-                                        primary: kGreen, // button text color
+                                        foregroundColor:
+                                            kGreen, // button text color
                                       ),
                                     ),
                                   ),
@@ -320,7 +324,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 150,
                   )
                 ],
