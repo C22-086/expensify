@@ -68,12 +68,14 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> pushIncomeUser(
-      {required String name,
-      required String uid,
-      required String category,
-      required int nominal,
-      required String note}) async {
+  Future<Either<Failure, void>> pushIncomeUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int nominal,
+    required String note,
+    required String date,
+  }) async {
     try {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
@@ -85,7 +87,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'category': category,
         'nominal': nominal,
         'note': note,
-        'incomeDate': DateTime.now().toString()
+        'incomeDate': date,
       });
       return const Right(null);
     } catch (e) {
@@ -94,12 +96,14 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> pushExpanseUser(
-      {required String name,
-      required String uid,
-      required String category,
-      required int nominal,
-      required String note}) async {
+  Future<Either<Failure, void>> pushExpanseUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int nominal,
+    required String note,
+    required String date,
+  }) async {
     try {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
@@ -111,7 +115,7 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'category': category,
         'nominal': nominal,
         'note': note,
-        'expanseDate': DateTime.now().toString()
+        'expanseDate': date,
       });
       return const Right(null);
     } catch (e) {
