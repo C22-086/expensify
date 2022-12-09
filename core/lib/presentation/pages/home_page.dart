@@ -220,6 +220,7 @@ class _HomePageState extends State<HomePage> {
                                 title: 'Income',
                                 label: "+",
                                 chart: SfCircularChart(
+                                  margin: EdgeInsets.zero,
                                   tooltipBehavior: TooltipBehavior(
                                       enable: true,
                                       format: 'point.x : Rp. point.y'),
@@ -254,6 +255,7 @@ class _HomePageState extends State<HomePage> {
                                 chart: expanses.isEmpty
                                     ? const NoOverviewCard(title: 'pengeluaran')
                                     : SfCircularChart(
+                                        margin: EdgeInsets.zero,
                                         tooltipBehavior: TooltipBehavior(
                                             enable: true,
                                             format: 'point.x : Rp. point.y'),
@@ -579,39 +581,6 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-    );
-  }
-
-  OverviewCard buildOverviewIncomeCart(
-      totalIncome, List<ChartIncome> incomes, BuildContext context) {
-    return OverviewCard(
-      titleImageUrl: 'assets/icon-trending-up.png',
-      color: kGreen,
-      secColor: kSoftGreen,
-      title: 'Income',
-      label: "+ ",
-      chart: incomes.isEmpty
-          ? Container()
-          : SfCircularChart(
-              tooltipBehavior:
-                  TooltipBehavior(enable: true, format: 'point.x : point.y'),
-              series: [
-                DoughnutSeries<ChartIncome, String>(
-                  explode: true,
-                  enableTooltip: true,
-                  dataSource: incomes,
-                  xValueMapper: (data, _) => incomes[_].category,
-                  yValueMapper: (data, _) => incomes[_].amount,
-                )
-              ],
-            ),
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          DetailIncomePage.routeName,
-        );
-      },
-      total: '$totalIncome',
     );
   }
 }

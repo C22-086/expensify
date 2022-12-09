@@ -33,7 +33,10 @@ class OverviewCard extends StatelessWidget {
           builder: (context, state) {
             return Container(
               margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: state ? kDark : kWhite,
