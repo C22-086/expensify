@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     final pageController = PageController(
       viewportFraction: 0.85,
@@ -430,13 +429,40 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
+                                          final getBalance =
+                                              await FirebaseDatabase.instance
+                                                  .ref()
+                                                  .child('users/$uid/balance')
+                                                  .get();
+
+                                          final refUser = FirebaseDatabase
+                                              .instance
+                                              .ref('users/$uid');
+                                          if (getBalance.exists) {
+                                            if (list[index]['type']
+                                                .contains('income')) {
+                                              await refUser.update({
+                                                'balance': int.parse(getBalance
+                                                        .value
+                                                        .toString()) -
+                                                    list[index]['amount']
+                                              });
+                                            } else {
+                                              await refUser.update({
+                                                'balance': int.parse(getBalance
+                                                        .value
+                                                        .toString()) +
+                                                    list[index]['amount']
+                                              });
+                                            }
+                                          }
                                           await FirebaseDatabase.instance
                                               .ref('transaction/$uid')
                                               .child(
                                                   list[index]['transactionId'])
-                                              .remove();
-                                          if (!mounted) return;
-                                          Navigator.pop(context);
+                                              .remove()
+                                              .then(
+                                                  (value) => Navigator.pop(_));
                                         },
                                         child: const Text('Delete'),
                                       ),
@@ -487,8 +513,8 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        child: FutureBuilder(
-          future: dbRef,
+        child: StreamBuilder(
+          stream: FirebaseDatabase.instance.ref('users/$uid').onValue,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

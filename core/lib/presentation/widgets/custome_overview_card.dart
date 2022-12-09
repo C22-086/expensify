@@ -32,6 +32,7 @@ class OverviewCard extends StatelessWidget {
         child: BlocBuilder<ThemeBloc, bool>(
           builder: (context, state) {
             return Container(
+              margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
