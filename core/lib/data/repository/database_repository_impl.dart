@@ -68,23 +68,26 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> pushIncomeUser(
-      {required String name,
-      required String uid,
-      required String category,
-      required int nominal,
-      required String note}) async {
+  Future<Either<Failure, void>> pushIncomeUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int amount,
+    required String title,
+    required String date,
+  }) async {
     try {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
-        'incomeId': push.key!,
+        'type': 'income',
+        'transactionId': push.key!,
         'userId': uid,
         'name': name,
         'category': category,
-        'nominal': nominal,
-        'note': note,
-        'incomeDate': DateTime.now().toString()
+        'amount': amount,
+        'title': title,
+        'incomeDate': date,
       });
       return const Right(null);
     } catch (e) {
@@ -93,23 +96,26 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> pushExpanseUser(
-      {required String name,
-      required String uid,
-      required String category,
-      required int nominal,
-      required String note}) async {
+  Future<Either<Failure, void>> pushExpanseUser({
+    required String name,
+    required String uid,
+    required String category,
+    required int amount,
+    required String title,
+    required String date,
+  }) async {
     try {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
-        'expanseId': push.key!,
+        'type': 'expanse',
+        'transactionId': push.key!,
         'userId': uid,
         'name': name,
         'category': category,
-        'nominal': nominal,
-        'note': note,
-        'expanseDate': DateTime.now().toString()
+        'amount': amount,
+        'title': title,
+        'expanseDate': date,
       });
       return const Right(null);
     } catch (e) {

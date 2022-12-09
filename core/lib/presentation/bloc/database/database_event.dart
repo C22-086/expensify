@@ -39,15 +39,17 @@ class DatabasePushIncomeUser extends DatabaseEvent {
   final String name;
   final String uid;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
+  final String date;
 
   const DatabasePushIncomeUser({
     required this.name,
     required this.uid,
     required this.category,
-    required this.nominal,
-    required this.note,
+    required this.amount,
+    required this.title,
+    required this.date,
   });
 
   @override
@@ -58,15 +60,17 @@ class DatabasePushExpanseUser extends DatabaseEvent {
   final String name;
   final String uid;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
+  final String date;
 
   const DatabasePushExpanseUser({
     required this.name,
     required this.uid,
     required this.category,
-    required this.nominal,
-    required this.note,
+    required this.amount,
+    required this.title,
+    required this.date,
   });
 
   @override

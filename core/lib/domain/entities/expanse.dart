@@ -5,8 +5,8 @@ class Expanse extends Equatable {
   final String userId;
   final String name;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
   final DateTime expanseDate;
 
   const Expanse(
@@ -14,8 +14,8 @@ class Expanse extends Equatable {
       required this.userId,
       required this.name,
       required this.category,
-      required this.nominal,
-      required this.note,
+      required this.amount,
+      required this.title,
       required this.expanseDate});
 
   @override
@@ -24,8 +24,8 @@ class Expanse extends Equatable {
         userId,
         name,
         category,
-        nominal,
-        note,
+        amount,
+        title,
         expanseDate,
       ];
 }

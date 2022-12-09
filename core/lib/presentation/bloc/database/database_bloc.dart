@@ -53,8 +53,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   _pushIncomeUser(
       DatabasePushIncomeUser event, Emitter<DatabaseState> emit) async {
     emit(DatabaseLoading());
-    final editData = await pushIncomeUser.execute(
-        event.name, event.uid, event.category, event.nominal, event.note);
+    final editData = await pushIncomeUser.execute(event.name, event.uid,
+        event.category, event.amount, event.title, event.date);
     editData.fold(
         (l) => emit(DatabaseError(l.message)), (r) => emit(DatabaseSuccess()));
   }
@@ -62,8 +62,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   _pushExpanseUser(
       DatabasePushExpanseUser event, Emitter<DatabaseState> emit) async {
     emit(DatabaseLoading());
-    final editData = await pushExpanseUser.execute(
-        event.name, event.uid, event.category, event.nominal, event.note);
+    final editData = await pushExpanseUser.execute(event.name, event.uid,
+        event.category, event.amount, event.title, event.date);
     editData.fold(
         (l) => emit(DatabaseError(l.message)), (r) => emit(DatabaseSuccess()));
   }

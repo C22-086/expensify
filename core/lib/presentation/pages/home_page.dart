@@ -338,11 +338,11 @@ class _HomePageState extends State<HomePage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              'Nominal \t\t:${list[index]['nominal']}'),
+                                              'Nominal \t\t:${list[index]['amount']}'),
                                           Text(
                                               'Category \t:${list[index]['category']}'),
                                           Text(
-                                              'Catatan \t\t:${list[index]['note']}')
+                                              'Nama \t\t\t:${list[index]['title']}')
                                         ],
                                       ),
                                     ),
@@ -354,11 +354,13 @@ class _HomePageState extends State<HomePage> {
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () {
-                                          // FirebaseDatabase.instance
-                                          //     .ref('transaction/$uid')
-                                          //     .child(list[index].key.)
-                                          //     .remove();
+                                        onPressed: () async {
+                                          await FirebaseDatabase.instance
+                                              .ref('transaction/$uid')
+                                              .child(
+                                                  list[index]['transactionId'])
+                                              .remove();
+                                          if (!mounted) return;
                                           Navigator.pop(context);
                                         },
                                         child: const Text('Delete'),
@@ -368,23 +370,23 @@ class _HomePageState extends State<HomePage> {
                                 });
                           },
                           child: IncomeTailCard(
-                            iconPath: list[index].keys.contains('incomeId')
+                            iconPath: list[index]['type'].contains('income')
                                 ? 'assets/icon_up.png'
                                 : 'assets/icon_down.png',
-                            color: list[index].keys.contains('incomeId')
+                            color: list[index]['type'].contains('income')
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            nominal: list[index]['nominal'],
-                            date: list[index].keys.contains('incomeId')
+                            nominal: list[index]['amount'],
+                            date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],
-                            label: list[index].keys.contains('incomeId')
+                            label: list[index]['type'].contains('income')
                                 ? '+'
                                 : '-',
-                            currencyColor: list[index].keys.contains('incomeId')
-                                ? kGreen
-                                : kRed,
+                            currencyColor:
+                                list[index]['type'] == 'income' ? kGreen : kRed,
+                            title: list[index]['title'],
                           ),
                         );
                       },

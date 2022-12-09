@@ -5,8 +5,8 @@ class IncomeModel extends Equatable {
   final String userId;
   final String name;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
   final String expanseDate;
 
   const IncomeModel({
@@ -14,8 +14,8 @@ class IncomeModel extends Equatable {
     required this.userId,
     required this.name,
     required this.category,
-    required this.nominal,
-    required this.note,
+    required this.amount,
+    required this.title,
     required this.expanseDate,
   });
 
@@ -24,8 +24,8 @@ class IncomeModel extends Equatable {
         "userId": userId,
         "name": name,
         "category": category,
-        "nominal": nominal,
-        "note": note,
+        "amount": amount,
+        "title": title,
         "expanseDate": expanseDate,
       };
 
@@ -35,8 +35,8 @@ class IncomeModel extends Equatable {
         userId,
         name,
         category,
-        nominal,
-        note,
+        amount,
+        title,
         expanseDate,
       ];
 }

@@ -6,9 +6,15 @@ class PushIncomeUser {
 
   PushIncomeUser(this.repository);
 
-  Future<Either<Failure, void>> execute(
-      String name, String uid, String category, int nominal, String note) {
+  Future<Either<Failure, void>> execute(String name, String uid,
+      String category, int amount, String title, String date) {
     return repository.pushIncomeUser(
-        name: name, uid: uid, category: category, nominal: nominal, note: note);
+      name: name,
+      uid: uid,
+      category: category,
+      amount: amount,
+      title: title,
+      date: date,
+    );
   }
 }

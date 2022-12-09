@@ -133,41 +133,58 @@ class _OverviewPageState extends State<OverviewPage> {
     }
 
     buildBalanceInformation() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+      return FutureBuilder(
+        future: fetchUserData(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final Map<String, dynamic> user =
+              snapshot.data as Map<String, dynamic>;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Balance",
-                  style: kHeading7,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Balance",
+                      style: kHeading7.copyWith(
+                          color: Colors.black45, fontSize: 18),
+                    ),
+                    Text(
+                      'Rp. ${user['balance']}',
+                      style: kHeading7.copyWith(
+                        color: kGreen,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  "IDR 400.000",
-                  style: kHeading7.copyWith(
-                      color: kGreen, fontSize: 18, fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: 60,
+                  width: 120,
+                  child: DropdownSearch(
+                    items: const [
+                      "Day",
+                      "Week",
+                      "Month",
+                      "Year",
+                    ],
+                    onChanged: print,
+                    selectedItem: "Day",
+                  ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 60,
-              width: 120,
-              child: DropdownSearch(
-                selectedItem: "Day",
-                items: const [
-                  "Day",
-                  "Week",
-                  "Month",
-                  "Year",
-                ],
-              ),
-            )
-          ],
-        ),
+          );
+        },
       );
     }
 
