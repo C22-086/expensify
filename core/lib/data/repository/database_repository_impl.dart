@@ -78,7 +78,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
-        'incomeId': push.key!,
+        'type': 'income',
+        'transactionId': push.key!,
         'userId': uid,
         'name': name,
         'category': category,
@@ -103,7 +104,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
       final ref = FirebaseDatabase.instance.ref('transaction/$uid');
       final push = ref.push();
       await push.set({
-        'expanseId': push.key!,
+        'type': 'expanse',
+        'transactionId': push.key!,
         'userId': uid,
         'name': name,
         'category': category,

@@ -26,7 +26,6 @@ class _OverviewPageState extends State<OverviewPage> {
     return data;
   }
 
-  @override
   void initState() {
     super.initState();
   }
@@ -151,9 +150,10 @@ class _OverviewPageState extends State<OverviewPage> {
                       Text(
                         'Rp. ${user['balance']}',
                         style: kHeading7.copyWith(
-                            color: kGreen,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                          color: kGreen,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
