@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core.dart';
@@ -30,14 +31,16 @@ class FormInputData extends StatelessWidget {
         vertical: 15,
       ),
       decoration: BoxDecoration(
-        color: kWhite,
+        color: context.watch<ThemeBloc>().state ? kDark : kWhite,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            offset: Offset(3, 3),
+            offset: const Offset(3, 3),
             spreadRadius: -10,
             blurRadius: 49,
-            color: Color.fromARGB(255, 169, 169, 169),
+            color: context.watch<ThemeBloc>().state
+                ? kDark
+                : const Color.fromARGB(255, 169, 169, 169),
           ),
         ],
       ),
@@ -70,7 +73,9 @@ class FormInputData extends StatelessWidget {
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(14),
               ),
-              fillColor: const Color(0xffF7F8F8),
+              fillColor: context.watch<ThemeBloc>().state
+                  ? kSoftDark
+                  : const Color(0xffF7F8F8),
               hintText: hintText,
               filled: true,
               hintStyle: GoogleFonts.poppins(

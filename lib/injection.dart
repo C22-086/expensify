@@ -23,6 +23,7 @@ Future<void> init() async {
   locator.registerFactory(() => OnboardingCubit(0));
   locator.registerFactory(() => SetPage());
   locator.registerFactory(() => SetCategory());
+  locator.registerFactory(() => ThemeBloc());
 
   // REPOSITORY
   locator.registerLazySingleton<AuthRepository>(

@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool? initializeApp;
@@ -13,6 +15,9 @@ bool? isLogin;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
   await Firebase.initializeApp(
     name: 'Expensify',
     options: DefaultFirebaseOptions.currentPlatform,
@@ -46,85 +51,92 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<AuthBloc>()),
         BlocProvider(create: (_) => di.locator<OnboardingCubit>()),
         BlocProvider(create: (_) => di.locator<DatabaseBloc>()),
+        BlocProvider(create: (_) => di.locator<ThemeBloc>()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Expensify',
-        theme: ThemeData(colorScheme: kColorScheme),
-        navigatorObservers: [routeObserver],
-        initialRoute: initializeApp == false || initializeApp == null
-            ? OnboardingPage.routeName
-            : isLogin == false || isLogin == null
-                ? LoginPage.routeName
-                : MainPage.routeName,
-        onGenerateRoute: (RouteSettings settings) {
-          switch (settings.name) {
-            case OnboardingPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const OnboardingPage(),
-              );
-            case MainPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const MainPage(),
-              );
-            case LoginPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const LoginPage(),
-              );
-            case SetBalancePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const SetBalancePage(),
-              );
-            case RegisterPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const RegisterPage(),
-              );
-            case HomePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const HomePage(),
-              );
-            case AddIncomePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => AddIncomePage(
-                  user: settings.arguments,
-                ),
-              );
-            case AddExpensePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => AddExpensePage(
-                  user: settings.arguments,
-                ),
-              );
-            case DetailIncomePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const DetailIncomePage(),
-              );
-            case DetailExpensePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const DetailExpensePage(),
-              );
-            case EditProfilePage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => EditProfilePage(
-                  user: settings.arguments,
-                ),
-              );
-            case ExportDataPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const ExportDataPage(),
-              );
-
-            default:
-              return MaterialPageRoute(
-                builder: (_) {
-                  return const Scaffold(
-                    body: Center(
-                      child: Text('Page not found :('),
+      child: BlocBuilder<ThemeBloc, bool>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Expensify',
+            themeMode: state ? ThemeMode.dark : ThemeMode.light,
+            darkTheme: ThemeData.dark(),
+            theme: ThemeData(colorScheme: kColorScheme),
+            navigatorObservers: [routeObserver],
+            initialRoute: initializeApp == false || initializeApp == null
+                ? OnboardingPage.routeName
+                : isLogin == false || isLogin == null
+                    ? LoginPage.routeName
+                    : MainPage.routeName,
+            onGenerateRoute: (RouteSettings settings) {
+              switch (settings.name) {
+                case OnboardingPage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const OnboardingPage(),
+                  );
+                case MainPage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const MainPage(),
+                  );
+                case LoginPage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const LoginPage(),
+                  );
+                case SetBalancePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const SetBalancePage(),
+                  );
+                case RegisterPage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const RegisterPage(),
+                  );
+                case HomePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const HomePage(),
+                  );
+                case AddIncomePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => AddIncomePage(
+                      user: settings.arguments,
                     ),
                   );
-                },
-              );
-          }
+                case AddExpensePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => AddExpensePage(
+                      user: settings.arguments,
+                    ),
+                  );
+                case DetailIncomePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const DetailIncomePage(),
+                  );
+                case DetailExpensePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const DetailExpensePage(),
+                  );
+                case EditProfilePage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => EditProfilePage(
+                      user: settings.arguments,
+                    ),
+                  );
+                case ExportDataPage.routeName:
+                  return MaterialPageRoute(
+                    builder: (_) => const ExportDataPage(),
+                  );
+
+                default:
+                  return MaterialPageRoute(
+                    builder: (_) {
+                      return const Scaffold(
+                        body: Center(
+                          child: Text('Page not found :('),
+                        ),
+                      );
+                    },
+                  );
+              }
+            },
+          );
         },
       ),
     );

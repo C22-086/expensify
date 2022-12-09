@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _OverviewPageState extends State<OverviewPage> {
           height: 75,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: kSoftGrey,
+            color: context.watch<ThemeBloc>().state ? kSoftBlack : kSoftGrey,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
@@ -58,7 +59,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? Colors.transparent : kWhite,
+                    color: isActive == true
+                        ? Colors.transparent
+                        : context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -81,7 +86,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? kWhite : Colors.transparent,
+                    color: isActive == true
+                        ? context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -118,8 +127,7 @@ class _OverviewPageState extends State<OverviewPage> {
               children: [
                 Text(
                   "Balance",
-                  style:
-                      kHeading7.copyWith(color: Colors.black45, fontSize: 18),
+                  style: kHeading7,
                 ),
                 Text(
                   "IDR 400.000",
