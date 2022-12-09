@@ -4,7 +4,6 @@ import 'package:core/core.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/back_button.dart';
@@ -99,7 +98,15 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
           ),
         );
 
-    buildCardExpanses() {
+    buildCardExpanses(data) {
+      final expanses = [];
+      for (var e in data) {
+        if (e['type'] == 'expanse') {
+          expanses.add(e['nominal']);
+        }
+      }
+      final totalExpanses = expanses.reduce((a, b) => a + b);
+
       return Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: defaultMargin,
@@ -129,7 +136,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    '- IDR 900K',
+                    '- ${data.length} Pengeluaran',
                     style: kHeading5.copyWith(
                       fontSize: 30,
                       color: kWhite,
@@ -137,99 +144,64 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "30% from tranfer",
+                    "Pengeluaran kamu sebesar :",
                     style: kSubtitle.copyWith(color: kWhite),
                   ),
                   Text(
-                    "70% from salary",
-                    style: kSubtitle.copyWith(color: kWhite),
+                    "Rp.-$totalExpanses",
+                    textAlign: TextAlign.right,
+                    style: kSubtitle.copyWith(
+                      color: kWhite,
+                      fontSize: 30,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(width: 10),
-              SizedBox(
-                height: 85,
-                width: 85,
-                child: PieChart(
-                  PieChartData(
-                      pieTouchData: PieTouchData(enabled: true),
-                      centerSpaceColor: Colors.transparent,
-                      centerSpaceRadius: 40,
-                      sections: [
-                        PieChartSectionData(
-                          color: const Color(0xffFF396F),
-                          value: 60,
-                          title: "60%",
-                          radius: 30,
-                          titleStyle: kBodyText.copyWith(color: kWhite),
-                        ),
-                        PieChartSectionData(
-                          color: kWhite,
-                          value: 40,
-                          title: "40%",
-                          radius: 30,
-                          titleStyle: kBodyText.copyWith(color: kGreen),
-                        ),
-                      ]),
-                  swapAnimationCurve: Curves.linear,
-                  swapAnimationDuration: const Duration(milliseconds: 150),
-                ),
-              ),
             ],
           ),
         ),
       );
     }
 
-    buildListExpanses() => Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin + 5,
-            vertical: height * 0.03,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Today", style: kHeading5),
-              const SizedBox(height: 15),
-              ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return const IncomeTailCard(
-                    iconPath: 'assets/icon_up.png',
-                    color: kSoftGreen,
-                    category: '',
-                    nominal: 1,
-                    date: '',
-                    label: '+',
-                    currencyColor: kSoftGreen,
-                    title: '',
-                  );
-                },
-              ),
-              Text("Monday", style: kHeading5),
-              const SizedBox(height: 15),
-              ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return const IncomeTailCard(
-                    iconPath: 'assets/icon_up.png',
-                    color: kSoftGreen,
-                    category: '',
-                    nominal: 1,
-                    date: '',
-                    label: '+',
-                    currencyColor: kSoftGreen,
-                    title: '',
-                  );
-                },
-              )
-            ],
-          ),
-        );
+    buildListExpanses(data) {
+      var expanses = [];
+      for (var e in data) {
+        if (e['type'] == 'expanse') {
+          expanses.add(e);
+        }
+      }
+      return Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultMargin + 5,
+          vertical: height * 0.03,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Daftar Pengeluaran Kamu", style: kHeading5),
+            const SizedBox(height: 15),
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: expanses.length,
+              itemBuilder: (context, index) {
+                return IncomeTailCard(
+                  iconPath: 'assets/icon_down.png',
+                  color: kSoftRed,
+                  category: expanses[index]['category'].toString(),
+                  nominal: expanses[index]['nominal'],
+                  date: expanses[index]['expanseDate'].split(' ')[0],
+                  label: '-',
+                  currencyColor: kRed,
+                  title: expanses[index]['note'],
+                );
+              },
+            )
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       body: Stack(
@@ -245,16 +217,32 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
               buildAppBar(),
               buildCategory(),
               Expanded(
-                child: SizedBox(
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      buildCardExpanses(),
-                      buildListExpanses(),
-                    ],
-                  ),
-                ),
+                child: FutureBuilder<dynamic>(
+                    future: fetchUserTransaction(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data == ServerFailure) {
+                        return const Center(
+                          child: Text('Data masih kosong'),
+                        );
+                      }
+
+                      final data = snapshot.data;
+                      return SizedBox(
+                        child: ListView(
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          children: [
+                            buildCardExpanses(data),
+                            buildListExpanses(data),
+                          ],
+                        ),
+                      );
+                    }),
               )
             ],
           ),
