@@ -21,16 +21,20 @@ class DetailIncomePage extends StatefulWidget {
 class _DetailIncomePageState extends State<DetailIncomePage> {
   Future fetchUserTransaction() async {
     var transactions = [];
-    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    final transactionRef =
-        FirebaseDatabase.instance.ref('transaction/$currentUserId');
-    final json = await transactionRef.orderByKey().get();
-    final data = jsonDecode(jsonEncode(json.value)) as Map;
-    data.forEach((key, value) {
-      transactions.add(value);
-    });
-    print(transactions);
-    return transactions;
+    try {
+      final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+      final transactionRef =
+          FirebaseDatabase.instance.ref('transaction/$currentUserId');
+      final json = await transactionRef.orderByKey().get();
+      final data = jsonDecode(jsonEncode(json.value)) as Map;
+      data.forEach((key, value) {
+        transactions.add(value);
+      });
+      print(transactions);
+      return transactions;
+    } catch (e) {
+      return ServerFailure;
+    }
   }
 
   @override
@@ -206,12 +210,17 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
               buildAppBar(),
               buildCategory(),
               Expanded(
-                child: FutureBuilder(
+                child: FutureBuilder<dynamic>(
                     future: fetchUserTransaction(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data == ServerFailure) {
+                        return const Center(
+                          child: Text('Data masih kosong'),
                         );
                       }
                       final data = snapshot.data;
