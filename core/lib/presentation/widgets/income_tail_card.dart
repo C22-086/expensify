@@ -5,6 +5,7 @@ import '../../core.dart';
 class IncomeTailCard extends StatelessWidget {
   const IncomeTailCard({
     Key? key,
+    required this.title,
     required this.iconPath,
     required this.nominal,
     required this.category,
@@ -13,7 +14,7 @@ class IncomeTailCard extends StatelessWidget {
     required this.color,
     required this.currencyColor,
   }) : super(key: key);
-
+  final String title;
   final String iconPath;
   final Color color;
   final Color currencyColor;
@@ -45,7 +46,12 @@ class IncomeTailCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(category, style: kHeading7),
+              Text(title, style: kHeading7),
+              const SizedBox(height: 5),
+              Text(
+                category,
+                style: kBodyText,
+              ),
               const SizedBox(height: 5),
               Text(date, style: kBodyText),
             ],

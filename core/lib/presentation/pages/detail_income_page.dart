@@ -162,43 +162,45 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
       );
     }
 
-    buildListIncome(data) =>
-        FutureBuilder(builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: defaultMargin + 5,
-              vertical: height * 0.03,
+    buildListIncome(data) {
+      var income = [];
+      for (var e in data) {
+        if (e['type'] == 'income') {
+          income.add(e);
+        }
+      }
+
+      return Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultMargin + 5,
+          vertical: height * 0.03,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Daftar Pemasukkan Kamu ", style: kHeading5),
+            const SizedBox(height: 15),
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: income.length,
+              itemBuilder: (context, index) {
+                return IncomeTailCard(
+                  iconPath: 'assets/icon_up.png',
+                  color: kSoftGreen,
+                  category: income[index]['category'].toString(),
+                  nominal: data[index]['nominal'],
+                  date: data[index]['incomeDate'].split(' ')[0],
+                  label: '+',
+                  currencyColor: kGreen,
+                  title: income[index]['note'],
+                );
+              },
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Daftar Pemasukkan Kamu ", style: kHeading5),
-                const SizedBox(height: 15),
-                ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return IncomeTailCard(
-                      iconPath: 'assets/icon_up.png',
-                      color: kSoftGreen,
-                      category: data[index]['note'].toString(),
-                      nominal: data[index]['nominal'],
-                      date: data[index]['incomeDate'],
-                      label: '+',
-                      currencyColor: kGreen,
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       body: Stack(

@@ -386,6 +386,7 @@ class _HomePageState extends State<HomePage> {
                                 : '-',
                             currencyColor:
                                 list[index]['type'] == 'income' ? kGreen : kRed,
+                            title: list[index]['note'],
                           ),
                         );
                       },

@@ -99,87 +99,89 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
           ),
         );
 
-    buildCardIncome() => Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultMargin,
+    buildCardExpanses() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: defaultMargin,
+        ),
+        child: Container(
+          height: 180,
+          padding: const EdgeInsets.only(
+            left: 20,
+            top: 20,
+            bottom: 20,
+            right: 50,
           ),
-          child: Container(
-            height: 180,
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 20,
-              bottom: 20,
-              right: 50,
+          decoration: BoxDecoration(
+            color: kDarkRed,
+            borderRadius: BorderRadius.circular(14),
+            image: const DecorationImage(
+              image: AssetImage('assets/expense_card.png'),
+              fit: BoxFit.cover,
             ),
-            decoration: BoxDecoration(
-              color: kDarkRed,
-              borderRadius: BorderRadius.circular(14),
-              image: const DecorationImage(
-                image: AssetImage('assets/expense_card.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      '- IDR 900K',
-                      style: kHeading5.copyWith(
-                        fontSize: 30,
-                        color: kWhite,
-                      ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    '- IDR 900K',
+                    style: kHeading5.copyWith(
+                      fontSize: 30,
+                      color: kWhite,
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "30% from tranfer",
-                      style: kSubtitle.copyWith(color: kWhite),
-                    ),
-                    Text(
-                      "70% from salary",
-                      style: kSubtitle.copyWith(color: kWhite),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  height: 85,
-                  width: 85,
-                  child: PieChart(
-                    PieChartData(
-                        pieTouchData: PieTouchData(enabled: true),
-                        centerSpaceColor: Colors.transparent,
-                        centerSpaceRadius: 40,
-                        sections: [
-                          PieChartSectionData(
-                            color: const Color(0xffFF396F),
-                            value: 60,
-                            title: "60%",
-                            radius: 30,
-                            titleStyle: kBodyText.copyWith(color: kWhite),
-                          ),
-                          PieChartSectionData(
-                            color: kWhite,
-                            value: 40,
-                            title: "40%",
-                            radius: 30,
-                            titleStyle: kBodyText.copyWith(color: kGreen),
-                          ),
-                        ]),
-                    swapAnimationCurve: Curves.linear,
-                    swapAnimationDuration: const Duration(milliseconds: 150),
                   ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "30% from tranfer",
+                    style: kSubtitle.copyWith(color: kWhite),
+                  ),
+                  Text(
+                    "70% from salary",
+                    style: kSubtitle.copyWith(color: kWhite),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                height: 85,
+                width: 85,
+                child: PieChart(
+                  PieChartData(
+                      pieTouchData: PieTouchData(enabled: true),
+                      centerSpaceColor: Colors.transparent,
+                      centerSpaceRadius: 40,
+                      sections: [
+                        PieChartSectionData(
+                          color: const Color(0xffFF396F),
+                          value: 60,
+                          title: "60%",
+                          radius: 30,
+                          titleStyle: kBodyText.copyWith(color: kWhite),
+                        ),
+                        PieChartSectionData(
+                          color: kWhite,
+                          value: 40,
+                          title: "40%",
+                          radius: 30,
+                          titleStyle: kBodyText.copyWith(color: kGreen),
+                        ),
+                      ]),
+                  swapAnimationCurve: Curves.linear,
+                  swapAnimationDuration: const Duration(milliseconds: 150),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
+        ),
+      );
+    }
 
-    buildListIncome() => Padding(
+    buildListExpanses() => Padding(
           padding: EdgeInsets.symmetric(
             horizontal: defaultMargin + 5,
             vertical: height * 0.03,
@@ -202,6 +204,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                     date: '',
                     label: '+',
                     currencyColor: kSoftGreen,
+                    title: '',
                   );
                 },
               ),
@@ -220,6 +223,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                     date: '',
                     label: '+',
                     currencyColor: kSoftGreen,
+                    title: '',
                   );
                 },
               )
@@ -246,8 +250,8 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: [
-                      buildCardIncome(),
-                      buildListIncome(),
+                      buildCardExpanses(),
+                      buildListExpanses(),
                     ],
                   ),
                 ),
