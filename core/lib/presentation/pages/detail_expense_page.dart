@@ -100,16 +100,21 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
 
     buildCardExpanses(data) {
       final expanses = [];
-      for (var e in data) {
-        if (e['type'] == 'expanse') {
-          expanses.add(e['nominal']);
+
+      if (data != null) {
+        for (var e in data) {
+          if (e['type'] == 'expanse') {
+            print(e['nominal']);
+            expanses.add(e['nominal']);
+          }
         }
       }
-      final totalExpanses = expanses.length > 2
+
+      final totalExpanses = expanses.length > 1
           ? expanses.reduce(
               (a, b) => a + b,
             )
-          : 0;
+          : expanses.first;
 
       return Padding(
         padding: const EdgeInsets.symmetric(
