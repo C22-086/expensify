@@ -11,6 +11,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
+import '../widgets/no_overview_card.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -146,60 +147,150 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: const EdgeInsets.symmetric(
               vertical: 15,
+              horizontal: 20,
             ),
             height: 195,
             width: double.infinity,
-            child: PageView.builder(
-              padEnds: false,
-              controller: pageController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 15),
-                  child: StreamBuilder<dynamic>(
-                      stream: FirebaseDatabase.instance
-                          .ref('transaction/$uid')
-                          .onValue,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          if (snapshot.hasData) {
-                            final Map<dynamic, dynamic> transactions =
-                                snapshot.data.snapshot.value;
-                            final listData = transactions.values.toList();
+            child: StreamBuilder<dynamic>(
+              stream: FirebaseDatabase.instance
+                  .ref()
+                  .child('transaction/$uid')
+                  .onValue,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.hasData) {
+                    final Map<dynamic, dynamic> transactions =
+                        snapshot.data.snapshot.value ?? {};
+                    final listData = transactions.values.toList();
 
-                            final incomesAmount = [];
+                    //get total income
+                    final incomesAmount = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'income') {
+                        incomesAmount.add(e['amount']);
+                      }
+                    }
+                    final totalIncome = incomesAmount.length >= 2
+                        ? incomesAmount.reduce((a, b) => a + b)
+                        : incomesAmount.isEmpty
+                            ? 0
+                            : incomesAmount.first;
 
-                            //get total income
-                            for (var e in listData) {
-                              if (e['type'] == 'income') {
-                                incomesAmount.add(e['amount']);
-                              }
-                            }
-                            //get all income
-                            final List<ChartIncome> incomes = [];
-                            for (var e in listData) {
-                              if (e['type'] == 'income') {
-                                incomes.add(ChartIncome.fromMap(e));
-                              }
-                            }
+                    //get all income
+                    final List<ChartIncome> incomes = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'income') {
+                        incomes.add(ChartIncome.fromMap(e));
+                      }
+                    }
+                    //get total Expanse
+                    final expansesAmount = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'expanse') {
+                        expansesAmount.add(e['amount']);
+                      }
+                    }
+                    final totalExpanse = expansesAmount.length >= 2
+                        ? expansesAmount.reduce((a, b) => a + b)
+                        : expansesAmount.isEmpty
+                            ? 0
+                            : expansesAmount.first;
 
-                            final totalIncome = incomesAmount.length >= 2
-                                ? incomesAmount.reduce((a, b) => a + b)
-                                : incomesAmount.first;
-
-                            return buildOverviewCart(
-                                totalIncome, incomes, context);
-                          } else {
-                            return Container();
-                          }
-                        }
-                      }),
-                );
+                    //get all expanses
+                    final List<ChartIncome> expanses = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'expanse') {
+                        expanses.add(ChartIncome.fromMap(e));
+                      }
+                    }
+                    return PageView(
+                      padEnds: false,
+                      controller: pageController,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        incomes.isEmpty
+                            ? const NoOverviewCard(
+                                title: 'pemasukkan',
+                              )
+                            : OverviewCard(
+                                titleImageUrl: 'assets/icon-trending-up.png',
+                                color: kGreen,
+                                secColor: kSoftGreen,
+                                title: 'Income',
+                                label: "+",
+                                chart: SfCircularChart(
+                                  tooltipBehavior: TooltipBehavior(
+                                      enable: true,
+                                      format: 'point.x : Rp. point.y'),
+                                  series: [
+                                    DoughnutSeries<ChartIncome, String>(
+                                      explode: true,
+                                      enableTooltip: true,
+                                      dataSource: incomes,
+                                      xValueMapper: (data, _) =>
+                                          incomes[_].category,
+                                      yValueMapper: (data, _) =>
+                                          incomes[_].amount,
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    DetailIncomePage.routeName,
+                                  );
+                                },
+                                total: '$totalIncome',
+                              ),
+                        expanses.isEmpty
+                            ? const NoOverviewCard(title: 'pengeluaran')
+                            : OverviewCard(
+                                titleImageUrl: 'assets/icon-trending-down.png',
+                                color: kRed,
+                                secColor: kSoftGreen,
+                                title: 'Expanse',
+                                label: "-",
+                                chart: expanses.isEmpty
+                                    ? const NoOverviewCard(title: 'pengeluaran')
+                                    : SfCircularChart(
+                                        tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            format: 'point.x : Rp. point.y'),
+                                        series: [
+                                          DoughnutSeries<ChartIncome, String>(
+                                            explode: true,
+                                            enableTooltip: true,
+                                            dataSource: expanses,
+                                            xValueMapper: (data, _) =>
+                                                expanses[_].category,
+                                            yValueMapper: (data, _) =>
+                                                expanses[_].amount,
+                                          )
+                                        ],
+                                      ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    DetailExpensePage.routeName,
+                                  );
+                                },
+                                total: '$totalExpanse',
+                              )
+                      ],
+                    );
+                  } else {
+                    return PageView(
+                      padEnds: false,
+                      controller: pageController,
+                      physics: const BouncingScrollPhysics(),
+                      children: const [
+                        NoOverviewCard(title: ''),
+                      ],
+                    );
+                  }
+                }
               },
             ),
           ),
@@ -465,7 +556,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  OverviewCard buildOverviewCart(
+  OverviewCard buildOverviewIncomeCart(
       totalIncome, List<ChartIncome> incomes, BuildContext context) {
     return OverviewCard(
       titleImageUrl: 'assets/icon-trending-up.png',

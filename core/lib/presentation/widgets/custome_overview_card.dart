@@ -42,6 +42,7 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [
@@ -60,7 +61,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Rp. + $total',
+                        'Rp. $label$total',
                         style: kHeading7.copyWith(
                           fontSize: 20,
                           color: color,
@@ -68,13 +69,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'ss',
-                        style: kBodyText.copyWith(
-                          color: state ? kWhite : Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        'subMaxPercent',
+                        'Jangan lupa untuk selalu hemat',
                         style: kBodyText.copyWith(
                           color: state ? kWhite : Colors.grey,
                         ),
