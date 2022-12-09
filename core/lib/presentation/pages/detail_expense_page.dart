@@ -30,7 +30,6 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
       data.forEach((key, value) {
         transactions.add(value);
       });
-      print(transactions);
       return transactions;
     } catch (e) {
       return ServerFailure;
@@ -104,8 +103,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
       if (data != null) {
         for (var e in data) {
           if (e['type'] == 'expanse') {
-            print(e['nominal']);
-            expanses.add(e['nominal']);
+            expanses.add(e['amount']);
           }
         }
       }
@@ -205,7 +203,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                   date: expanses[index]['expanseDate'].split(' ')[0],
                   label: '-',
                   currencyColor: kRed,
-                  title: expanses[index]['note'],
+                  title: expanses[index]['title'],
                 );
               },
             )

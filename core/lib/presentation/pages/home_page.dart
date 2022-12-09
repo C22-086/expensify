@@ -338,11 +338,11 @@ class _HomePageState extends State<HomePage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              'Nominal \t\t:${list[index]['nominal']}'),
+                                              'Nominal \t\t:${list[index]['amount']}'),
                                           Text(
                                               'Category \t:${list[index]['category']}'),
                                           Text(
-                                              'Nama \t\t\t:${list[index]['note']}')
+                                              'Nama \t\t\t:${list[index]['title']}')
                                         ],
                                       ),
                                     ),
@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            nominal: list[index]['nominal'],
+                            nominal: list[index]['amount'],
                             date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],
@@ -386,7 +386,7 @@ class _HomePageState extends State<HomePage> {
                                 : '-',
                             currencyColor:
                                 list[index]['type'] == 'income' ? kGreen : kRed,
-                            title: list[index]['note'],
+                            title: list[index]['title'],
                           ),
                         );
                       },

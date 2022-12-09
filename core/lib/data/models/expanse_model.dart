@@ -5,8 +5,8 @@ class ExpanseModel extends Equatable {
   final String userId;
   final String name;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
   final DateTime expanseDate;
 
   const ExpanseModel(
@@ -14,8 +14,8 @@ class ExpanseModel extends Equatable {
       required this.userId,
       required this.name,
       required this.category,
-      required this.nominal,
-      required this.note,
+      required this.amount,
+      required this.title,
       required this.expanseDate});
 
   Map<String, dynamic> toJson() => {
@@ -23,8 +23,8 @@ class ExpanseModel extends Equatable {
         "userId": userId,
         "name": name,
         "category": category,
-        "nominal": nominal,
-        "note": note,
+        "amount": amount,
+        "title": title,
         "expanseDate": expanseDate,
       };
 
@@ -34,8 +34,8 @@ class ExpanseModel extends Equatable {
         userId,
         name,
         category,
-        nominal,
-        note,
+        amount,
+        title,
         expanseDate,
       ];
 }

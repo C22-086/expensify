@@ -5,8 +5,8 @@ class Income extends Equatable {
   final String userId;
   final String name;
   final String category;
-  final int nominal;
-  final String note;
+  final int amount;
+  final String title;
   final String expanseDate;
 
   const Income(
@@ -14,11 +14,11 @@ class Income extends Equatable {
       required this.userId,
       required this.name,
       required this.category,
-      required this.nominal,
-      required this.note,
+      required this.amount,
+      required this.title,
       required this.expanseDate});
 
   @override
   List<Object?> get props =>
-      [incomeId, userId, name, category, nominal, note, expanseDate];
+      [incomeId, userId, name, category, amount, title, expanseDate];
 }

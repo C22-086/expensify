@@ -30,7 +30,6 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
       data.forEach((key, value) {
         transactions.add(value);
       });
-      print(transactions);
       return transactions;
     } catch (e) {
       return ServerFailure;
@@ -104,7 +103,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
       final income = [];
       for (var e in data) {
         if (e['type'] == 'income') {
-          income.add(e['nominal']);
+          income.add(e['amount']);
         }
       }
       final totalIncome =
@@ -190,11 +189,11 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                   iconPath: 'assets/icon_up.png',
                   color: kSoftGreen,
                   category: income[index]['category'].toString(),
-                  nominal: data[index]['nominal'],
+                  nominal: data[index]['amount'],
                   date: data[index]['incomeDate'].split(' ')[0],
                   label: '+',
                   currencyColor: kGreen,
-                  title: income[index]['note'],
+                  title: income[index]['title'],
                 );
               },
             ),

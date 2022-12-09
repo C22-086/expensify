@@ -72,8 +72,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
     required String name,
     required String uid,
     required String category,
-    required int nominal,
-    required String note,
+    required int amount,
+    required String title,
     required String date,
   }) async {
     try {
@@ -85,8 +85,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'userId': uid,
         'name': name,
         'category': category,
-        'nominal': nominal,
-        'note': note,
+        'amount': amount,
+        'title': title,
         'incomeDate': date,
       });
       return const Right(null);
@@ -100,8 +100,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
     required String name,
     required String uid,
     required String category,
-    required int nominal,
-    required String note,
+    required int amount,
+    required String title,
     required String date,
   }) async {
     try {
@@ -113,8 +113,8 @@ class DatabaseRepositoryImpl implements DatabaseRepository {
         'userId': uid,
         'name': name,
         'category': category,
-        'nominal': nominal,
-        'note': note,
+        'amount': amount,
+        'title': title,
         'expanseDate': date,
       });
       return const Right(null);

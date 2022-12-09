@@ -22,7 +22,7 @@ class AddExpensePage extends StatefulWidget {
 
 class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController _incomeTextController = TextEditingController();
-  final TextEditingController _noteTextController = TextEditingController();
+  final TextEditingController _titleTextController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   dynamic category;
 
@@ -37,7 +37,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
   @override
   void dispose() {
     _incomeTextController.dispose();
-    _noteTextController.dispose();
+    _titleTextController.dispose();
     _dateController.dispose();
     super.dispose();
   }
@@ -58,8 +58,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
         name: widget.user['name'],
         uid: widget.user['uid'],
         category: category,
-        nominal: int.parse(_incomeTextController.text),
-        note: _noteTextController.text,
+        amount: int.parse(_incomeTextController.text),
+        title: _titleTextController.text,
         date: _dateController.text));
   }
 
@@ -165,7 +165,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
               child: Form(
                 onChanged: () {
                   if (_incomeTextController.text.isNotEmpty &&
-                      _noteTextController.text.isNotEmpty &&
+                      _titleTextController.text.isNotEmpty &&
                       _dateController.text.isNotEmpty) {
                     setState(() {
                       isButtonEnable = true;
@@ -180,7 +180,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 child: Column(
                   children: [
                     FormInputData(
-                      controller: _noteTextController,
+                      controller: _titleTextController,
                       chipLabel: 'Judul',
                       hintText: 'Tambahkan judul , contoh: Es-krim',
                       boderColor: kRed,

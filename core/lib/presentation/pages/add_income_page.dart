@@ -23,7 +23,7 @@ class AddIncomePage extends StatefulWidget {
 class _AddIncomePageState extends State<AddIncomePage> {
   final TextEditingController _incomeTextController = TextEditingController();
 
-  final TextEditingController _noteTextController = TextEditingController();
+  final TextEditingController _titleTextController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
 
@@ -40,7 +40,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
   @override
   void dispose() {
     _incomeTextController.dispose();
-    _noteTextController.dispose();
+    _titleTextController.dispose();
     _dateController.dispose();
     super.dispose();
   }
@@ -61,8 +61,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
         name: widget.user['name'],
         uid: widget.user['uid'],
         category: category,
-        nominal: int.parse(_incomeTextController.text),
-        note: _noteTextController.text,
+        amount: int.parse(_incomeTextController.text),
+        title: _titleTextController.text,
         date: ''));
   }
 
@@ -173,7 +173,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 child: Form(
                   onChanged: () {
                     if (_incomeTextController.text.isNotEmpty &&
-                        _noteTextController.text.isNotEmpty &&
+                        _titleTextController.text.isNotEmpty &&
                         _dateController.text.isNotEmpty) {
                       setState(() {
                         isButtonEnable = true;
@@ -188,7 +188,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   child: Column(
                     children: [
                       FormInputData(
-                        controller: _noteTextController,
+                        controller: _titleTextController,
                         chipLabel: 'Judul',
                         hintText: 'Tambahkan judul, contoh: Jual Motor',
                       ),
