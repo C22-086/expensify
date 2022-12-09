@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     final pageController = PageController(
-      viewportFraction: 0.8,
+      viewportFraction: 0.85,
       keepPage: true,
     );
     // final ref = FirebaseDatabase.instance.ref('transactions/$uid');
@@ -460,7 +460,9 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               "Recent Transaction",
                               style: kHeading5.copyWith(
-                                color: kSoftBlack,
+                                color: context.watch<ThemeBloc>().state
+                                    ? kWhite
+                                    : kSoftBlack,
                               ),
                             ),
                           ),

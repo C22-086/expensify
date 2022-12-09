@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -26,6 +27,7 @@ class _OverviewPageState extends State<OverviewPage> {
     return data;
   }
 
+  @override
   void initState() {
     super.initState();
   }
@@ -64,7 +66,7 @@ class _OverviewPageState extends State<OverviewPage> {
           height: 75,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: kSoftGrey,
+            color: context.watch<ThemeBloc>().state ? kSoftBlack : kSoftGrey,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
@@ -74,7 +76,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? Colors.transparent : kWhite,
+                    color: isActive == true
+                        ? Colors.transparent
+                        : context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -97,7 +103,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? kWhite : Colors.transparent,
+                    color: isActive == true
+                        ? context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -124,57 +134,58 @@ class _OverviewPageState extends State<OverviewPage> {
 
     buildBalanceInformation() {
       return FutureBuilder(
-          future: fetchUserData(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final Map<String, dynamic> user =
-                snapshot.data as Map<String, dynamic>;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Balance",
-                        style: kHeading7.copyWith(
-                            color: Colors.black45, fontSize: 18),
-                      ),
-                      Text(
-                        'Rp. ${user['balance']}',
-                        style: kHeading7.copyWith(
-                          color: kGreen,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 60,
-                    width: 120,
-                    child: DropdownSearch(
-                      items: const [
-                        "Day",
-                        "Week",
-                        "Month",
-                        "Year",
-                      ],
-                      onChanged: print,
-                      selectedItem: "Day",
-                    ),
-                  ),
-                ],
-              ),
+        future: fetchUserData(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          });
+          }
+          final Map<String, dynamic> user =
+              snapshot.data as Map<String, dynamic>;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Balance",
+                      style: kHeading7.copyWith(
+                          color: Colors.black45, fontSize: 18),
+                    ),
+                    Text(
+                      'Rp. ${user['balance']}',
+                      style: kHeading7.copyWith(
+                        color: kGreen,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 60,
+                  width: 120,
+                  child: DropdownSearch(
+                    items: const [
+                      "Day",
+                      "Week",
+                      "Month",
+                      "Year",
+                    ],
+                    onChanged: print,
+                    selectedItem: "Day",
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
     }
 
     buildChart() {

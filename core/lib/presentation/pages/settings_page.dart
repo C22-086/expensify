@@ -32,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Center(
               child: Text(
                 "Settings",
-                style: kHeading6.copyWith(color: kRichBlack),
+                style: kHeading6,
               ),
             ),
           ),
@@ -100,7 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           Text(
                             user['name'],
-                            style: kHeading6.copyWith(color: kSoftBlack),
+                            style: kHeading6,
                           ),
                           const SizedBox(
                             height: 6,
@@ -134,31 +134,31 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: Text(
                 'Dark Mode',
-                style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: kSoftBlack),
+                style: kHeading6,
               ),
-              trailing: SizedBox(
-                width: 100,
-                child: FlutterSwitch(
-                  width: 105.0,
-                  height: 40.0,
-                  valueFontSize: 18.0,
-                  toggleSize: 35.0,
-                  value: status,
-                  borderRadius: 30.0,
-                  padding: 8.0,
-                  showOnOff: true,
-                  activeIcon: const Icon(Icons.sunny),
-                  inactiveColor: kGrey,
-                  activeColor: kGreen,
-                  onToggle: (val) {
-                    setState(() {
-                      status = val;
-                    });
-                  },
-                ),
+              trailing: BlocBuilder<ThemeBloc, bool>(
+                builder: (context, state) {
+                  return SizedBox(
+                    width: 100,
+                    child: FlutterSwitch(
+                      width: 105.0,
+                      height: 40.0,
+                      valueFontSize: 18.0,
+                      toggleSize: 35.0,
+                      value: state,
+                      borderRadius: 30.0,
+                      padding: 8.0,
+                      showOnOff: true,
+                      activeIcon: const Icon(Icons.sunny),
+                      inactiveColor: kGrey,
+                      activeColor: kGreen,
+                      onToggle: (val) {
+                        BlocProvider.of<ThemeBloc>(context)
+                            .toggleTheme(value: val);
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(
@@ -186,10 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   title: Text(
                     'Export Data',
-                    style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: kSoftBlack),
+                    style: kHeading6,
                   ),
                   trailing: const Icon(
                     Icons.arrow_forward_ios_rounded,
@@ -216,10 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: Text(
                 'Log Out',
-                style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: kSoftBlack),
+                style: kHeading6,
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios_rounded,

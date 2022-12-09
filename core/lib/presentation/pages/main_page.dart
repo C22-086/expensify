@@ -27,13 +27,18 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0.1,
+            selectedLabelStyle: kSubtitle.copyWith(fontSize: 12),
+            selectedItemColor: kGreen,
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
             onTap: (value) => context.read<SetPage>().setPage(value),
             items: [
               BottomNavigationBarItem(
-                activeIcon: Image.asset('assets/icon_home.png',
-                    color: Colors.green, width: 20),
+                activeIcon: Image.asset(
+                  'assets/icon_home.png',
+                  color: kGreen,
+                  width: 20,
+                ),
                 icon: Image.asset(
                   'assets/icon_home.png',
                   color: Colors.grey,
@@ -67,7 +72,6 @@ class MainPage extends StatelessWidget {
           body: Stack(
             children: [
               buildContent(currentIndex),
-              // buttonNavigasi(),
             ],
           ),
         );
