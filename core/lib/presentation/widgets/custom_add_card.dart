@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../../core.dart';
 
 class AddCard extends StatelessWidget {
-  const AddCard(
-      {super.key,
-      required this.iconPath,
-      required this.subtitle,
-      required this.textColor,
-      required this.onTap});
+  const AddCard({
+    super.key,
+    required this.iconPath,
+    required this.subtitle,
+    required this.textColor,
+    required this.onTap,
+  });
 
   final String iconPath;
   final String subtitle;

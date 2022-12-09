@@ -9,6 +9,7 @@ export 'presentation/bloc/auth/auth_bloc.dart';
 export 'presentation/bloc/page/set_page_bloc.dart';
 export 'presentation/bloc/onboarding/onboarding_bloc.dart';
 export 'presentation/bloc/database/database_bloc.dart';
+export 'presentation/bloc/theme/theme_bloc.dart';
 
 // Pages
 export 'presentation/pages/login_page.dart';

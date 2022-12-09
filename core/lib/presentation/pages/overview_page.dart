@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:core/core.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -13,6 +18,19 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   bool isActive = false;
+
+  Future fetchUserData() async {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    final userRef = FirebaseDatabase.instance.ref('users/$currentUserId');
+    final json = await userRef.get();
+    final data = jsonDecode(jsonEncode(json.value));
+    return data;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +66,7 @@ class _OverviewPageState extends State<OverviewPage> {
           height: 75,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: kSoftGrey,
+            color: context.watch<ThemeBloc>().state ? kSoftBlack : kSoftGrey,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
@@ -58,7 +76,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? Colors.transparent : kWhite,
+                    color: isActive == true
+                        ? Colors.transparent
+                        : context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -81,7 +103,11 @@ class _OverviewPageState extends State<OverviewPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2 - 30,
                   decoration: BoxDecoration(
-                    color: isActive == true ? kWhite : Colors.transparent,
+                    color: isActive == true
+                        ? context.watch<ThemeBloc>().state
+                            ? kDark
+                            : kWhite
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Center(
@@ -118,8 +144,7 @@ class _OverviewPageState extends State<OverviewPage> {
               children: [
                 Text(
                   "Balance",
-                  style:
-                      kHeading7.copyWith(color: Colors.black45, fontSize: 18),
+                  style: kHeading7,
                 ),
                 Text(
                   "IDR 400.000",
@@ -132,16 +157,15 @@ class _OverviewPageState extends State<OverviewPage> {
               height: 60,
               width: 120,
               child: DropdownSearch(
+                selectedItem: "Day",
                 items: const [
                   "Day",
                   "Week",
                   "Month",
                   "Year",
                 ],
-                onChanged: print,
-                selectedItem: "Day",
               ),
-            ),
+            )
           ],
         ),
       );

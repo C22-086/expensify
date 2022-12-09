@@ -33,7 +33,11 @@ class CustomBottomNavigation extends StatelessWidget {
             width: 30,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: context.watch<SetPage>().state == index ? kGreen : kWhite,
+              color: context.watch<SetPage>().state == index
+                  ? kGreen
+                  : context.watch<ThemeBloc>().state
+                      ? kDark
+                      : kWhite,
             ),
           ),
         ],

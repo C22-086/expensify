@@ -68,6 +68,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height - 130,
                     child: ListView(
+                      physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       children: [buildBody()],
                     ),
@@ -78,17 +79,22 @@ class _AddIncomePageState extends State<AddIncomePage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 16,
+                ),
                 width: double.infinity,
-                decoration: const BoxDecoration(color: kWhite, boxShadow: [
-                  BoxShadow(
-                    offset: Offset(3, 15),
-                    spreadRadius: -17,
-                    blurRadius: 49,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  )
-                ]),
+                decoration: BoxDecoration(
+                  color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(3, 15),
+                      spreadRadius: -17,
+                      blurRadius: 49,
+                      color: Color.fromRGBO(139, 139, 139, 1),
+                    )
+                  ],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -118,6 +124,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                 note: _noteTextController.text));
                       },
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: kGreen,
                         padding: const EdgeInsets.all(14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -143,246 +150,259 @@ class _AddIncomePageState extends State<AddIncomePage> {
   }
 
   Widget buildBody() {
-    return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-            ),
-            child: Form(
-              child: Column(
-                children: [
-                  FormInputData(
-                    controller: _noteTextController,
-                    chipLabel: 'Judul',
-                    hintText: 'Tambahkan judul, contoh: Jual Motor',
-                  ),
-                  FormInputData(
-                    controller: _incomeTextController,
-                    chipLabel: 'Income',
-                    hintText: 'Masukkan jumlah income',
-                    keyboardType: TextInputType.number,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 24),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: kWhite,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: const [
-                        BoxShadow(
-                          offset: Offset(3, 3),
-                          spreadRadius: -10,
-                          blurRadius: 49,
-                          color: Color.fromARGB(255, 169, 169, 169),
+    return BlocBuilder<ThemeBloc, bool>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                ),
+                child: Form(
+                  child: Column(
+                    children: [
+                      FormInputData(
+                        controller: _noteTextController,
+                        chipLabel: 'Judul',
+                        hintText: 'Tambahkan judul, contoh: Jual Motor',
+                      ),
+                      FormInputData(
+                        controller: _incomeTextController,
+                        chipLabel: 'Income',
+                        hintText: 'Masukkan jumlah income',
+                        keyboardType: TextInputType.number,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 24),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Chip(
-                          backgroundColor: Colors.transparent,
-                          labelStyle: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: kGreen,
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            side: BorderSide(color: kGreen, width: 2),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
-                            ),
-                          ),
-                          label: const Text('Kategori'),
-                        ),
-                        const SizedBox(height: 9),
-                        DropdownButtonFormField(
-                          icon: Container(
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: kGreen,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: kWhite,
-                            ),
-                          ),
-                          hint: const Text('Pilih kategori'),
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: kRichBlack,
-                          ),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xffF7F8F8),
-                          ),
-                          items: [
-                            DropdownMenuItem(
-                              enabled: false,
-                              child: Text(
-                                'Pilih kategori',
-                                style: GoogleFonts.poppins(color: Colors.grey),
-                              ),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Gaji',
-                              child: Text('Gaji'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Penjualan Barang',
-                              child: Text('Penjualan'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Tabungan',
-                              child: Text('Tabungan'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Penerimaan Piutang',
-                              child: Text('Penerimaan Piutang'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Komisi',
-                              child: Text('Komisi'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Pendapatan Jasa',
-                              child: Text('Pendapatan Jasa'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Pendapatan Bunga',
-                              child: Text('Pendapatan Bunga'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Pendapatan Sewa',
-                              child: Text('Pendapatan Sewa'),
-                            ),
-                            const DropdownMenuItem(
-                              value: 'Pendapatan lain',
-                              child: Text('Pendapatan lain'),
+                        decoration: BoxDecoration(
+                          color: state ? kDark : kWhite,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(3, 3),
+                              spreadRadius: -10,
+                              blurRadius: 49,
+                              color: state
+                                  ? kDark
+                                  : const Color.fromARGB(255, 169, 169, 169),
                             ),
                           ],
-                          onChanged: (value) {
-                            setState(() {
-                              category = value;
-                            });
-                          },
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 24),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: kWhite,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: const [
-                        BoxShadow(
-                          offset: Offset(3, 3),
-                          spreadRadius: -10,
-                          blurRadius: 49,
-                          color: Color.fromARGB(255, 169, 169, 169),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Chip(
-                          backgroundColor: Colors.transparent,
-                          labelStyle: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: kGreen,
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            side: BorderSide(color: kGreen, width: 2),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Chip(
+                              backgroundColor: Colors.transparent,
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: kGreen,
+                              ),
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(color: kGreen, width: 2),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(30),
+                                ),
+                              ),
+                              label: const Text('Kategori'),
                             ),
-                          ),
-                          label: const Text('Tanggal'),
-                        ),
-                        const SizedBox(height: 9),
-                        TextFormField(
-                          controller: _dateController,
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                              Icons.calendar_today,
-                              color: kGreen,
-                            ),
-                            hintText: "Pilih Tanggal",
-                            hintStyle: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xffF7F8F8),
-                          ),
-                          readOnly: true,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                              builder: (context, child) {
-                                return Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary:
-                                          kGreen, // header background color
-                                      onPrimary: kWhite, // header text color
-                                      onSurface: kGreen, // body text color
-                                    ),
-                                    textButtonTheme: TextButtonThemeData(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            kGreen, // button text color
-                                      ),
-                                    ),
+                            const SizedBox(height: 9),
+                            DropdownButtonFormField(
+                              icon: Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  color: kGreen,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: state ? kDark : kWhite,
+                                ),
+                              ),
+                              hint: const Text('Pilih kategori'),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: kRichBlack,
+                              ),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    state ? kSoftDark : const Color(0xffF7F8F8),
+                              ),
+                              items: [
+                                DropdownMenuItem(
+                                  enabled: false,
+                                  child: Text(
+                                    'Pilih kategori',
+                                    style: kHeading6.copyWith(fontSize: 14),
                                   ),
-                                  child: child!,
-                                );
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Gaji',
+                                  child: Text('Gaji'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Penjualan Barang',
+                                  child: Text('Penjualan'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Tabungan',
+                                  child: Text('Tabungan'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Penerimaan Piutang',
+                                  child: Text('Penerimaan Piutang'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Komisi',
+                                  child: Text('Komisi'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Pendapatan Jasa',
+                                  child: Text('Pendapatan Jasa'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Pendapatan Bunga',
+                                  child: Text('Pendapatan Bunga'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Pendapatan Sewa',
+                                  child: Text('Pendapatan Sewa'),
+                                ),
+                                const DropdownMenuItem(
+                                  value: 'Pendapatan lain',
+                                  child: Text('Pendapatan lain'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  category = value;
+                                });
                               },
-                            );
-                            if (pickedDate != null) {
-                              String formattedDate =
-                                  DateFormat("yyyy-MM-dd").format(pickedDate);
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 24),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          color: state ? kDark : kWhite,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(3, 3),
+                              spreadRadius: -10,
+                              blurRadius: 49,
+                              color: state
+                                  ? kDark
+                                  : const Color.fromARGB(255, 169, 169, 169),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Chip(
+                              backgroundColor: Colors.transparent,
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: kGreen,
+                              ),
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(color: kGreen, width: 2),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(30),
+                                ),
+                              ),
+                              label: const Text('Tanggal'),
+                            ),
+                            const SizedBox(height: 9),
+                            TextFormField(
+                              controller: _dateController,
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
+                                  Icons.calendar_today,
+                                  color: kGreen,
+                                ),
+                                hintText: "Pilih Tanggal",
+                                hintStyle: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                filled: true,
+                                fillColor:
+                                    state ? kSoftDark : const Color(0xffF7F8F8),
+                              ),
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                  builder: (context, child) {
+                                    return Theme(
+                                      data: Theme.of(context).copyWith(
+                                        colorScheme: const ColorScheme.light(
+                                          primary:
+                                              kGreen, // header background color
+                                          onPrimary:
+                                              kWhite, // header text color
+                                          onSurface: kGreen, // body text color
+                                        ),
+                                        textButtonTheme: TextButtonThemeData(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor:
+                                                kGreen, // button text color
+                                          ),
+                                        ),
+                                      ),
+                                      child: child!,
+                                    );
+                                  },
+                                );
+                                if (pickedDate != null) {
+                                  String formattedDate =
+                                      DateFormat("yyyy-MM-dd")
+                                          .format(pickedDate);
 
-                              setState(() {
-                                _dateController.text = formattedDate.toString();
-                              });
-                            } else {}
-                          },
-                        )
-                      ],
-                    ),
+                                  setState(() {
+                                    _dateController.text =
+                                        formattedDate.toString();
+                                  });
+                                } else {}
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 150,
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 150,
-                  )
-                ],
-              ),
-            ))
-      ],
+                ))
+          ],
+        );
+      },
     );
   }
 
@@ -412,7 +432,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: kWhite,
+                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),

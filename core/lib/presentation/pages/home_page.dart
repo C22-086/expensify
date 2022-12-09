@@ -27,9 +27,22 @@ class _HomePageState extends State<HomePage> {
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     final pageController = PageController(
-      viewportFraction: 0.8,
+      viewportFraction: 0.85,
       keepPage: true,
     );
+    // final ref = FirebaseDatabase.instance.ref('transactions/$uid');
+
+    // Future<int> getTransactionSum() async {
+    //   final getAllKey = await ref.get();
+
+    //   if (getAllKey.exists) {
+    //     final allKey = getAllKey.children.toList();
+    //     final allKeyLength = allKey.length;
+    //     for (int i = 0; i < allKeyLength; i++) {
+
+    //     }
+    //   }
+    // }
 
     List cardItem = [
       Padding(
@@ -41,8 +54,8 @@ class _HomePageState extends State<HomePage> {
           title: 'Income',
           label: "+",
           amount: 400,
-          subMinPercent: "30% from tranfer",
-          subMaxPercent: "70% from salary",
+          subMinPercent: "30% Pemasukan",
+          subMaxPercent: "70% Pengeluaran",
           valueChartOne: 70,
           valueChartTwo: 30,
           chartOneTitle: "70%",
@@ -446,7 +459,9 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               "Recent Transaction",
                               style: kHeading5.copyWith(
-                                color: kSoftBlack,
+                                color: context.watch<ThemeBloc>().state
+                                    ? kWhite
+                                    : kSoftBlack,
                               ),
                             ),
                           ),

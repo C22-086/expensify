@@ -70,14 +70,16 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                 width: double.infinity,
-                decoration: const BoxDecoration(color: kWhite, boxShadow: [
-                  BoxShadow(
-                    offset: Offset(3, 15),
-                    spreadRadius: -17,
-                    blurRadius: 49,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  )
-                ]),
+                decoration: BoxDecoration(
+                    color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(3, 15),
+                        spreadRadius: -17,
+                        blurRadius: 49,
+                        color: Color.fromRGBO(139, 139, 139, 1),
+                      )
+                    ]),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -133,258 +135,271 @@ class _AddExpensePageState extends State<AddExpensePage> {
   }
 
   Widget buildBody() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          child: Form(
-            child: Column(
-              children: [
-                FormInputData(
-                  controller: _noteTextController,
-                  chipLabel: 'Judul',
-                  hintText: 'Tambahkan judul , contoh: Es-krim',
-                  boderColor: kRed,
-                  textColor: kRed,
-                ),
-                FormInputData(
-                  controller: _incomeTextController,
-                  chipLabel: 'Expense',
-                  hintText: 'Masukkan jumlah Pengeluaran',
-                  boderColor: kRed,
-                  textColor: kRed,
-                  keyboardType: TextInputType.number,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 24),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                  decoration: BoxDecoration(
-                    color: kWhite,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: const [
-                      BoxShadow(
-                        offset: Offset(3, 3),
-                        spreadRadius: -10,
-                        blurRadius: 49,
-                        color: Color.fromARGB(255, 169, 169, 169),
+    return BlocBuilder<ThemeBloc, bool>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+              ),
+              child: Form(
+                child: Column(
+                  children: [
+                    FormInputData(
+                      controller: _noteTextController,
+                      chipLabel: 'Judul',
+                      hintText: 'Tambahkan judul , contoh: Es-krim',
+                      boderColor: kRed,
+                      textColor: kRed,
+                    ),
+                    FormInputData(
+                      controller: _incomeTextController,
+                      chipLabel: 'Expense',
+                      hintText: 'Masukkan jumlah Pengeluaran',
+                      boderColor: kRed,
+                      textColor: kRed,
+                      keyboardType: TextInputType.number,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Chip(
-                        backgroundColor: Colors.transparent,
-                        labelStyle: GoogleFonts.poppins(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: kRed,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: kRed, width: 2),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                        label: const Text('Kategori'),
-                      ),
-                      const SizedBox(height: 9),
-                      DropdownButtonFormField(
-                        icon: Container(
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: kRed,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: kWhite,
-                          ),
-                        ),
-                        hint: const Text('Pilih kategori'),
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: kRichBlack,
-                        ),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffF7F8F8),
-                        ),
-                        items: [
-                          DropdownMenuItem(
-                            enabled: false,
-                            child: Text(
-                              'Pilih kategori',
-                              style: GoogleFonts.poppins(color: Colors.grey),
-                            ),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembelian Makanan',
-                            child: Text('Pembelian Makanan'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembelian Pakaian',
-                            child: Text('Pembelian Pakaian'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembayaran Hutang',
-                            child: Text('Pembayaran Hutang'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pinjaman/kasbon',
-                            child: Text('Pinjaman/kasbon'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembayaran Pulsa/internet',
-                            child: Text('Pembayaran Pulsa/Internet'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembelian Persediaan',
-                            child: Text('Pembelian Persediaan'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembayaran Listrik',
-                            child: Text('Pembayaran Listrik'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembayaran Air',
-                            child: Text('Pembayaran Air'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembelian Barang Dagangan',
-                            child: Text('Pembelian Barang Dagangan'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Pembelian Barang Elektronik',
-                            child: Text('Pembelian Barang Elektronik'),
-                          ),
-                          const DropdownMenuItem(
-                            value: 'Lainnya',
-                            child: Text('Lainnya'),
+                      decoration: BoxDecoration(
+                        color: state ? kDark : kWhite,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(3, 3),
+                            spreadRadius: -10,
+                            blurRadius: 49,
+                            color: state
+                                ? kDark
+                                : const Color.fromARGB(255, 169, 169, 169),
                           ),
                         ],
-                        onChanged: (value) {
-                          setState(() {
-                            category = value;
-                          });
-                        },
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 24),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                  decoration: BoxDecoration(
-                    color: kWhite,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: const [
-                      BoxShadow(
-                        offset: Offset(3, 3),
-                        spreadRadius: -10,
-                        blurRadius: 49,
-                        color: Color.fromARGB(255, 169, 169, 169),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Chip(
-                        backgroundColor: Colors.transparent,
-                        labelStyle: GoogleFonts.poppins(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: kRed,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: kRed, width: 2),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Chip(
+                            backgroundColor: Colors.transparent,
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: kRed,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              side: BorderSide(color: kRed, width: 2),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
+                            ),
+                            label: const Text('Kategori'),
                           ),
-                        ),
-                        label: const Text('Tanggal'),
-                      ),
-                      const SizedBox(height: 9),
-                      TextFormField(
-                        controller: dateController,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.calendar_today,
-                            color: kRed,
-                          ),
-                          hintText: "Pilih Tanggal",
-                          hintStyle: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffF7F8F8),
-                        ),
-                        readOnly: true,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2101),
-                            builder: (context, child) {
-                              return Theme(
-                                data: Theme.of(context).copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: kRed, // header background color
-                                    onPrimary: kWhite, // header text color
-                                    onSurface: kRed, // body text color
-                                  ),
-                                  textButtonTheme: TextButtonThemeData(
-                                    style: TextButton.styleFrom(
-                                      foregroundColor:
-                                          kRed, // button text color
-                                    ),
-                                  ),
+                          const SizedBox(height: 9),
+                          DropdownButtonFormField(
+                            icon: Container(
+                              width: 40,
+                              decoration: BoxDecoration(
+                                color: kRed,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: state ? kDark : kWhite,
+                              ),
+                            ),
+                            hint: const Text('Pilih kategori'),
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: kRichBlack,
+                            ),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  state ? kSoftDark : const Color(0xffF7F8F8),
+                            ),
+                            items: [
+                              DropdownMenuItem(
+                                enabled: false,
+                                child: Text(
+                                  'Pilih kategori',
+                                  style:
+                                      GoogleFonts.poppins(color: Colors.grey),
                                 ),
-                                child: child!,
-                              );
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembelian Makanan',
+                                child: Text('Pembelian Makanan'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembelian Pakaian',
+                                child: Text('Pembelian Pakaian'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembayaran Hutang',
+                                child: Text('Pembayaran Hutang'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pinjaman/kasbon',
+                                child: Text('Pinjaman/kasbon'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembayaran Pulsa/internet',
+                                child: Text('Pembayaran Pulsa/Internet'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembelian Persediaan',
+                                child: Text('Pembelian Persediaan'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembayaran Listrik',
+                                child: Text('Pembayaran Listrik'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembayaran Air',
+                                child: Text('Pembayaran Air'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembelian Barang Dagangan',
+                                child: Text('Pembelian Barang Dagangan'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Pembelian Barang Elektronik',
+                                child: Text('Pembelian Barang Elektronik'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'Lainnya',
+                                child: Text('Lainnya'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                category = value;
+                              });
                             },
-                          );
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat("yyyy-MM-dd").format(pickedDate);
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      decoration: BoxDecoration(
+                        color: state ? kDark : kWhite,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(3, 3),
+                            spreadRadius: -10,
+                            blurRadius: 49,
+                            color: state
+                                ? kDark
+                                : const Color.fromARGB(255, 169, 169, 169),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Chip(
+                            backgroundColor: Colors.transparent,
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: kRed,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              side: BorderSide(color: kRed, width: 2),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
+                            ),
+                            label: const Text('Tanggal'),
+                          ),
+                          const SizedBox(height: 9),
+                          TextFormField(
+                            controller: dateController,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.calendar_today,
+                                color: kRed,
+                              ),
+                              hintText: "Pilih Tanggal",
+                              hintStyle: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              filled: true,
+                              fillColor:
+                                  state ? kSoftDark : const Color(0xffF7F8F8),
+                            ),
+                            readOnly: true,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2101),
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: const ColorScheme.light(
+                                        primary:
+                                            kRed, // header background color
+                                        onPrimary: kWhite, // header text color
+                                        onSurface: kRed, // body text color
+                                      ),
+                                      textButtonTheme: TextButtonThemeData(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor:
+                                              kRed, // button text color
+                                        ),
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                              if (pickedDate != null) {
+                                String formattedDate =
+                                    DateFormat("yyyy-MM-dd").format(pickedDate);
 
-                            setState(() {
-                              dateController.text = formattedDate.toString();
-                            });
-                          } else {}
-                        },
-                      )
-                    ],
-                  ),
+                                setState(() {
+                                  dateController.text =
+                                      formattedDate.toString();
+                                });
+                              } else {}
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 150,
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: 150,
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
@@ -416,7 +431,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: kWhite,
+                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),

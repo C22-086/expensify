@@ -48,7 +48,10 @@ dependencies:
   dropdown_search: ^5.0.3
   percent_indicator: ^4.2.2
   smooth_page_indicator: ^1.0.0+2
+  hydrated_bloc: ^9.0.0
+  path_provider: ^2.0.11
   lottie: ^2.0.0
+
 
 flutter_icons:
   image_path_android: "assets/app_icon.png"
