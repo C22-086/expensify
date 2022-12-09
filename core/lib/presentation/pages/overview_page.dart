@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:core/core.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +18,19 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   bool isActive = false;
+
+  Future fetchUserData() async {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    final userRef = FirebaseDatabase.instance.ref('users/$currentUserId');
+    final json = await userRef.get();
+    final data = jsonDecode(jsonEncode(json.value));
+    return data;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,16 +157,15 @@ class _OverviewPageState extends State<OverviewPage> {
               height: 60,
               width: 120,
               child: DropdownSearch(
+                selectedItem: "Day",
                 items: const [
                   "Day",
                   "Week",
                   "Month",
                   "Year",
                 ],
-                onChanged: print,
-                selectedItem: "Day",
               ),
-            ),
+            )
           ],
         ),
       );
