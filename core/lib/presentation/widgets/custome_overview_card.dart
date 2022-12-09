@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,32 +7,23 @@ class OverviewCard extends StatelessWidget {
   const OverviewCard({
     super.key,
     required this.title,
-    required this.subMinPercent,
-    required this.subMaxPercent,
-    required this.chartOneTitle,
-    required this.chartTwoTitle,
-    required this.valueChartOne,
-    required this.valueChartTwo,
-    required this.amount,
     required this.color,
     required this.label,
     required this.secColor,
     required this.onTap,
     required this.titleImageUrl,
+    required this.chart,
+    required this.total,
   });
 
   final Color color;
   final Color secColor;
   final String title;
   final String label;
-  final String subMinPercent;
-  final String subMaxPercent;
-  final String chartOneTitle;
-  final String chartTwoTitle;
-  final double valueChartOne;
-  final double valueChartTwo;
   final String titleImageUrl;
-  final int amount;
+  final Widget chart;
+  final String total;
+
   final Function() onTap;
   @override
   Widget build(BuildContext context) {
@@ -70,7 +60,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        ' IDR ${amount}K',
+                        'Rp. + $total',
                         style: kHeading7.copyWith(
                           fontSize: 20,
                           color: color,
@@ -78,13 +68,13 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        subMinPercent,
+                        'ss',
                         style: kBodyText.copyWith(
                           color: state ? kWhite : Colors.grey,
                         ),
                       ),
                       Text(
-                        subMaxPercent,
+                        'subMaxPercent',
                         style: kBodyText.copyWith(
                           color: state ? kWhite : Colors.grey,
                         ),
@@ -92,32 +82,8 @@ class OverviewCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 10),
-                  SizedBox(
-                    height: 75,
-                    width: 75,
-                    child: PieChart(
-                      PieChartData(
-                          pieTouchData: PieTouchData(enabled: true),
-                          centerSpaceColor: Colors.transparent,
-                          centerSpaceRadius: 30,
-                          sections: [
-                            PieChartSectionData(
-                                color: color,
-                                value: valueChartOne,
-                                title: chartOneTitle,
-                                radius: 20,
-                                titleStyle: kBodyText.copyWith(color: kWhite)),
-                            PieChartSectionData(
-                                color: secColor,
-                                value: valueChartTwo,
-                                title: chartTwoTitle,
-                                radius: 20,
-                                titleStyle:
-                                    kBodyText.copyWith(color: kRichBlack)),
-                          ]),
-                      swapAnimationCurve: Curves.linear,
-                      swapAnimationDuration: const Duration(milliseconds: 150),
-                    ),
+                  Flexible(
+                    child: SizedBox(child: chart),
                   ),
                 ],
               ),

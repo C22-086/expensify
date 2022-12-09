@@ -107,7 +107,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
         }
       }
       final totalIncome =
-          income.length > 2 ? income.reduce((a, b) => a + b) : income.first;
+          income.length >= 2 ? income.reduce((a, b) => a + b) : income.first;
 
       return Padding(
         padding: const EdgeInsets.symmetric(

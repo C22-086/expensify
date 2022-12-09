@@ -63,7 +63,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         category: category,
         amount: int.parse(_incomeTextController.text),
         title: _titleTextController.text,
-        date: ''));
+        date: _dateController.text));
   }
 
   @override

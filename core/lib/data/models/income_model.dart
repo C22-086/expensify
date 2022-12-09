@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class IncomeModel extends Equatable {
-  final String incomeId;
+  final String transactionId;
   final String userId;
   final String name;
   final String category;
@@ -10,7 +10,7 @@ class IncomeModel extends Equatable {
   final String expanseDate;
 
   const IncomeModel({
-    required this.incomeId,
+    required this.transactionId,
     required this.userId,
     required this.name,
     required this.category,
@@ -20,7 +20,7 @@ class IncomeModel extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-        "incomeId": incomeId,
+        "transaction": transactionId,
         "userId": userId,
         "name": name,
         "category": category,
@@ -31,7 +31,7 @@ class IncomeModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        incomeId,
+        transactionId,
         userId,
         name,
         category,

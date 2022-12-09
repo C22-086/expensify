@@ -4,7 +4,6 @@ import 'package:core/core.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -189,51 +188,11 @@ class _OverviewPageState extends State<OverviewPage> {
     }
 
     buildChart() {
-      return Padding(
-        padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+      return const Padding(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         child: SizedBox(
           height: 240,
           width: double.maxFinite,
-          child: PieChart(
-            PieChartData(
-                pieTouchData: PieTouchData(enabled: true),
-                centerSpaceColor: Colors.transparent,
-                centerSpaceRadius: 65,
-                sections: [
-                  PieChartSectionData(
-                      color: kRichBlack,
-                      value: 10,
-                      title: "10",
-                      radius: defaultChartRadius,
-                      titleStyle: kBodyText.copyWith(color: kWhite)),
-                  PieChartSectionData(
-                      color: kGreen,
-                      value: 40,
-                      title: "10",
-                      radius: defaultChartRadius,
-                      titleStyle: kBodyText.copyWith(color: kRichBlack)),
-                  PieChartSectionData(
-                      color: kPrussianBlue,
-                      value: 15,
-                      title: "10",
-                      radius: defaultChartRadius,
-                      titleStyle: kBodyText.copyWith(color: kWhite)),
-                  PieChartSectionData(
-                      color: kSoftGreen,
-                      value: 10,
-                      title: "10",
-                      radius: defaultChartRadius,
-                      titleStyle: kBodyText.copyWith(color: kRichBlack)),
-                  PieChartSectionData(
-                      color: kRed,
-                      value: 10,
-                      title: "10",
-                      radius: defaultChartRadius,
-                      titleStyle: kBodyText.copyWith(color: kRichBlack)),
-                ]),
-            swapAnimationCurve: Curves.linear,
-            swapAnimationDuration: const Duration(milliseconds: 150),
-          ),
         ),
       );
     }

@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/domain/entities/chart_income.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
@@ -30,68 +32,6 @@ class _HomePageState extends State<HomePage> {
       viewportFraction: 0.85,
       keepPage: true,
     );
-    // final ref = FirebaseDatabase.instance.ref('transactions/$uid');
-
-    // Future<int> getTransactionSum() async {
-    //   final getAllKey = await ref.get();
-
-    //   if (getAllKey.exists) {
-    //     final allKey = getAllKey.children.toList();
-    //     final allKeyLength = allKey.length;
-    //     for (int i = 0; i < allKeyLength; i++) {
-
-    //     }
-    //   }
-    // }
-
-    List cardItem = [
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 15),
-        child: OverviewCard(
-          titleImageUrl: 'assets/icon-trending-up.png',
-          color: kGreen,
-          secColor: kSoftGreen,
-          title: 'Income',
-          label: "+",
-          amount: 400,
-          subMinPercent: "30% Pemasukan",
-          subMaxPercent: "70% Pengeluaran",
-          valueChartOne: 70,
-          valueChartTwo: 30,
-          chartOneTitle: "70%",
-          chartTwoTitle: "30%",
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              DetailIncomePage.routeName,
-            );
-          },
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(right: 20),
-        child: OverviewCard(
-          titleImageUrl: 'assets/icon-trending-down.png',
-          color: kRed,
-          secColor: kSoftRed,
-          title: 'Expense',
-          label: "-",
-          amount: 700,
-          subMinPercent: "30% from tranfer",
-          subMaxPercent: "70% from salary",
-          valueChartOne: 65,
-          valueChartTwo: 35,
-          chartOneTitle: "65%",
-          chartTwoTitle: "35%",
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              DetailExpensePage.routeName,
-            );
-          },
-        ),
-      ),
-    ];
 
     buildHeader(user) {
       return SafeArea(
@@ -200,7 +140,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildCard(user) {
+    buildCard(data) {
       return Column(
         children: [
           Container(
@@ -213,16 +153,60 @@ class _HomePageState extends State<HomePage> {
               padEnds: false,
               controller: pageController,
               physics: const BouncingScrollPhysics(),
-              itemCount: cardItem.length,
+              itemCount: 2,
               itemBuilder: (context, index) {
-                return cardItem[index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 15),
+                  child: StreamBuilder<dynamic>(
+                      stream: FirebaseDatabase.instance
+                          .ref('transaction/$uid')
+                          .onValue,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          if (snapshot.hasData) {
+                            final Map<dynamic, dynamic> transactions =
+                                snapshot.data.snapshot.value;
+                            final listData = transactions.values.toList();
+
+                            final incomesAmount = [];
+
+                            //get total income
+                            for (var e in listData) {
+                              if (e['type'] == 'income') {
+                                incomesAmount.add(e['amount']);
+                              }
+                            }
+                            //get all income
+                            final List<ChartIncome> incomes = [];
+                            for (var e in listData) {
+                              if (e['type'] == 'income') {
+                                incomes.add(ChartIncome.fromMap(e));
+                              }
+                            }
+
+                            final totalIncome = incomesAmount.length >= 2
+                                ? incomesAmount.reduce((a, b) => a + b)
+                                : incomesAmount.first;
+
+                            return buildOverviewCart(
+                                totalIncome, incomes, context);
+                          } else {
+                            return Container();
+                          }
+                        }
+                      }),
+                );
               },
             ),
           ),
           const SizedBox(height: 10),
           SmoothPageIndicator(
             controller: pageController,
-            count: cardItem.length,
+            count: 2,
             effect: CustomizableEffect(
               activeDotDecoration: DotDecoration(
                 width: 35,
@@ -478,6 +462,39 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+    );
+  }
+
+  OverviewCard buildOverviewCart(
+      totalIncome, List<ChartIncome> incomes, BuildContext context) {
+    return OverviewCard(
+      titleImageUrl: 'assets/icon-trending-up.png',
+      color: kGreen,
+      secColor: kSoftGreen,
+      title: 'Income',
+      label: "+ ",
+      chart: incomes.isEmpty
+          ? Container()
+          : SfCircularChart(
+              tooltipBehavior:
+                  TooltipBehavior(enable: true, format: 'point.x : point.y'),
+              series: [
+                DoughnutSeries<ChartIncome, String>(
+                  explode: true,
+                  enableTooltip: true,
+                  dataSource: incomes,
+                  xValueMapper: (data, _) => incomes[_].category,
+                  yValueMapper: (data, _) => incomes[_].amount,
+                )
+              ],
+            ),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          DetailIncomePage.routeName,
+        );
+      },
+      total: '$totalIncome',
     );
   }
 }
