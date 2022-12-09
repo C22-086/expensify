@@ -7,7 +7,7 @@ class IncomeTailCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.iconPath,
-    required this.nominal,
+    required this.amount,
     required this.category,
     required this.date,
     required this.label,
@@ -19,7 +19,7 @@ class IncomeTailCard extends StatelessWidget {
   final Color color;
   final Color currencyColor;
   final String label;
-  final int nominal;
+  final int amount;
   final String category;
   final String date;
 
@@ -58,7 +58,7 @@ class IncomeTailCard extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            "$label $nominal",
+            "$label $amount",
             style: kHeading6.copyWith(
               color: currencyColor,
             ),

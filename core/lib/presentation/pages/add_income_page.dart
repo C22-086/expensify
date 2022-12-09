@@ -57,13 +57,16 @@ class _AddIncomePageState extends State<AddIncomePage> {
       ref.update({'balance': balance + int.parse(_incomeTextController.text)});
     }
     if (!mounted) return;
-    BlocProvider.of<DatabaseBloc>(context).add(DatabasePushIncomeUser(
+    BlocProvider.of<DatabaseBloc>(context).add(
+      DatabasePushIncomeUser(
         name: widget.user['name'],
         uid: widget.user['uid'],
         category: category,
         amount: int.parse(_incomeTextController.text),
         title: _titleTextController.text,
-        date: ''));
+        date: _dateController.text,
+      ),
+    );
   }
 
   @override

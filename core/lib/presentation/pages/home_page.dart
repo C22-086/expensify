@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/domain/entities/chart_income.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -6,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
+import '../widgets/no_overview_card.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -24,74 +27,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
 
     final pageController = PageController(
       viewportFraction: 0.85,
       keepPage: true,
     );
-    // final ref = FirebaseDatabase.instance.ref('transactions/$uid');
-
-    // Future<int> getTransactionSum() async {
-    //   final getAllKey = await ref.get();
-
-    //   if (getAllKey.exists) {
-    //     final allKey = getAllKey.children.toList();
-    //     final allKeyLength = allKey.length;
-    //     for (int i = 0; i < allKeyLength; i++) {
-
-    //     }
-    //   }
-    // }
-
-    List cardItem = [
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 15),
-        child: OverviewCard(
-          titleImageUrl: 'assets/icon-trending-up.png',
-          color: kGreen,
-          secColor: kSoftGreen,
-          title: 'Income',
-          label: "+",
-          amount: 400,
-          subMinPercent: "30% Pemasukan",
-          subMaxPercent: "70% Pengeluaran",
-          valueChartOne: 70,
-          valueChartTwo: 30,
-          chartOneTitle: "70%",
-          chartTwoTitle: "30%",
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              DetailIncomePage.routeName,
-            );
-          },
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(right: 20),
-        child: OverviewCard(
-          titleImageUrl: 'assets/icon-trending-down.png',
-          color: kRed,
-          secColor: kSoftRed,
-          title: 'Expense',
-          label: "-",
-          amount: 700,
-          subMinPercent: "30% from tranfer",
-          subMaxPercent: "70% from salary",
-          valueChartOne: 65,
-          valueChartTwo: 35,
-          chartOneTitle: "65%",
-          chartTwoTitle: "35%",
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              DetailExpensePage.routeName,
-            );
-          },
-        ),
-      ),
-    ];
 
     buildHeader(user) {
       return SafeArea(
@@ -200,29 +140,165 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildCard(user) {
+    buildCard(data) {
       return Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(
               vertical: 15,
+              horizontal: 20,
             ),
             height: 195,
             width: double.infinity,
-            child: PageView.builder(
-              padEnds: false,
-              controller: pageController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: cardItem.length,
-              itemBuilder: (context, index) {
-                return cardItem[index];
+            child: StreamBuilder<dynamic>(
+              stream: FirebaseDatabase.instance
+                  .ref()
+                  .child('transaction/$uid')
+                  .onValue,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.hasData) {
+                    final Map<dynamic, dynamic> transactions =
+                        snapshot.data.snapshot.value ?? {};
+                    final listData = transactions.values.toList();
+
+                    //get total income
+                    final incomesAmount = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'income') {
+                        incomesAmount.add(e['amount']);
+                      }
+                    }
+                    final totalIncome = incomesAmount.length >= 2
+                        ? incomesAmount.reduce((a, b) => a + b)
+                        : incomesAmount.isEmpty
+                            ? 0
+                            : incomesAmount.first;
+
+                    //get all income
+                    final List<ChartIncome> incomes = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'income') {
+                        incomes.add(ChartIncome.fromMap(e));
+                      }
+                    }
+                    //get total Expanse
+                    final expansesAmount = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'expanse') {
+                        expansesAmount.add(e['amount']);
+                      }
+                    }
+                    final totalExpanse = expansesAmount.length >= 2
+                        ? expansesAmount.reduce((a, b) => a + b)
+                        : expansesAmount.isEmpty
+                            ? 0
+                            : expansesAmount.first;
+
+                    //get all expanses
+                    final List<ChartIncome> expanses = [];
+                    for (var e in listData) {
+                      if (e['type'] == 'expanse') {
+                        expanses.add(ChartIncome.fromMap(e));
+                      }
+                    }
+                    return PageView(
+                      padEnds: false,
+                      controller: pageController,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        incomes.isEmpty
+                            ? const NoOverviewCard(
+                                title: 'pemasukkan',
+                              )
+                            : OverviewCard(
+                                titleImageUrl: 'assets/icon-trending-up.png',
+                                color: kGreen,
+                                secColor: kSoftGreen,
+                                title: 'Income',
+                                label: "+",
+                                chart: SfCircularChart(
+                                  margin: EdgeInsets.zero,
+                                  tooltipBehavior: TooltipBehavior(
+                                      enable: true,
+                                      format: 'point.x : Rp. point.y'),
+                                  series: [
+                                    DoughnutSeries<ChartIncome, String>(
+                                      explode: true,
+                                      enableTooltip: true,
+                                      dataSource: incomes,
+                                      xValueMapper: (data, _) =>
+                                          incomes[_].category,
+                                      yValueMapper: (data, _) =>
+                                          incomes[_].amount,
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    DetailIncomePage.routeName,
+                                  );
+                                },
+                                total: '$totalIncome',
+                              ),
+                        expanses.isEmpty
+                            ? const NoOverviewCard(title: 'pengeluaran')
+                            : OverviewCard(
+                                titleImageUrl: 'assets/icon-trending-down.png',
+                                color: kRed,
+                                secColor: kSoftGreen,
+                                title: 'Expanse',
+                                label: "-",
+                                chart: expanses.isEmpty
+                                    ? const NoOverviewCard(title: 'pengeluaran')
+                                    : SfCircularChart(
+                                        margin: EdgeInsets.zero,
+                                        tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            format: 'point.x : Rp. point.y'),
+                                        series: [
+                                          DoughnutSeries<ChartIncome, String>(
+                                            explode: true,
+                                            enableTooltip: true,
+                                            dataSource: expanses,
+                                            xValueMapper: (data, _) =>
+                                                expanses[_].category,
+                                            yValueMapper: (data, _) =>
+                                                expanses[_].amount,
+                                          )
+                                        ],
+                                      ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    DetailExpensePage.routeName,
+                                  );
+                                },
+                                total: '$totalExpanse',
+                              )
+                      ],
+                    );
+                  } else {
+                    return PageView(
+                      padEnds: false,
+                      controller: pageController,
+                      physics: const BouncingScrollPhysics(),
+                      children: const [
+                        NoOverviewCard(title: ''),
+                      ],
+                    );
+                  }
+                }
               },
             ),
           ),
           const SizedBox(height: 10),
           SmoothPageIndicator(
             controller: pageController,
-            count: cardItem.length,
+            count: 2,
             effect: CustomizableEffect(
               activeDotDecoration: DotDecoration(
                 width: 35,
@@ -355,13 +431,40 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
+                                          final getBalance =
+                                              await FirebaseDatabase.instance
+                                                  .ref()
+                                                  .child('users/$uid/balance')
+                                                  .get();
+
+                                          final refUser = FirebaseDatabase
+                                              .instance
+                                              .ref('users/$uid');
+                                          if (getBalance.exists) {
+                                            if (list[index]['type']
+                                                .contains('income')) {
+                                              await refUser.update({
+                                                'balance': int.parse(getBalance
+                                                        .value
+                                                        .toString()) -
+                                                    list[index]['amount']
+                                              });
+                                            } else {
+                                              await refUser.update({
+                                                'balance': int.parse(getBalance
+                                                        .value
+                                                        .toString()) +
+                                                    list[index]['amount']
+                                              });
+                                            }
+                                          }
                                           await FirebaseDatabase.instance
                                               .ref('transaction/$uid')
                                               .child(
                                                   list[index]['transactionId'])
-                                              .remove();
-                                          if (!mounted) return;
-                                          Navigator.pop(context);
+                                              .remove()
+                                              .then(
+                                                  (value) => Navigator.pop(_));
                                         },
                                         child: const Text('Delete'),
                                       ),
@@ -377,7 +480,7 @@ class _HomePageState extends State<HomePage> {
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            nominal: list[index]['amount'],
+                            amount: list[index]['amount'],
                             date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],
@@ -412,8 +515,8 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        child: FutureBuilder(
-          future: dbRef,
+        child: StreamBuilder(
+          stream: FirebaseDatabase.instance.ref('users/$uid').onValue,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
