@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +11,32 @@ import '../widgets/back_button.dart';
 import '../widgets/custom_category.dart';
 import '../widgets/custom_header_app.dart';
 
-class DetailExpensePage extends StatelessWidget {
+class DetailExpensePage extends StatefulWidget {
   static const routeName = '/detail_expense_page';
   const DetailExpensePage({super.key});
+
+  @override
+  State<DetailExpensePage> createState() => _DetailExpensePageState();
+}
+
+class _DetailExpensePageState extends State<DetailExpensePage> {
+  Future fetchUserTransaction() async {
+    var transactions = [];
+    try {
+      final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+      final transactionRef =
+          FirebaseDatabase.instance.ref('transaction/$currentUserId');
+      final json = await transactionRef.orderByKey().get();
+      final data = jsonDecode(jsonEncode(json.value)) as Map;
+      data.forEach((key, value) {
+        transactions.add(value);
+      });
+      print(transactions);
+      return transactions;
+    } catch (e) {
+      return ServerFailure;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
