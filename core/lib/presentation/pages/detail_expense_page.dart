@@ -114,7 +114,9 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
           ? expanses.reduce(
               (a, b) => a + b,
             )
-          : expanses.first;
+          : expanses.isNotEmpty
+              ? expanses.first
+              : 0;
 
       return Padding(
         padding: const EdgeInsets.symmetric(
