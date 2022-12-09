@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:core/core.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -13,6 +17,19 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   bool isActive = false;
+
+  Future fetchUserData() async {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    final userRef = FirebaseDatabase.instance.ref('users/$currentUserId');
+    final json = await userRef.get();
+    final data = jsonDecode(jsonEncode(json.value));
+    return data;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,44 +124,57 @@ class _OverviewPageState extends State<OverviewPage> {
     }
 
     buildBalanceInformation() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Balance",
-                  style:
-                      kHeading7.copyWith(color: Colors.black45, fontSize: 18),
-                ),
-                Text(
-                  "IDR 400.000",
-                  style: kHeading7.copyWith(
-                      color: kGreen, fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 60,
-              width: 120,
-              child: DropdownSearch(
-                items: const [
-                  "Day",
-                  "Week",
-                  "Month",
-                  "Year",
+      return FutureBuilder(
+          future: fetchUserData(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final Map<String, dynamic> user =
+                snapshot.data as Map<String, dynamic>;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Balance",
+                        style: kHeading7.copyWith(
+                            color: Colors.black45, fontSize: 18),
+                      ),
+                      Text(
+                        'Rp. ${user['balance']}',
+                        style: kHeading7.copyWith(
+                            color: kGreen,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 60,
+                    width: 120,
+                    child: DropdownSearch(
+                      items: const [
+                        "Day",
+                        "Week",
+                        "Month",
+                        "Year",
+                      ],
+                      onChanged: print,
+                      selectedItem: "Day",
+                    ),
+                  ),
                 ],
-                onChanged: print,
-                selectedItem: "Day",
               ),
-            ),
-          ],
-        ),
-      );
+            );
+          });
     }
 
     buildChart() {
