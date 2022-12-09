@@ -32,7 +32,11 @@ class OverviewCard extends StatelessWidget {
         child: BlocBuilder<ThemeBloc, bool>(
           builder: (context, state) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              margin: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: state ? kDark : kWhite,
@@ -42,6 +46,7 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [
@@ -60,7 +65,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Rp. + $total',
+                        'Rp. $label$total',
                         style: kHeading7.copyWith(
                           fontSize: 20,
                           color: color,
@@ -68,13 +73,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'ss',
-                        style: kBodyText.copyWith(
-                          color: state ? kWhite : Colors.grey,
-                        ),
-                      ),
-                      Text(
-                        'subMaxPercent',
+                        'Jangan lupa untuk selalu hemat',
                         style: kBodyText.copyWith(
                           color: state ? kWhite : Colors.grey,
                         ),

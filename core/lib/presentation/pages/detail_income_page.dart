@@ -193,9 +193,9 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                 return IncomeTailCard(
                   iconPath: 'assets/icon_up.png',
                   color: kSoftGreen,
-                  category: income[index]['category'].toString(),
-                  amount: data[index]['amount'],
-                  date: data[index]['incomeDate'].split(' ')[0],
+                  category: income[index]['category'],
+                  amount: income[index]['amount'],
+                  date: income[index]['incomeDate'],
                   label: '+',
                   currencyColor: kGreen,
                   title: income[index]['title'],
