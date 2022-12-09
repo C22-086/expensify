@@ -260,13 +260,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.16"
-  fl_chart:
-    dependency: transitive
-    description:
-      name: fl_chart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.55.2"
   flutter:
     dependency: "direct main"
     description: flutter

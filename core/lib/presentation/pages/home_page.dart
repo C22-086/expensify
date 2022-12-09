@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/domain/entities/chart_income.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
+import 'package:core/utils/format_currency.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Rp. ${user['balance']}',
+                    formatCurrency.format(user['balance']),
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
                   const SizedBox(height: 10),
@@ -242,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                                     DetailIncomePage.routeName,
                                   );
                                 },
-                                total: '$totalIncome',
+                                total: formatCurrency.format(totalIncome),
                               ),
                         expanses.isEmpty
                             ? const NoOverviewCard(title: 'pengeluaran')
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                                     DetailExpensePage.routeName,
                                   );
                                 },
-                                total: '$totalExpanse',
+                                total: formatCurrency.format(totalExpanse),
                               )
                       ],
                     );
@@ -407,18 +408,82 @@ class _HomePageState extends State<HomePage> {
                                 builder: (_) {
                                   return AlertDialog(
                                     title: const Text('Detail '),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
                                     content: SizedBox(
                                       height: 100,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      width: double.maxFinite,
+                                      child: Row(
                                         children: [
-                                          Text(
-                                              'Nominal \t\t:${list[index]['amount']}'),
-                                          Text(
-                                              'Category \t:${list[index]['category']}'),
-                                          Text(
-                                              'Nama \t\t\t:${list[index]['title']}')
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Nama",
+                                                style: kHeading7,
+                                              ),
+                                              Text(
+                                                "Nominal",
+                                                style: kHeading7,
+                                              ),
+                                              Text(
+                                                "Kategori",
+                                                style: kHeading7,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                ":",
+                                                style: kSubtitle,
+                                              ),
+                                              Text(
+                                                ":",
+                                                style: kSubtitle,
+                                              ),
+                                              Text(
+                                                ":",
+                                                style: kSubtitle,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${list[index]['title']}",
+                                                  style: kSubtitle,
+                                                ),
+                                                Text(
+                                                  "${list[index]['amount']}",
+                                                  style: kSubtitle,
+                                                ),
+                                                Text(
+                                                  "${list[index]['category']}",
+                                                  style: kSubtitle,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -480,7 +545,8 @@ class _HomePageState extends State<HomePage> {
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            amount: list[index]['amount'],
+                            amount:
+                                formatCurrency.format(list[index]['amount']),
                             date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],

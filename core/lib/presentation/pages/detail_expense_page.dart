@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/format_currency.dart';
 import '../widgets/back_button.dart';
 import '../widgets/custom_category.dart';
 import '../widgets/custom_header_app.dart';
@@ -160,7 +161,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                         style: kSubtitle.copyWith(color: kWhite),
                       ),
                       Text(
-                        "Rp.-$totalExpanses",
+                        "- ${formatCurrency.format(totalExpanses)}",
                         textAlign: TextAlign.right,
                         style: kSubtitle.copyWith(
                           color: kWhite,
@@ -204,7 +205,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                   iconPath: 'assets/icon_down.png',
                   color: kSoftRed,
                   category: expanses[index]['category'].toString(),
-                  amount: expanses[index]['amount'],
+                  amount: formatCurrency.format(expanses[index]['amount']),
                   date: expanses[index]['expanseDate'].split(' ')[0],
                   label: '-',
                   currencyColor: kRed,
