@@ -43,7 +43,7 @@ class AddCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Add", style: kHeading7.copyWith(color: textColor)),
+                    Text("Tambah", style: kHeading7.copyWith(color: textColor)),
                     Text(
                       subtitle,
                       style: kBodyText.copyWith(
@@ -53,7 +53,7 @@ class AddCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Image.asset(iconPath, scale: 1.5)
+                Image.asset(iconPath, scale: 2)
               ],
             ),
           ),

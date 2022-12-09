@@ -44,7 +44,7 @@ class MainPage extends StatelessWidget {
                   color: Colors.grey,
                   width: 20,
                 ),
-                label: 'Home',
+                label: 'Beranda',
               ),
               BottomNavigationBarItem(
                 activeIcon: Image.asset(
@@ -53,7 +53,7 @@ class MainPage extends StatelessWidget {
                   color: Colors.green,
                 ),
                 icon: Image.asset('assets/icon_chart.png', width: 20),
-                label: 'Overview',
+                label: 'Grafik',
               ),
               BottomNavigationBarItem(
                 activeIcon: Image.asset(
@@ -65,7 +65,7 @@ class MainPage extends StatelessWidget {
                   'assets/icon_setting.png',
                   width: 20,
                 ),
-                label: 'Settings',
+                label: 'Pengaturan',
               ),
             ],
           ),

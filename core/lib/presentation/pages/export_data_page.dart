@@ -50,7 +50,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Select Category", style: kHeading6),
+            Text("Pilih Kategori", style: kHeading6),
             const SizedBox(
               height: 20,
             ),
@@ -67,7 +67,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
-                      "Income",
+                      "Pendapatan",
                       style: kHeading7.copyWith(color: kSoftBlack),
                     ),
                   ),
@@ -85,7 +85,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
-                      "Expense",
+                      "Pemasukan",
                       style: kHeading7.copyWith(color: kSoftBlack),
                     ),
                   ),
@@ -95,7 +95,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
             const SizedBox(
               height: 20,
             ),
-            Text("Select Date", style: kHeading6),
+            Text("Pilih Tanggal", style: kHeading6),
             const SizedBox(
               height: 10,
             ),
@@ -106,7 +106,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                   controller: dateController,
                   decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.calendar_today),
-                      hintText: "Enter Date",
+                      hintText: "Masukkan Tanggal",
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: kGreen, width: 2),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -134,7 +134,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
             const SizedBox(
               height: 20,
             ),
-            Text("Select Format", style: kHeading6),
+            Text("Pilih Format", style: kHeading6),
             const SizedBox(
               height: 20,
             ),
@@ -147,7 +147,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                     border: Border.all(color: kGrey, width: 2),
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
                 child: Text(
-                  ".XLSX",
+                  "PDF",
                   style: kHeading7.copyWith(color: kSoftBlack),
                 ),
               ),
@@ -160,7 +160,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               child: SizedBox(
                 width: 150,
                 height: 50,
-                child: CustomButton(title: "Export", onPressed: () {}),
+                child: CustomButton(title: "Ekspor", onPressed: () {}),
               ),
             )
           ],
@@ -223,7 +223,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
             ),
           ),
           Text(
-            'Export Data',
+            'Ekspor Data',
             style: kHeading6.copyWith(color: kWhite),
           ),
           const SizedBox(width: 24),

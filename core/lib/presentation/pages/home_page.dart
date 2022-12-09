@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, ${user['name']}',
+                    'Hai, ${user['name']}',
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       color: kWhite,
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(width: 9),
                       Text(
-                        'Balance',
+                        'Saldo',
                         style: kHeading7.copyWith(color: kWhite),
                       ),
                     ],
@@ -332,7 +332,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
                 child: AddCard(
               iconPath: 'assets/icon_income.png',
-              subtitle: 'Income',
+              subtitle: 'Pemasukan',
               textColor: kGreen,
               onTap: () {
                 Navigator.push(
@@ -349,7 +349,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: AddCard(
                 iconPath: 'assets/icon_expense.png',
-                subtitle: 'Expense',
+                subtitle: 'Pengeluaran',
                 textColor: kRed,
                 onTap: () {
                   Navigator.push(
@@ -406,19 +406,136 @@ class _HomePageState extends State<HomePage> {
                                 context: context,
                                 builder: (_) {
                                   return AlertDialog(
-                                    title: const Text('Detail '),
+                                    title: Text(
+                                      "Detail",
+                                      style: kHeading7.copyWith(fontSize: 18),
+                                    ),
                                     content: SizedBox(
-                                      height: 100,
+                                      height: 240,
+                                      width: 300,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                              'Nominal \t\t:${list[index]['amount']}'),
-                                          Text(
-                                              'Category \t:${list[index]['category']}'),
-                                          Text(
-                                              'Nama \t\t\t:${list[index]['title']}')
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                width: 35,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 235, 212),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Icon(
+                                                  Icons.notes_rounded,
+                                                  color: Color.fromARGB(
+                                                      255, 255, 155, 40),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Text(
+                                                'Judul \t\t\t\t\t :',
+                                                style: kHeading6.copyWith(
+                                                    fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                width: 18,
+                                              ),
+                                              Text(
+                                                '${list[index]['title']}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 26,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                width: 35,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 221, 235, 255),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Icon(
+                                                  Icons.category_rounded,
+                                                  color: kPrussianBlue,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Text(
+                                                'Kategori \t :',
+                                                style: kHeading6.copyWith(
+                                                    fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                width: 18,
+                                              ),
+                                              Expanded(
+                                                  child: Text(
+                                                '${list[index]['category']}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16),
+                                              ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 26,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                width: 35,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 207, 238, 213),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Icon(
+                                                  Icons.attach_money_rounded,
+                                                  color: kDarkGreen,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Text(
+                                                'Nominal \t :',
+                                                style: kHeading6.copyWith(
+                                                    fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                width: 18,
+                                              ),
+                                              Text(
+                                                '${list[index]['amount']}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16),
+                                              )
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -427,7 +544,7 @@ class _HomePageState extends State<HomePage> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: const Text('Cancel'),
+                                        child: const Text('Batal'),
                                       ),
                                       TextButton(
                                         onPressed: () async {
@@ -466,7 +583,7 @@ class _HomePageState extends State<HomePage> {
                                               .then(
                                                   (value) => Navigator.pop(_));
                                         },
-                                        child: const Text('Delete'),
+                                        child: const Text('Hapus'),
                                       ),
                                     ],
                                   );
@@ -562,7 +679,7 @@ class _HomePageState extends State<HomePage> {
                               vertical: 20,
                             ),
                             child: Text(
-                              "Recent Transaction",
+                              "Transaksi Terbaru",
                               style: kHeading5.copyWith(
                                 color: context.watch<ThemeBloc>().state
                                     ? kWhite
