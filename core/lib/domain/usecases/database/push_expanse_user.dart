@@ -6,9 +6,14 @@ class PushExpanseUser {
 
   PushExpanseUser(this.repository);
 
-  Future<Either<Failure, void>> execute(
-      String name, String uid, String category, int nominal, String note) {
+  Future<Either<Failure, void>> execute(String name, String uid,
+      String category, int nominal, String note, String date) {
     return repository.pushExpanseUser(
-        name: name, uid: uid, category: category, nominal: nominal, note: note);
+        name: name,
+        uid: uid,
+        category: category,
+        nominal: nominal,
+        note: note,
+        date: date);
   }
 }

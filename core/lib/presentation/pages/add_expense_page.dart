@@ -106,7 +106,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                 uid: widget.user['uid'],
                                 category: category,
                                 nominal: int.parse(_incomeTextController.text),
-                                note: _noteTextController.text));
+                                note: _noteTextController.text,
+                                date: dateController.text));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kRed,

@@ -16,6 +16,7 @@ abstract class DatabaseRepository {
     required String category,
     required int nominal,
     required String note,
+    required String date,
   });
   Future<Either<Failure, void>> pushExpanseUser({
     required String name,
@@ -23,5 +24,6 @@ abstract class DatabaseRepository {
     required String category,
     required int nominal,
     required String note,
+    required String date,
   });
 }
