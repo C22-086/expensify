@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            nominal: list[index]['amount'],
+                            amount: list[index]['amount'],
                             date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],

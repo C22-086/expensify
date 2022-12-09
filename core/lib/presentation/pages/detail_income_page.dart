@@ -129,34 +129,39 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    '+ ${income.length} Pemasukkan',
-                    style: kHeading5.copyWith(
-                      fontSize: 30,
-                      color: kWhite,
-                    ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        '+ ${income.length} Pemasukkan',
+                        style: kHeading5.copyWith(
+                          fontSize: 30,
+                          color: kWhite,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "Kamu mendapatkan pemasukan sebesar : ",
+                        style: kSubtitle.copyWith(color: kWhite),
+                      ),
+                      Text(
+                        "Rp.$totalIncome ",
+                        style: kSubtitle.copyWith(color: kWhite, fontSize: 30),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Kamu mendapatkan pemasukan sebesar : ",
-                    style: kSubtitle.copyWith(color: kWhite),
-                  ),
-                  Text(
-                    "Rp.$totalIncome ",
-                    style: kSubtitle.copyWith(color: kWhite, fontSize: 30),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-            ],
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
           ),
         ),
       );
@@ -189,7 +194,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                   iconPath: 'assets/icon_up.png',
                   color: kSoftGreen,
                   category: income[index]['category'].toString(),
-                  nominal: data[index]['amount'],
+                  amount: data[index]['amount'],
                   date: data[index]['incomeDate'].split(' ')[0],
                   label: '+',
                   currencyColor: kGreen,

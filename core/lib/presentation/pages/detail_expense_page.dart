@@ -136,38 +136,43 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    '- ${expanses.length} Pengeluaran',
-                    style: kHeading5.copyWith(
-                      fontSize: 30,
-                      color: kWhite,
-                    ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        '- ${expanses.length} Pengeluaran',
+                        style: kHeading5.copyWith(
+                          fontSize: 30,
+                          color: kWhite,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "Pengeluaran kamu sebesar :",
+                        style: kSubtitle.copyWith(color: kWhite),
+                      ),
+                      Text(
+                        "Rp.-$totalExpanses",
+                        textAlign: TextAlign.right,
+                        style: kSubtitle.copyWith(
+                          color: kWhite,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Pengeluaran kamu sebesar :",
-                    style: kSubtitle.copyWith(color: kWhite),
-                  ),
-                  Text(
-                    "Rp.-$totalExpanses",
-                    textAlign: TextAlign.right,
-                    style: kSubtitle.copyWith(
-                      color: kWhite,
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-            ],
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
           ),
         ),
       );
@@ -199,7 +204,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                   iconPath: 'assets/icon_down.png',
                   color: kSoftRed,
                   category: expanses[index]['category'].toString(),
-                  nominal: expanses[index]['nominal'],
+                  amount: expanses[index]['amount'],
                   date: expanses[index]['expanseDate'].split(' ')[0],
                   label: '-',
                   currencyColor: kRed,
