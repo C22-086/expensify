@@ -107,7 +107,8 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
           income.add(e['nominal']);
         }
       }
-      final totalIncome = income.reduce((a, b) => a + b);
+      final totalIncome =
+          income.length > 2 ? income.reduce((a, b) => a + b) : 0;
 
       return Padding(
         padding: const EdgeInsets.symmetric(
@@ -138,7 +139,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    '+ ${data.length} Pemasukkan',
+                    '+ ${income.length} Pemasukkan',
                     style: kHeading5.copyWith(
                       fontSize: 30,
                       color: kWhite,

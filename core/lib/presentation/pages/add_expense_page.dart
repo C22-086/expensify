@@ -23,18 +23,49 @@ class AddExpensePage extends StatefulWidget {
 class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController _incomeTextController = TextEditingController();
   final TextEditingController _noteTextController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   dynamic category;
+
+  bool isButtonEnable = false;
 
   @override
   void initState() {
     super.initState();
-    dateController.text = "";
+    _dateController.text = "";
+  }
+
+  @override
+  void dispose() {
+    _incomeTextController.dispose();
+    _noteTextController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  addExpanse() async {
+    final ref = FirebaseDatabase.instance
+        .ref('users/${FirebaseAuth.instance.currentUser!.uid}');
+    final snapshot = await FirebaseDatabase.instance
+        .ref('users/${FirebaseAuth.instance.currentUser!.uid}')
+        .child('balance')
+        .get();
+    if (snapshot.exists) {
+      final balance = snapshot.value as int;
+      ref.update({'balance': balance - int.parse(_incomeTextController.text)});
+    }
+    if (!mounted) return;
+    BlocProvider.of<DatabaseBloc>(context).add(DatabasePushExpanseUser(
+        name: widget.user['name'],
+        uid: widget.user['uid'],
+        category: category,
+        nominal: int.parse(_incomeTextController.text),
+        note: _noteTextController.text));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: buttonAddExpanse(context),
       resizeToAvoidBottomInset: false,
       body: BlocListener<DatabaseBloc, DatabaseState>(
         listener: (context, state) {
@@ -64,72 +95,59 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: context.watch<ThemeBloc>().state ? kDark : kWhite,
-                    boxShadow: const [
-                      BoxShadow(
-                        offset: Offset(3, 15),
-                        spreadRadius: -17,
-                        blurRadius: 49,
-                        color: Color.fromRGBO(139, 139, 139, 1),
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        final ref = FirebaseDatabase.instance.ref(
-                            'users/${FirebaseAuth.instance.currentUser!.uid}');
-                        final snapshot = await FirebaseDatabase.instance
-                            .ref(
-                                'users/${FirebaseAuth.instance.currentUser!.uid}')
-                            .child('balance')
-                            .get();
-                        if (snapshot.exists) {
-                          final balance = snapshot.value as int;
-                          ref.update({
-                            'balance':
-                                balance - int.parse(_incomeTextController.text)
-                          });
-                        }
-                        if (!mounted) return;
-                        BlocProvider.of<DatabaseBloc>(context).add(
-                            DatabasePushExpanseUser(
-                                name: widget.user['name'],
-                                uid: widget.user['uid'],
-                                category: category,
-                                nominal: int.parse(_incomeTextController.text),
-                                note: _noteTextController.text));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kRed,
-                        padding: const EdgeInsets.all(14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: Text(
-                        'Tambahkan',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: kWhite,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
+      ),
+    );
+  }
+
+  Container buttonAddExpanse(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(3, 15),
+              spreadRadius: -17,
+              blurRadius: 49,
+              color: Color.fromRGBO(139, 139, 139, 1),
+            )
+          ]),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Pengeluaran :'),
+              Text(
+                'Rp. -${_incomeTextController.text}',
+                style: GoogleFonts.poppins(fontSize: 24),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: isButtonEnable ? addExpanse : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kRed,
+              padding: const EdgeInsets.all(14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            child: Text(
+              'Tambahkan',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: kWhite,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -144,6 +162,20 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 horizontal: 12,
               ),
               child: Form(
+                onChanged: () {
+                  if (_incomeTextController.text.isNotEmpty &&
+                      _noteTextController.text.isNotEmpty &&
+                      _dateController.text.isNotEmpty) {
+                    setState(() {
+                      isButtonEnable = true;
+                    });
+                  } else {
+                    setState(() {
+                      isButtonEnable = false;
+                    });
+                  }
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
                     FormInputData(
@@ -201,6 +233,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           ),
                           const SizedBox(height: 9),
                           DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             icon: Container(
                               width: 40,
                               decoration: BoxDecoration(
@@ -330,7 +364,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           ),
                           const SizedBox(height: 9),
                           TextFormField(
-                            controller: dateController,
+                            controller: _dateController,
                             decoration: InputDecoration(
                               prefixIcon: const Icon(
                                 Icons.calendar_today,
@@ -381,7 +415,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                     DateFormat("yyyy-MM-dd").format(pickedDate);
 
                                 setState(() {
-                                  dateController.text =
+                                  _dateController.text =
                                       formattedDate.toString();
                                 });
                               } else {}

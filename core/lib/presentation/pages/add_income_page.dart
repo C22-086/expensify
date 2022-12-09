@@ -29,6 +29,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
 
   dynamic category;
 
+  bool isButtonEnable = false;
+
   @override
   void initState() {
     super.initState();
@@ -43,9 +45,30 @@ class _AddIncomePageState extends State<AddIncomePage> {
     super.dispose();
   }
 
+  addIncome() async {
+    final ref = FirebaseDatabase.instance
+        .ref('users/${FirebaseAuth.instance.currentUser!.uid}');
+    final snapshot = await FirebaseDatabase.instance
+        .ref('users/${FirebaseAuth.instance.currentUser!.uid}')
+        .child('balance')
+        .get();
+    if (snapshot.exists) {
+      final balance = snapshot.value as int;
+      ref.update({'balance': balance + int.parse(_incomeTextController.text)});
+    }
+    if (!mounted) return;
+    BlocProvider.of<DatabaseBloc>(context).add(DatabasePushIncomeUser(
+        name: widget.user['name'],
+        uid: widget.user['uid'],
+        category: category,
+        nominal: int.parse(_incomeTextController.text),
+        note: _noteTextController.text));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: buttonAddIncome(context),
       resizeToAvoidBottomInset: false,
       body: BlocListener<DatabaseBloc, DatabaseState>(
         listener: (context, state) {
@@ -76,75 +99,63 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 16,
-                ),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: context.watch<ThemeBloc>().state ? kDark : kWhite,
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(3, 15),
-                      spreadRadius: -17,
-                      blurRadius: 49,
-                      color: Color.fromRGBO(139, 139, 139, 1),
-                    )
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        final ref = FirebaseDatabase.instance.ref(
-                            'users/${FirebaseAuth.instance.currentUser!.uid}');
-                        final snapshot = await FirebaseDatabase.instance
-                            .ref(
-                                'users/${FirebaseAuth.instance.currentUser!.uid}')
-                            .child('balance')
-                            .get();
-                        if (snapshot.exists) {
-                          final balance = snapshot.value as int;
-                          ref.update({
-                            'balance':
-                                balance + int.parse(_incomeTextController.text)
-                          });
-                        }
-                        if (!mounted) return;
-                        BlocProvider.of<DatabaseBloc>(context).add(
-                            DatabasePushIncomeUser(
-                                name: widget.user['name'],
-                                uid: widget.user['uid'],
-                                category: category,
-                                nominal: int.parse(_incomeTextController.text),
-                                note: _noteTextController.text));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kGreen,
-                        padding: const EdgeInsets.all(14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: Text(
-                        'Tambahkan',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: kWhite,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
+      ),
+    );
+  }
+
+  Container buttonAddIncome(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 30,
+        vertical: 16,
+      ),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+        boxShadow: const [
+          BoxShadow(
+            offset: Offset(3, 15),
+            spreadRadius: -17,
+            blurRadius: 49,
+            color: Color.fromRGBO(139, 139, 139, 1),
+          )
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Pemasukkan :'),
+              Text(
+                'Rp. +${_incomeTextController.text}',
+                style: GoogleFonts.poppins(fontSize: 24),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: isButtonEnable ? addIncome : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kGreen,
+              padding: const EdgeInsets.all(14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            child: Text(
+              'Tambahkan',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: kWhite,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -159,6 +170,20 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   horizontal: 12,
                 ),
                 child: Form(
+                  onChanged: () {
+                    if (_incomeTextController.text.isNotEmpty &&
+                        _noteTextController.text.isNotEmpty &&
+                        _dateController.text.isNotEmpty) {
+                      setState(() {
+                        isButtonEnable = true;
+                      });
+                    } else {
+                      setState(() {
+                        isButtonEnable = false;
+                      });
+                    }
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
                     children: [
                       FormInputData(
@@ -332,6 +357,12 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             ),
                             const SizedBox(height: 9),
                             TextFormField(
+                              validator: (String? value) {
+                                if (value!.isEmpty) {
+                                  return 'Tanggal tidak boleh kosong';
+                                }
+                                return null;
+                              },
                               controller: _dateController,
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(

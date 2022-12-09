@@ -105,7 +105,11 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
           expanses.add(e['nominal']);
         }
       }
-      final totalExpanses = expanses.reduce((a, b) => a + b);
+      final totalExpanses = expanses.length > 2
+          ? expanses.reduce(
+              (a, b) => a + b,
+            )
+          : 0;
 
       return Padding(
         padding: const EdgeInsets.symmetric(
@@ -136,7 +140,7 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    '- ${data.length} Pengeluaran',
+                    '- ${expanses.length} Pengeluaran',
                     style: kHeading5.copyWith(
                       fontSize: 30,
                       color: kWhite,

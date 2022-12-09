@@ -64,6 +64,12 @@ class FormInputData extends StatelessWidget {
           ),
           const SizedBox(height: 9),
           TextFormField(
+            validator: (String? value) {
+              if (value!.isEmpty) {
+                return 'Tidak boleh kosong';
+              }
+              return null;
+            },
             keyboardType: keyboardType,
             decoration: InputDecoration(
               border: OutlineInputBorder(
