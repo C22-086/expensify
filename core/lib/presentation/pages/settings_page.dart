@@ -204,25 +204,58 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      title: Text("keluar"),
-                      content: Text("Apakah anda yakin ingin keluar?"),
+                          borderRadius: BorderRadius.circular(5.0)),
+                      title: Text(
+                        "Keluar",
+                        style: kHeading7.copyWith(fontSize: 18, color: kGreen),
+                        textAlign: TextAlign.center,
+                      ),
+                      content: SizedBox(
+                        height: 50,
+                        child: Text(
+                          "Apakah anda yakin ingin keluar ?",
+                          style: kHeading7.copyWith(fontSize: 16),
+                        ),
+                      ),
                       actions: <Widget>[
-                        TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Batal')),
-                        TextButton(
-                          onPressed: () => BlocProvider.of<AuthBloc>(context)
-                              .add(LogOutRequested()),
-                          child: Text(
-                            'Confirm',
-                            style: TextStyle(
-                                color: Color(0xFFC41A3B),
-                                fontWeight: FontWeight.w700), //belum
-                          ),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 36.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: kGreen),
+                              child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Batal',
+                                      style: kHeading7.copyWith(
+                                          fontSize: 16, color: kWhite))),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 36.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: kRed),
+                              child: TextButton(
+                                  onPressed: () =>
+                                      BlocProvider.of<AuthBloc>(context)
+                                          .add(LogOutRequested()),
+                                  child: Text('Keluar',
+                                      style: kHeading7.copyWith(
+                                          fontSize: 16,
+                                          color: kWhite))), //belum
+                            ),
+                          ],
+                        ),
                       ],
                     );
                   },
