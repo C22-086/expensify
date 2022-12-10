@@ -6,13 +6,15 @@ import 'package:get_it/get_it.dart';
 final locator = GetIt.instance;
 Future<void> init() async {
   // BLOC
-  locator.registerFactory(() => AuthBloc(
-        logIn: locator(),
-        logOut: locator(),
-        logInGoogle: locator(),
-        register: locator(),
-        saveUserData: locator(),
-      ));
+  locator.registerFactory(
+    () => AuthBloc(
+      logIn: locator(),
+      logOut: locator(),
+      logInGoogle: locator(),
+      register: locator(),
+      saveUserData: locator(),
+    ),
+  );
   locator.registerFactory(() => DatabaseBloc(
         saveUserData: locator(),
         editUserData: locator(),

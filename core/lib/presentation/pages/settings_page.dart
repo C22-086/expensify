@@ -344,8 +344,16 @@ class _SettingsPageState extends State<SettingsPage> {
             stream: dbRef,
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: Text('Loading...'),
+                return Column(
+                  children: const [
+                    Spacer(),
+                    Text('Loading data...'),
+                    Spacer(),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: LinearProgressIndicator(backgroundColor: kGrey),
+                    ),
+                  ],
                 );
               }
               final result = snapshot.data;

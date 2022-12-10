@@ -309,8 +309,17 @@ class _OverviewPageState extends State<OverviewPage> {
                     .onValue,
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Column(
+                      children: const [
+                        Spacer(),
+                        Text('Loading data...'),
+                        Spacer(),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child:
+                              LinearProgressIndicator(backgroundColor: kGrey),
+                        ),
+                      ],
                     );
                   } else {
                     if (snapshot.hasData) {

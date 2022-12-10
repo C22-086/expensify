@@ -22,6 +22,7 @@ void main() async {
     name: 'Expensify',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   // Initializing Dependecy Injection
   await di.init();
 
