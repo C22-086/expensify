@@ -73,6 +73,10 @@ class _ExportDataPageState extends State<ExportDataPage> {
     final dataDateIncome = [];
     final incomesAmount = [];
 
+    final dataExpanse = [];
+    final dataDateExpanse = [];
+    final expansesAmount = [];
+
     if (category == 'pendapatan') {
       for (var e in listData) {
         if (e['type'] == 'income') {
@@ -95,19 +99,27 @@ class _ExportDataPageState extends State<ExportDataPage> {
       _savePdf(dataDateIncome, totalIncome);
     }
 
-    // if (category == 'pengeluaran') {}
+    if (category == 'pengeluaran') {
+      for (var e in listData) {
+        if (e['type'] == 'expanse') {
+          dataExpanse.add(e);
+        }
+      }
+      for (var e in dataExpanse) {
+        if (e['expanseDate'] == dateController.text) {
+          dataDateExpanse.add(e);
+          expansesAmount.add(e['amount']);
+        }
+      }
 
-    // final expansesAmount = [];
-    // for (var e in listData) {
-    //   if (e['type'] == 'expanse') {
-    //     expansesAmount.add(e['amount']);
-    //   }
-    // }
-    // final totalExpanse = expansesAmount.length >= 2
-    //     ? expansesAmount.reduce((a, b) => a + b)
-    //     : expansesAmount.isEmpty
-    //         ? 0
-    //         : expansesAmount.first;
+      final totalIncome = expansesAmount.length >= 2
+          ? expansesAmount.reduce((a, b) => a + b)
+          : expansesAmount.isEmpty
+              ? 0
+              : expansesAmount.first;
+
+      _savePdf(dataDateExpanse, totalIncome);
+    }
   }
 
   Future<void> _savePdf(List data, totalIncome) async {
@@ -145,7 +157,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
             pw.Row(
               children: [
                 pw.Text(
-                  'Tanggal Pendapatan : ',
+                  category == 'pendapatan'
+                      ? 'Tanggal Pendapatan : '
+                      : 'Tanggal Pengeluaran : ',
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.Text(
@@ -232,7 +246,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
             pw.Row(
               children: [
                 pw.Text(
-                  'Jumlah Pendapatan : ',
+                  category == 'pendapatan'
+                      ? 'Jumlah Pendapatan : '
+                      : 'Jumlah Pengeluaran : ',
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.Text(
