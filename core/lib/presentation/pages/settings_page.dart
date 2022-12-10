@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings_page';
@@ -66,7 +66,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                       backgroundImage:
                                           NetworkImage(user['imageProfile']),
                                     ),
-                              ElevatedButton(
+                              CustomButton(
+                                title: 'Edit Profil',
+                                width: 100,
+                                fontSize: 12,
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -77,21 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 17, 20, 17),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Edit Profil',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: kWhite,
-                                  ),
-                                ),
                               ),
                             ],
                           ),

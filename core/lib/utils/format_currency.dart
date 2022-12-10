@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
-final formatCurrency = NumberFormat.currency(
+final formatCurrency = NumberFormat.compactCurrency(
   locale: "id_ID",
-  symbol: "Rp.",
+  symbol: "Rp. ",
   decimalDigits: 0,
 );

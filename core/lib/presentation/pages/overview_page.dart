@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:core/domain/entities/chart_income.dart';
+import 'package:core/utils/format_currency.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -160,7 +161,7 @@ class _OverviewPageState extends State<OverviewPage> {
                           color: Colors.black45, fontSize: 18),
                     ),
                     Text(
-                      'Rp. ${user['balance']}',
+                      formatCurrency.format(user['balance']),
                       style: kHeading7.copyWith(
                         color: kGreen,
                         fontSize: 18,
@@ -209,7 +210,7 @@ class _OverviewPageState extends State<OverviewPage> {
                 series: <ChartSeries>[
                   ColumnSeries<ChartIncome, String>(
                     dataLabelMapper: (datum, index) {
-                      return 'Rp. ${datum.amount.toInt()}';
+                      return formatCurrency.format(datum.amount.toInt());
                     },
                     dataSource:
                         income.map((e) => ChartIncome.fromMap(e)).toList(),
@@ -219,7 +220,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   ),
                   ColumnSeries<ChartIncome, String>(
                     dataLabelMapper: (datum, index) {
-                      return 'Rp. ${datum.amount.toInt()}';
+                      return formatCurrency.format(datum.amount.toInt());
                     },
                     dataSource:
                         expanses.map((e) => ChartIncome.fromMap(e)).toList(),
@@ -239,7 +240,7 @@ class _OverviewPageState extends State<OverviewPage> {
                 series: <ChartSeries>[
                   ColumnSeries<ChartIncome, String>(
                     dataLabelMapper: (datum, index) {
-                      return 'Rp. ${datum.amount.toInt()}';
+                      return formatCurrency.format(datum.amount.toInt());
                     },
                     dataSource:
                         income.map((e) => ChartIncome.fromMap(e)).toList(),
@@ -260,7 +261,7 @@ class _OverviewPageState extends State<OverviewPage> {
                 series: <ChartSeries>[
                   ColumnSeries<ChartIncome, String>(
                     dataLabelMapper: (datum, index) {
-                      return 'Rp. ${datum.amount.toInt()}';
+                      return formatCurrency.format(datum.amount.toInt());
                     },
                     dataSource:
                         expanses.map((e) => ChartIncome.fromMap(e)).toList(),
@@ -407,7 +408,7 @@ class CategoryItem extends StatelessWidget {
               PieSeries<ChartIncome, String>(
                 enableTooltip: true,
                 dataLabelMapper: (datum, index) {
-                  return 'Rp, ${(datum.amount).toInt()}';
+                  return formatCurrency.format((datum.amount).toInt());
                 },
                 dataSource: dataIncome
                     .map((e) =>
@@ -433,7 +434,7 @@ class CategoryItem extends StatelessWidget {
               PieSeries<ChartIncome, String>(
                 enableTooltip: true,
                 dataLabelMapper: (datum, index) {
-                  return 'Rp, ${(datum.amount).toInt()}';
+                  return formatCurrency.format((datum.amount).toInt());
                 },
                 dataSource: dataExpanse
                     .map((e) =>

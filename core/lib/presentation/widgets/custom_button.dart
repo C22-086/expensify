@@ -6,13 +6,15 @@ class CustomButton extends StatelessWidget {
   final String title;
   final Function() onPressed;
   final double width;
+  final double fontSize;
 
-  const CustomButton({
-    Key? key,
-    required this.title,
-    required this.onPressed,
-    this.width = double.infinity,
-  }) : super(key: key);
+  const CustomButton(
+      {Key? key,
+      required this.title,
+      required this.onPressed,
+      this.width = double.infinity,
+      this.fontSize = 16})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CustomButton extends StatelessWidget {
           style: kSubtitle.copyWith(
             color: kWhite,
             fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontSize: fontSize,
           ),
         ),
       ),

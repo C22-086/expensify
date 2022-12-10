@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     final pageController = PageController(
@@ -48,13 +49,12 @@ class _HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Hai, ${user['name']}',
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      color: kWhite,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: width / 1.5,
+                    child: Text(
+                      'Hai, ${user['name']}',
+                      overflow: TextOverflow.ellipsis,
+                      style: kHeading6.copyWith(color: kWhite),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -141,184 +141,175 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildCard(data) {
-      return Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 20,
-            ),
-            height: 195,
-            width: double.infinity,
-            child: StreamBuilder<dynamic>(
-              stream: FirebaseDatabase.instance
-                  .ref()
-                  .child('transaction/$uid')
-                  .onValue,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  if (snapshot.hasData) {
-                    final Map<dynamic, dynamic> transactions =
-                        snapshot.data.snapshot.value ?? {};
-                    final listData = transactions.values.toList();
+    Widget buildCard(data, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        final Map<dynamic, dynamic> transactions =
+            snapshot.data.snapshot.value ?? {};
+        final listData = transactions.values.toList();
 
-                    //get total income
-                    final incomesAmount = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'income') {
-                        incomesAmount.add(e['amount']);
-                      }
-                    }
-                    final totalIncome = incomesAmount.length >= 2
-                        ? incomesAmount.reduce((a, b) => a + b)
-                        : incomesAmount.isEmpty
-                            ? 0
-                            : incomesAmount.first;
+        //get total income
+        final incomesAmount = [];
+        for (var e in listData) {
+          if (e['type'] == 'income') {
+            incomesAmount.add(e['amount']);
+          }
+        }
+        final totalIncome = incomesAmount.length >= 2
+            ? incomesAmount.reduce((a, b) => a + b)
+            : incomesAmount.isEmpty
+                ? 0
+                : incomesAmount.first;
 
-                    //get all income
-                    final List<ChartIncome> incomes = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'income') {
-                        incomes.add(ChartIncome.fromMap(e));
-                      }
-                    }
-                    //get total Expanse
-                    final expansesAmount = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'expanse') {
-                        expansesAmount.add(e['amount']);
-                      }
-                    }
-                    final totalExpanse = expansesAmount.length >= 2
-                        ? expansesAmount.reduce((a, b) => a + b)
-                        : expansesAmount.isEmpty
-                            ? 0
-                            : expansesAmount.first;
+        //get all income
+        final List<ChartIncome> incomes = [];
+        for (var e in listData) {
+          if (e['type'] == 'income') {
+            incomes.add(ChartIncome.fromMap(e));
+          }
+        }
+        //get total Expanse
+        final expansesAmount = [];
+        for (var e in listData) {
+          if (e['type'] == 'expanse') {
+            expansesAmount.add(e['amount']);
+          }
+        }
+        final totalExpanse = expansesAmount.length >= 2
+            ? expansesAmount.reduce((a, b) => a + b)
+            : expansesAmount.isEmpty
+                ? 0
+                : expansesAmount.first;
 
-                    //get all expanses
-                    final List<ChartIncome> expanses = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'expanse') {
-                        expanses.add(ChartIncome.fromMap(e));
-                      }
-                    }
-                    return PageView(
-                      padEnds: false,
-                      controller: pageController,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        incomes.isEmpty
-                            ? const NoOverviewCard(
-                                title: 'pemasukkan',
-                              )
-                            : OverviewCard(
-                                titleImageUrl: 'assets/icon-trending-up.png',
-                                color: kGreen,
-                                secColor: kSoftGreen,
-                                title: 'Income',
-                                label: "+",
-                                chart: SfCircularChart(
-                                  margin: EdgeInsets.zero,
-                                  tooltipBehavior: TooltipBehavior(
-                                      enable: true,
-                                      format: 'point.x : Rp. point.y'),
-                                  series: [
-                                    DoughnutSeries<ChartIncome, String>(
-                                      explode: true,
-                                      enableTooltip: true,
-                                      dataSource: incomes,
-                                      xValueMapper: (data, _) =>
-                                          incomes[_].category,
-                                      yValueMapper: (data, _) =>
-                                          incomes[_].amount,
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailIncomePage.routeName,
-                                  );
-                                },
-                                total: formatCurrency.format(totalIncome),
+        //get all expanses
+        final List<ChartIncome> expanses = [];
+        for (var e in listData) {
+          if (e['type'] == 'expanse') {
+            expanses.add(ChartIncome.fromMap(e));
+          }
+        }
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 20,
+                  ),
+                  height: 195,
+                  width: double.infinity,
+                  child: PageView(
+                    padEnds: false,
+                    controller: pageController,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      incomes.isEmpty
+                          ? const NoOverviewCard(
+                              title: 'pemasukkan',
+                            )
+                          : OverviewCard(
+                              titleImageUrl: 'assets/icon-trending-up.png',
+                              color: kGreen,
+                              secColor: kSoftGreen,
+                              title: 'Income',
+                              label: "+",
+                              chart: SfCircularChart(
+                                margin: EdgeInsets.zero,
+                                tooltipBehavior: TooltipBehavior(
+                                    enable: true,
+                                    format: 'point.x : Rp. point.y'),
+                                series: [
+                                  DoughnutSeries<ChartIncome, String>(
+                                    explode: true,
+                                    enableTooltip: true,
+                                    dataSource: incomes,
+                                    xValueMapper: (data, _) =>
+                                        incomes[_].category,
+                                    yValueMapper: (data, _) =>
+                                        incomes[_].amount,
+                                  )
+                                ],
                               ),
-                        expanses.isEmpty
-                            ? const NoOverviewCard(title: 'pengeluaran')
-                            : OverviewCard(
-                                titleImageUrl: 'assets/icon-trending-down.png',
-                                color: kRed,
-                                secColor: kSoftGreen,
-                                title: 'Expanse',
-                                label: "-",
-                                chart: expanses.isEmpty
-                                    ? const NoOverviewCard(title: 'pengeluaran')
-                                    : SfCircularChart(
-                                        margin: EdgeInsets.zero,
-                                        tooltipBehavior: TooltipBehavior(
-                                            enable: true,
-                                            format: 'point.x : Rp. point.y'),
-                                        series: [
-                                          DoughnutSeries<ChartIncome, String>(
-                                            explode: true,
-                                            enableTooltip: true,
-                                            dataSource: expanses,
-                                            xValueMapper: (data, _) =>
-                                                expanses[_].category,
-                                            yValueMapper: (data, _) =>
-                                                expanses[_].amount,
-                                          )
-                                        ],
-                                      ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailExpensePage.routeName,
-                                  );
-                                },
-                                total: formatCurrency.format(totalExpanse),
-                              )
-                      ],
-                    );
-                  } else {
-                    return PageView(
-                      padEnds: false,
-                      controller: pageController,
-                      physics: const BouncingScrollPhysics(),
-                      children: const [
-                        NoOverviewCard(title: ''),
-                      ],
-                    );
-                  }
-                }
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          SmoothPageIndicator(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  DetailIncomePage.routeName,
+                                );
+                              },
+                              total: formatCurrency.format(totalIncome),
+                            ),
+                      expanses.isEmpty
+                          ? const NoOverviewCard(title: 'pengeluaran')
+                          : OverviewCard(
+                              titleImageUrl: 'assets/icon-trending-down.png',
+                              color: kRed,
+                              secColor: kSoftGreen,
+                              title: 'Expanse',
+                              label: "-",
+                              chart: expanses.isEmpty
+                                  ? const NoOverviewCard(title: 'pengeluaran')
+                                  : SfCircularChart(
+                                      margin: EdgeInsets.zero,
+                                      tooltipBehavior: TooltipBehavior(
+                                          enable: true,
+                                          format: 'point.x : Rp. point.y'),
+                                      series: [
+                                        DoughnutSeries<ChartIncome, String>(
+                                          explode: true,
+                                          enableTooltip: true,
+                                          dataSource: expanses,
+                                          xValueMapper: (data, _) =>
+                                              expanses[_].category,
+                                          yValueMapper: (data, _) =>
+                                              expanses[_].amount,
+                                        )
+                                      ],
+                                    ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  DetailExpensePage.routeName,
+                                );
+                              },
+                              total: formatCurrency.format(totalExpanse),
+                            )
+                    ],
+                  )),
+              const SizedBox(height: 10),
+              SmoothPageIndicator(
+                controller: pageController,
+                count: 2,
+                effect: CustomizableEffect(
+                  activeDotDecoration: DotDecoration(
+                    width: 35,
+                    height: 8,
+                    color: kGreen,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  dotDecoration: DotDecoration(
+                    width: 15,
+                    height: 8,
+                    color: kSoftGreen,
+                    borderRadius: BorderRadius.circular(16),
+                    verticalOffset: 0,
+                  ),
+                  spacing: 6.0,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return PageView(
+            padEnds: false,
             controller: pageController,
-            count: 2,
-            effect: CustomizableEffect(
-              activeDotDecoration: DotDecoration(
-                width: 35,
-                height: 8,
-                color: kGreen,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              dotDecoration: DotDecoration(
-                width: 15,
-                height: 8,
-                color: kSoftGreen,
-                borderRadius: BorderRadius.circular(16),
-                verticalOffset: 0,
-              ),
-              spacing: 6.0,
-            ),
-          ),
-        ],
-      );
+            physics: const BouncingScrollPhysics(),
+            children: const [
+              NoOverviewCard(title: ''),
+            ],
+          );
+        }
+      }
     }
 
     buildMainFuture(user) {
@@ -369,265 +360,239 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget buildContent() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            StreamBuilder(
-              stream: FirebaseDatabase.instance.ref('transaction/$uid').onValue,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Kamu belum melakukan transaksi'));
-                  } else if (snapshot.hasData) {
-                    Map<dynamic, dynamic> transaction =
-                        snapshot.data.snapshot.value == null
-                            ? {}
-                            : snapshot.data!.snapshot!.value;
+    Widget buildContent(AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+        if (snapshot.hasError) {
+          return const Center(child: Text('Kamu belum melakukan transaksi'));
+        } else if (snapshot.hasData) {
+          Map<dynamic, dynamic> transaction =
+              snapshot.data.snapshot.value == null
+                  ? {}
+                  : snapshot.data!.snapshot!.value;
 
-                    List<dynamic> list = transaction.values.toList();
+          List<dynamic> list = transaction.values.toList();
 
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      "Detail",
-                                      style: kHeading7.copyWith(fontSize: 18),
-                                    ),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Text(
+                              "Detail",
+                              style: kHeading7.copyWith(fontSize: 18),
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            content: SizedBox(
+                              height: 200,
+                              width: double.maxFinite,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 35,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 255, 235, 212),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: const Icon(
+                                          Icons.notes_rounded,
+                                          color:
+                                              Color.fromARGB(255, 255, 155, 40),
+                                        ),
                                       ),
-                                    ),
-                                    content: SizedBox(
-                                      height: 200,
-                                      width: double.maxFinite,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 255, 235, 212),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.notes_rounded,
-                                                  color: Color.fromARGB(
-                                                      255, 255, 155, 40),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Judul \t\t\t\t\t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Text(
-                                                '${list[index]['title']}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 26,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 221, 235, 255),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.category_rounded,
-                                                  color: kPrussianBlue,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Kategori \t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Expanded(
-                                                  child: Text(
-                                                '${list[index]['category']}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              ))
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 26,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 207, 238, 213),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.attach_money_rounded,
-                                                  color: kDarkGreen,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Nominal \t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Text(
-                                                formatCurrency.format(
-                                                    list[index]['amount']),
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                      const SizedBox(
+                                        width: 12,
                                       ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Batal'),
+                                      Text(
+                                        'Judul \t\t\t\t\t :',
+                                        style: kHeading6.copyWith(fontSize: 16),
                                       ),
-                                      TextButton(
-                                        onPressed: () async {
-                                          final getBalance =
-                                              await FirebaseDatabase.instance
-                                                  .ref()
-                                                  .child('users/$uid/balance')
-                                                  .get();
-
-                                          final refUser = FirebaseDatabase
-                                              .instance
-                                              .ref('users/$uid');
-                                          if (getBalance.exists) {
-                                            if (list[index]['type']
-                                                .contains('income')) {
-                                              await refUser.update({
-                                                'balance': int.parse(getBalance
-                                                        .value
-                                                        .toString()) -
-                                                    list[index]['amount']
-                                              });
-                                            } else {
-                                              await refUser.update({
-                                                'balance': int.parse(getBalance
-                                                        .value
-                                                        .toString()) +
-                                                    list[index]['amount']
-                                              });
-                                            }
-                                          }
-                                          await FirebaseDatabase.instance
-                                              .ref('transaction/$uid')
-                                              .child(
-                                                  list[index]['transactionId'])
-                                              .remove()
-                                              .then(
-                                                  (value) => Navigator.pop(_));
-                                        },
-                                        child: const Text('Hapus'),
+                                      const SizedBox(
+                                        width: 18,
                                       ),
+                                      Text(
+                                        '${list[index]['title']}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 16),
+                                      )
                                     ],
-                                  );
-                                });
-                          },
-                          child: IncomeTailCard(
-                            iconPath: list[index]['type'].contains('income')
-                                ? 'assets/icon_up.png'
-                                : 'assets/icon_down.png',
-                            color: list[index]['type'].contains('income')
-                                ? kSoftGreen
-                                : kSoftRed,
-                            category: list[index]['category'],
-                            amount:
-                                formatCurrency.format(list[index]['amount']),
-                            date: list[index]['type'].contains('income')
-                                ? list[index]['incomeDate'].split(' ')[0]
-                                : list[index]['expanseDate'].split(' ')[0],
-                            label: list[index]['type'].contains('income')
-                                ? '+'
-                                : '-',
-                            currencyColor:
-                                list[index]['type'] == 'income' ? kGreen : kRed,
-                            title: list[index]['title'],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Text('data kosong');
-                  }
-                }
+                                  ),
+                                  const SizedBox(
+                                    height: 26,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 35,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 221, 235, 255),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: const Icon(
+                                          Icons.category_rounded,
+                                          color: kPrussianBlue,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        'Kategori \t :',
+                                        style: kHeading6.copyWith(fontSize: 16),
+                                      ),
+                                      const SizedBox(
+                                        width: 18,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        '${list[index]['category']}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 16),
+                                      ))
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 26,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 35,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 207, 238, 213),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: const Icon(
+                                          Icons.attach_money_rounded,
+                                          color: kDarkGreen,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        'Nominal \t :',
+                                        style: kHeading6.copyWith(fontSize: 16),
+                                      ),
+                                      const SizedBox(
+                                        width: 18,
+                                      ),
+                                      Text(
+                                        formatCurrency
+                                            .format(list[index]['amount']),
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 16),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  final getBalance = await FirebaseDatabase
+                                      .instance
+                                      .ref()
+                                      .child('users/$uid/balance')
+                                      .get();
+
+                                  final refUser = FirebaseDatabase.instance
+                                      .ref('users/$uid');
+                                  if (getBalance.exists) {
+                                    if (list[index]['type']
+                                        .contains('income')) {
+                                      await refUser.update({
+                                        'balance': int.parse(
+                                                getBalance.value.toString()) -
+                                            list[index]['amount']
+                                      });
+                                    } else {
+                                      await refUser.update({
+                                        'balance': int.parse(
+                                                getBalance.value.toString()) +
+                                            list[index]['amount']
+                                      });
+                                    }
+                                  }
+                                  await FirebaseDatabase.instance
+                                      .ref('transaction/$uid')
+                                      .child(list[index]['transactionId'])
+                                      .remove()
+                                      .then((value) => Navigator.pop(_));
+                                },
+                                child: const Text('Hapus'),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                  child: IncomeTailCard(
+                    iconPath: list[index]['type'].contains('income')
+                        ? 'assets/icon_up.png'
+                        : 'assets/icon_down.png',
+                    color: list[index]['type'].contains('income')
+                        ? kSoftGreen
+                        : kSoftRed,
+                    category: list[index]['category'],
+                    amount: formatCurrency.format(list[index]['amount']),
+                    date: list[index]['type'].contains('income')
+                        ? list[index]['incomeDate'].split(' ')[0]
+                        : list[index]['expanseDate'].split(' ')[0],
+                    label: list[index]['type'].contains('income') ? '+' : '-',
+                    currencyColor:
+                        list[index]['type'] == 'income' ? kGreen : kRed,
+                    title: list[index]['title'],
+                  ),
+                );
               },
             ),
-          ],
-        ),
-      );
+          );
+        } else {
+          return const Text('data kosong');
+        }
+      }
     }
 
     return Scaffold(
@@ -677,26 +642,34 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          buildCard(user),
-                          buildMainFuture(user),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 20,
+                      StreamBuilder<dynamic>(
+                        stream: FirebaseDatabase.instance
+                            .ref()
+                            .child('transaction/$uid')
+                            .onValue,
+                        builder: (context, AsyncSnapshot snapshot) {
+                          return SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                buildCard(user, snapshot),
+                                buildMainFuture(user),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 20),
+                                  child: Text(
+                                    "Transaksi Terbaru",
+                                    style: kHeading5.copyWith(
+                                      color: context.watch<ThemeBloc>().state
+                                          ? kWhite
+                                          : kSoftBlack,
+                                    ),
+                                  ),
+                                ),
+                                buildContent(snapshot),
+                              ],
                             ),
-                            child: Text(
-                              "Transaksi Terbaru",
-                              style: kHeading5.copyWith(
-                                color: context.watch<ThemeBloc>().state
-                                    ? kWhite
-                                    : kSoftBlack,
-                              ),
-                            ),
-                          ),
-                          buildContent(),
-                        ]),
+                          );
+                        },
                       ),
                     ],
                   )
