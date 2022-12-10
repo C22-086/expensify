@@ -2,9 +2,12 @@
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ExportDataPage extends StatefulWidget {
   static const routeName = '/export-data';
@@ -41,6 +44,22 @@ class _ExportDataPageState extends State<ExportDataPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _createPdf() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Text("Hello World"),
+          );
+        }));
+
+    Uint8List bytes = await pdf.save();
+
+    await saveAndLaunchFile(bytes, 'document.pdf');
   }
 
   Widget buildBody() {
@@ -160,7 +179,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
               child: SizedBox(
                 width: 150,
                 height: 50,
-                child: CustomButton(title: "Ekspor", onPressed: () {}),
+                child: CustomButton(
+                    title: "Ekspor",
+                    onPressed: () {
+                      _createPdf();
+                    }),
               ),
             )
           ],
