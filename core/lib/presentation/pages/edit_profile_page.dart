@@ -168,7 +168,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           side: const BorderSide(color: kGrey, width: 2)),
                     ),
                     child: Text(
-                      "Cancel",
+                      "Batal",
                       style: kSubtitle.copyWith(
                         color: kSoftBlack,
                         fontWeight: FontWeight.w600,
@@ -181,7 +181,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   width: 150,
                   height: 50,
                   child: CustomButton(
-                      title: "Save",
+                      title: "Simpan",
                       onPressed: () {
                         BlocProvider.of<DatabaseBloc>(context).add(
                           DatabaseEditUser(

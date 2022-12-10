@@ -31,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             child: Center(
               child: Text(
-                "Settings",
+                "Pengaturan",
                 style: kHeading6,
               ),
             ),
@@ -133,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               title: Text(
-                'Dark Mode',
+                'Tema Gelap',
                 style: kHeading6,
               ),
               trailing: BlocBuilder<ThemeBloc, bool>(
@@ -185,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   title: Text(
-                    'Export Data',
+                    'Ekspor Data',
                     style: kHeading6,
                   ),
                   trailing: const Icon(
@@ -198,7 +198,68 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             ListTile(
               onTap: () {
-                BlocProvider.of<AuthBloc>(context).add(LogOutRequested());
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      title: Text(
+                        "Keluar",
+                        style: kHeading7.copyWith(fontSize: 18, color: kGreen),
+                        textAlign: TextAlign.center,
+                      ),
+                      content: SizedBox(
+                        height: 50,
+                        child: Text(
+                          "Apakah anda yakin ingin keluar ?",
+                          style: kHeading7.copyWith(fontSize: 16),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 36.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: kGreen),
+                              child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Batal',
+                                      style: kHeading7.copyWith(
+                                          fontSize: 16, color: kWhite))),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 36.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: kRed),
+                              child: TextButton(
+                                  onPressed: () =>
+                                      BlocProvider.of<AuthBloc>(context)
+                                          .add(LogOutRequested()),
+                                  child: Text('Keluar',
+                                      style: kHeading7.copyWith(
+                                          fontSize: 16,
+                                          color: kWhite))), //belum
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               leading: Container(
                 padding: const EdgeInsets.all(13),
@@ -212,7 +273,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               title: Text(
-                'Log Out',
+                'Keluar',
                 style: kHeading6,
               ),
               trailing: const Icon(

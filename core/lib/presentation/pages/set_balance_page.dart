@@ -92,7 +92,7 @@ class SetBalancePage extends StatelessWidget {
                               Lottie.asset(
                                 'assets/sukses.json',
                                 repeat: false,
-                                height: 100,
+                                height: 140,
                               ),
                               Text(
                                 "Saldo anda berhasil ditambahkan",
