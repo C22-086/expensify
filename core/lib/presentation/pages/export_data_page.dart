@@ -120,7 +120,32 @@ class _ExportDataPageState extends State<ExportDataPage> {
             pw.Row(
               children: [
                 pw.Text(
-                  'Tanggal : ',
+                  'Nama : ',
+                  style: const pw.TextStyle(fontSize: 18),
+                ),
+                pw.Text(
+                  widget.user['name'],
+                  style: const pw.TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            pw.Row(
+              children: [
+                pw.Text(
+                  'Email : ',
+                  style: const pw.TextStyle(fontSize: 18),
+                ),
+                pw.Text(
+                  widget.user['email'],
+                  style: const pw.TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              children: [
+                pw.Text(
+                  'Tanggal Pendapatan : ',
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.Text(
@@ -136,19 +161,34 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 pw.TableRow(
                   children: [
                     pw.Center(
-                      child: pw.Text('No'),
+                      child: pw.Text(
+                        'No',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
                     ),
                     pw.Center(
-                      child: pw.Text('Tipe'),
+                      child: pw.Text(
+                        'Tipe',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
                     ),
                     pw.Center(
-                      child: pw.Text('Kategori'),
+                      child: pw.Text(
+                        'Kategori',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
                     ),
                     pw.Center(
-                      child: pw.Text('Keterangan'),
+                      child: pw.Text(
+                        'Keterangan',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
                     ),
                     pw.Center(
-                      child: pw.Text('jumlah'),
+                      child: pw.Text(
+                        'jumlah',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
                     )
                   ],
                 ),
@@ -157,12 +197,31 @@ class _ExportDataPageState extends State<ExportDataPage> {
                       (e) => pw.TableRow(
                         children: [
                           pw.Center(
-                            child: pw.Text((data.indexOf(e) + 1).toString()),
+                            child: pw.Text(
+                              (data.indexOf(e) + 1).toString(),
+                              style: const pw.TextStyle(fontSize: 16),
+                            ),
                           ),
-                          pw.Text(e['type']),
-                          pw.Text(e['category']),
-                          pw.Text(e['title']),
-                          pw.Text(e['amount'].toString()),
+                          pw.Center(
+                              child: pw.Text(
+                            e['type'],
+                            style: const pw.TextStyle(fontSize: 16),
+                          )),
+                          pw.Center(
+                              child: pw.Text(
+                            e['category'],
+                            style: const pw.TextStyle(fontSize: 16),
+                          )),
+                          pw.Center(
+                              child: pw.Text(
+                            e['title'],
+                            style: const pw.TextStyle(fontSize: 16),
+                          )),
+                          pw.Center(
+                              child: pw.Text(
+                            e['amount'].toString(),
+                            style: const pw.TextStyle(fontSize: 16),
+                          )),
                         ],
                       ),
                     )
@@ -173,7 +232,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
             pw.Row(
               children: [
                 pw.Text(
-                  'Jumlah : ',
+                  'Jumlah Pendapatan : ',
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.Text(
