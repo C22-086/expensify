@@ -144,7 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfilePage(
+                    builder: (context) => ExportDataPage(
                       user: user,
                     ),
                   ),
