@@ -37,34 +37,139 @@ class _ExportDataPageState extends State<ExportDataPage> {
           stream: FirebaseDatabase.instance
               .ref('transaction/${widget.user['uid']}')
               .onValue,
-          builder: (context, snapshot) {
-            return Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildHeader(context),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height - 130,
-                      child: buildBody(),
-                    ),
-                  ],
-                ),
-              ],
-            );
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final result = snapshot.data;
+            final user = result.snapshot.value;
+            return snapshot.hasData
+                ? Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildHeader(context),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 130,
+                            child: buildBody(user),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : const Center(child: CircularProgressIndicator());
           }),
     );
   }
 
-  Future<void> _createPdf() async {
+  Future<void> _createPdf(data) async {
+    final Map<dynamic, dynamic> transactions = data ?? {};
+    final listData = transactions.values.toList();
+
+    final dataIncome = [];
+    final dataDateIncome = [];
+
+    if (category == 'pendapatan') {
+      for (var e in listData) {
+        if (e['type'] == 'income') {
+          dataIncome.add(e);
+        }
+      }
+      for (var e in dataIncome) {
+        if (e['incomeDate'] == dateController.text) {
+          dataDateIncome.add(e);
+        }
+      }
+
+      _savePdf(dataDateIncome);
+    }
+
+    // if (category == 'pengeluaran') {}
+
+    // final incomesAmount = [];
+    // for (var e in listData) {
+    //   if (e['type'] == 'income') {
+    //     incomesAmount.add(e['amount']);
+    //   }
+    // }
+    // final totalIncome = incomesAmount.length >= 2
+    //     ? incomesAmount.reduce((a, b) => a + b)
+    //     : incomesAmount.isEmpty
+    //         ? 0
+    //         : incomesAmount.first;
+    // final expansesAmount = [];
+    // for (var e in listData) {
+    //   if (e['type'] == 'expanse') {
+    //     expansesAmount.add(e['amount']);
+    //   }
+    // }
+    // final totalExpanse = expansesAmount.length >= 2
+    //     ? expansesAmount.reduce((a, b) => a + b)
+    //     : expansesAmount.isEmpty
+    //         ? 0
+    //         : expansesAmount.first;
+  }
+
+  Future<void> _savePdf(List data) async {
     final pdf = pw.Document();
 
     pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Text("Hello World"),
-          );
+          return pw.Column(children: [
+            pw.Row(
+              children: [
+                pw.Text(
+                  'Tanggal : ',
+                  style: const pw.TextStyle(fontSize: 18),
+                ),
+                pw.Text(
+                  dateController.text,
+                  style: const pw.TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Table(border: pw.TableBorder.all(width: 1.5), children: [
+              pw.TableRow(
+                children: [
+                  pw.Center(
+                    child: pw.Text('No'),
+                  ),
+                  pw.Center(
+                    child: pw.Text('Tipe'),
+                  ),
+                  pw.Center(
+                    child: pw.Text('Kategori'),
+                  ),
+                  pw.Center(
+                    child: pw.Text('Keterangan'),
+                  ),
+                  pw.Center(
+                    child: pw.Text('jumlah'),
+                  )
+                ],
+              ),
+              ...data
+                  .map(
+                    (e) => pw.TableRow(
+                      children: [
+                        pw.Center(
+                          child: pw.Text((data.indexOf(e) + 1).toString()),
+                        ),
+                        pw.Text(e['type']),
+                        pw.Text(e['category']),
+                        pw.Text(e['title']),
+                        pw.Text(e['amount'].toString()),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ])
+          ]);
         }));
 
     Uint8List bytes = await pdf.save();
@@ -72,7 +177,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
     await saveAndLaunchFile(bytes, 'document.pdf');
   }
 
-  Widget buildBody() {
+  Widget buildBody(user) {
     return Container(
         padding:
             const EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 30),
@@ -113,7 +218,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      category = 'pemasukan';
+                      category = 'pengeluaran';
                     });
                   },
                   child: Container(
@@ -121,12 +226,12 @@ class _ExportDataPageState extends State<ExportDataPage> {
                         horizontal: 17, vertical: 10),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: category == 'pemasukan' ? kGreen : kGrey,
+                            color: category == 'pengeluaran' ? kGreen : kGrey,
                             width: 2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
-                      "Pemasukan",
+                      "Pengeluaran",
                       style: kHeading7.copyWith(color: kSoftBlack),
                     ),
                   ),
@@ -209,7 +314,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 child: CustomButton(
                     title: "Ekspor",
                     onPressed: () {
-                      _createPdf();
+                      _createPdf(user);
                     }),
               ),
             )

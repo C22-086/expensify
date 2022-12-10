@@ -171,6 +171,7 @@ class _HomePageState extends State<HomePage> {
             incomes.add(ChartIncome.fromMap(e));
           }
         }
+
         //get total Expanse
         final expansesAmount = [];
         for (var e in listData) {
@@ -550,7 +551,7 @@ class _HomePageState extends State<HomePage> {
                 'assets/nodata.json',
                 height: 200,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Text(
