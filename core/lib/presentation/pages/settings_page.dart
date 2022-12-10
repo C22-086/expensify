@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings_page';
@@ -135,6 +136,59 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
+            ),
+            const SizedBox(
+              height: 33,
+            ),
+            InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        content: const Text(
+                            'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Batal')),
+                          TextButton(
+                              onPressed: () async {
+                                final ref = FirebaseDatabase.instance
+                                    .ref('transaction/$uid');
+                                await ref.remove();
+                                if (!mounted) return;
+                                Navigator.pushNamed(
+                                    context, SetBalancePage.routeName);
+                              },
+                              child: const Text('Lanjutkan'))
+                        ],
+                      );
+                    });
+              },
+              child: ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kGrey,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15))),
+                    child: Image.asset(
+                      'assets/icon_export.png',
+                    ),
+                  ),
+                  title: Text(
+                    'Ubah Saldo',
+                    style: kHeading6,
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                  )),
             ),
             const SizedBox(
               height: 33,
