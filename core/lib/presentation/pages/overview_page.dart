@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:core/core.dart';
+import 'package:core/domain/entities/chart_income.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
@@ -18,8 +21,8 @@ class OverviewPage extends StatefulWidget {
 class _OverviewPageState extends State<OverviewPage> {
   bool isActive = false;
 
+  final currentUserId = FirebaseAuth.instance.currentUser!.uid;
   Future fetchUserData() async {
-    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
     final userRef = FirebaseDatabase.instance.ref('users/$currentUserId');
     final json = await userRef.get();
     final data = jsonDecode(jsonEncode(json.value));
@@ -187,35 +190,105 @@ class _OverviewPageState extends State<OverviewPage> {
       );
     }
 
-    buildChart() {
-      return const Padding(
-        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-        child: SizedBox(
-          height: 240,
-          width: double.maxFinite,
+    buildChart(List data) {
+      final List income = data.where((e) => e['type'] == 'income').toList();
+
+      final List expanses = data.where((e) => e['type'] == 'expanse').toList();
+
+      return Padding(
+        padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+        child: Column(
+          children: [
+            const Divider(),
+            SizedBox(
+              width: double.maxFinite,
+              child: SfCartesianChart(
+                tooltipBehavior: TooltipBehavior(enable: true),
+                title: ChartTitle(text: 'Diagram Semua Transaksi'),
+                primaryXAxis: CategoryAxis(),
+                series: <ChartSeries>[
+                  ColumnSeries<ChartIncome, String>(
+                    dataLabelMapper: (datum, index) {
+                      return 'Rp. ${datum.amount.toInt()}';
+                    },
+                    dataSource:
+                        income.map((e) => ChartIncome.fromMap(e)).toList(),
+                    xValueMapper: (ChartIncome data, _) => data.category,
+                    yValueMapper: (ChartIncome data, _) => data.amount,
+                    // dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                  ColumnSeries<ChartIncome, String>(
+                    dataLabelMapper: (datum, index) {
+                      return 'Rp. ${datum.amount.toInt()}';
+                    },
+                    dataSource:
+                        expanses.map((e) => ChartIncome.fromMap(e)).toList(),
+                    xValueMapper: (ChartIncome data, _) => data.category,
+                    yValueMapper: (ChartIncome data, _) => data.amount,
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            SizedBox(
+              width: double.maxFinite,
+              child: SfCartesianChart(
+                tooltipBehavior: TooltipBehavior(enable: true),
+                title: ChartTitle(text: 'Diagram Pemasukkan'),
+                primaryXAxis: CategoryAxis(),
+                series: <ChartSeries>[
+                  ColumnSeries<ChartIncome, String>(
+                    dataLabelMapper: (datum, index) {
+                      return 'Rp. ${datum.amount.toInt()}';
+                    },
+                    dataSource:
+                        income.map((e) => ChartIncome.fromMap(e)).toList(),
+                    xValueMapper: (ChartIncome data, _) => data.category,
+                    yValueMapper: (ChartIncome data, _) => data.amount,
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            SizedBox(
+              width: double.maxFinite,
+              child: SfCartesianChart(
+                tooltipBehavior: TooltipBehavior(enable: true),
+                title: ChartTitle(text: 'Diagram Pengeluaran'),
+                primaryXAxis: CategoryAxis(),
+                series: <ChartSeries>[
+                  ColumnSeries<ChartIncome, String>(
+                    dataLabelMapper: (datum, index) {
+                      return 'Rp. ${datum.amount.toInt()}';
+                    },
+                    dataSource:
+                        expanses.map((e) => ChartIncome.fromMap(e)).toList(),
+                    xValueMapper: (ChartIncome data, _) => data.category,
+                    yValueMapper: (ChartIncome data, _) => data.amount,
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    buildCategory() {
+    buildCategory(data) {
       return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Categories",
+              "Income vs Expanse",
               style: kHeading6,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Column(
-                children: const [
-                  CategoryItem(),
-                  CategoryItem(),
-                  CategoryItem(),
-                ],
-              ),
+              child: CategoryItem(data: data),
             ),
           ],
         ),
@@ -227,17 +300,38 @@ class _OverviewPageState extends State<OverviewPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           buildHeader(),
-          buildButton(),
+          // buildButton(),
           Expanded(
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              children: [
-                buildBalanceInformation(),
-                buildChart(),
-                buildCategory(),
-              ],
-            ),
+            child: StreamBuilder(
+                stream: FirebaseDatabase.instance
+                    .ref('transaction/$currentUserId')
+                    .onValue,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (snapshot.hasData) {
+                      final data = snapshot.data.snapshot.value;
+                      final listData = data.values.toList();
+
+                      return ListView(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          buildBalanceInformation(),
+                          buildCategory(listData),
+                          buildChart(listData),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('No Data'),
+                      );
+                    }
+                  }
+                }),
           ),
         ],
       ),
@@ -256,67 +350,103 @@ class _OverviewPageState extends State<OverviewPage> {
 class CategoryItem extends StatelessWidget {
   const CategoryItem({
     Key? key,
+    required this.data,
   }) : super(key: key);
+
+  final List data;
 
   @override
   Widget build(BuildContext context) {
+    final dataIncome =
+        data.where((element) => element['type'] == 'income').toList();
+    final dataExpanse =
+        data.where((element) => element['type'] == 'expanse').toList();
+    final totalPercent = dataIncome.length / data.length;
+
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 110,
-                  child: Chip(
-                    backgroundColor: Colors.transparent,
-                    labelStyle: kHeading6,
-                    shape: const RoundedRectangleBorder(
-                      side: BorderSide(color: kGreen, width: 2),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(14),
-                      ),
-                    ),
-                    label: Row(
-                      children: [
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: const BoxDecoration(
-                            color: kGreen,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text("Food"),
-                      ],
-                    ),
-                  ),
-                ),
-                Text(
-                  "IDR 290.000",
-                  style: kHeading7.copyWith(
-                      color: kGreen, fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Incomes',
+                style: GoogleFonts.poppins(fontSize: 18),
+              ),
+              Text(
+                'Expanses',
+                style: GoogleFonts.poppins(fontSize: 18),
+              )
+            ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(
+            height: 20,
+          ),
           LinearPercentIndicator(
             animation: true,
-            barRadius: const Radius.circular(20),
-            lineHeight: 20.0,
-            animationDuration: 2500,
-            percent: 0.8,
-            center: Text(
-              "80.0%",
-              style: kSubtitle.copyWith(color: kWhite),
-            ),
+            backgroundColor: Colors.orange,
             progressColor: kGreen,
+            center: Text(
+              "${(totalPercent * 100).toStringAsFixed(1)} %",
+              style: const TextStyle(fontSize: 14, color: Colors.white),
+            ),
+            percent: totalPercent,
+            lineHeight: 20,
+            barRadius: const Radius.circular(20),
           ),
+          SfCircularChart(
+            title: ChartTitle(text: 'Pemasukkan'),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            legend: Legend(
+              isVisible: true,
+              overflowMode: LegendItemOverflowMode.wrap,
+              position: LegendPosition.bottom,
+            ),
+            series: [
+              PieSeries<ChartIncome, String>(
+                enableTooltip: true,
+                dataLabelMapper: (datum, index) {
+                  return 'Rp, ${(datum.amount).toInt()}';
+                },
+                dataSource: dataIncome
+                    .map((e) =>
+                        ChartIncome(e['category'], e['amount'].toDouble()))
+                    .toList(),
+                xValueMapper: (ChartIncome data, _) => data.category,
+                yValueMapper: (ChartIncome data, _) => data.amount,
+                dataLabelSettings: const DataLabelSettings(
+                  isVisible: true,
+                ),
+              ),
+            ],
+          ),
+          SfCircularChart(
+            title: ChartTitle(text: 'Pengeluaran'),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            legend: Legend(
+              isVisible: true,
+              overflowMode: LegendItemOverflowMode.wrap,
+              position: LegendPosition.bottom,
+            ),
+            series: [
+              PieSeries<ChartIncome, String>(
+                enableTooltip: true,
+                dataLabelMapper: (datum, index) {
+                  return 'Rp, ${(datum.amount).toInt()}';
+                },
+                dataSource: dataExpanse
+                    .map((e) =>
+                        ChartIncome(e['category'], e['amount'].toDouble()))
+                    .toList(),
+                xValueMapper: (ChartIncome data, _) => data.category,
+                yValueMapper: (ChartIncome data, _) => data.amount,
+                dataLabelSettings: const DataLabelSettings(
+                  isVisible: true,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
