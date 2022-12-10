@@ -71,6 +71,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
 
     final dataIncome = [];
     final dataDateIncome = [];
+    final incomesAmount = [];
 
     if (category == 'pendapatan') {
       for (var e in listData) {
@@ -81,25 +82,21 @@ class _ExportDataPageState extends State<ExportDataPage> {
       for (var e in dataIncome) {
         if (e['incomeDate'] == dateController.text) {
           dataDateIncome.add(e);
+          incomesAmount.add(e['amount']);
         }
       }
 
-      _savePdf(dataDateIncome);
+      final totalIncome = incomesAmount.length >= 2
+          ? incomesAmount.reduce((a, b) => a + b)
+          : incomesAmount.isEmpty
+              ? 0
+              : incomesAmount.first;
+
+      _savePdf(dataDateIncome, totalIncome);
     }
 
     // if (category == 'pengeluaran') {}
 
-    // final incomesAmount = [];
-    // for (var e in listData) {
-    //   if (e['type'] == 'income') {
-    //     incomesAmount.add(e['amount']);
-    //   }
-    // }
-    // final totalIncome = incomesAmount.length >= 2
-    //     ? incomesAmount.reduce((a, b) => a + b)
-    //     : incomesAmount.isEmpty
-    //         ? 0
-    //         : incomesAmount.first;
     // final expansesAmount = [];
     // for (var e in listData) {
     //   if (e['type'] == 'expanse') {
@@ -113,7 +110,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
     //         : expansesAmount.first;
   }
 
-  Future<void> _savePdf(List data) async {
+  Future<void> _savePdf(List data, totalIncome) async {
     final pdf = pw.Document();
 
     pdf.addPage(pw.Page(
@@ -133,42 +130,59 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ],
             ),
             pw.SizedBox(height: 20),
-            pw.Table(border: pw.TableBorder.all(width: 1.5), children: [
-              pw.TableRow(
-                children: [
-                  pw.Center(
-                    child: pw.Text('No'),
-                  ),
-                  pw.Center(
-                    child: pw.Text('Tipe'),
-                  ),
-                  pw.Center(
-                    child: pw.Text('Kategori'),
-                  ),
-                  pw.Center(
-                    child: pw.Text('Keterangan'),
-                  ),
-                  pw.Center(
-                    child: pw.Text('jumlah'),
-                  )
-                ],
-              ),
-              ...data
-                  .map(
-                    (e) => pw.TableRow(
-                      children: [
-                        pw.Center(
-                          child: pw.Text((data.indexOf(e) + 1).toString()),
-                        ),
-                        pw.Text(e['type']),
-                        pw.Text(e['category']),
-                        pw.Text(e['title']),
-                        pw.Text(e['amount'].toString()),
-                      ],
+            pw.Table(
+              border: pw.TableBorder.all(width: 1.5),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Center(
+                      child: pw.Text('No'),
                     ),
-                  )
-                  .toList(),
-            ])
+                    pw.Center(
+                      child: pw.Text('Tipe'),
+                    ),
+                    pw.Center(
+                      child: pw.Text('Kategori'),
+                    ),
+                    pw.Center(
+                      child: pw.Text('Keterangan'),
+                    ),
+                    pw.Center(
+                      child: pw.Text('jumlah'),
+                    )
+                  ],
+                ),
+                ...data
+                    .map(
+                      (e) => pw.TableRow(
+                        children: [
+                          pw.Center(
+                            child: pw.Text((data.indexOf(e) + 1).toString()),
+                          ),
+                          pw.Text(e['type']),
+                          pw.Text(e['category']),
+                          pw.Text(e['title']),
+                          pw.Text(e['amount'].toString()),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              children: [
+                pw.Text(
+                  'Jumlah : ',
+                  style: const pw.TextStyle(fontSize: 18),
+                ),
+                pw.Text(
+                  totalIncome.toString(),
+                  style: const pw.TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            pw.SizedBox(height: 20),
           ]);
         }));
 
