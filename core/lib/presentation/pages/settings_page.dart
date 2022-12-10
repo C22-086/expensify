@@ -178,7 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15))),
                     child: Image.asset(
-                      'assets/icon_export.png',
+                      'assets/balance.png',
                     ),
                   ),
                   title: Text(
