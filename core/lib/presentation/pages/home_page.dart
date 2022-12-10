@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                               titleImageUrl: 'assets/icon-trending-up.png',
                               color: kGreen,
                               secColor: kSoftGreen,
-                              title: 'Income',
+                              title: 'Pemasukan',
                               label: "+",
                               chart: SfCircularChart(
                                 margin: EdgeInsets.zero,
@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                               titleImageUrl: 'assets/icon-trending-down.png',
                               color: kRed,
                               secColor: kSoftGreen,
-                              title: 'Expanse',
+                              title: 'Pengeluaran',
                               label: "-",
                               chart: expanses.isEmpty
                                   ? const NoOverviewCard(title: 'pengeluaran')

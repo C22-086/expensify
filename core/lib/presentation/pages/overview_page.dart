@@ -51,7 +51,7 @@ class _OverviewPageState extends State<OverviewPage> {
         child: SafeArea(
           child: Center(
             child: Text(
-              "Statistic",
+              "Grafik",
               style: kHeading6.copyWith(
                 color: kWhite,
                 fontSize: 22,
@@ -88,7 +88,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   ),
                   child: Center(
                     child: Text(
-                      "Income",
+                      "Pemasukan",
                       style: kHeading6.copyWith(
                         color: isActive == true ? kGrey : kGreen,
                         fontSize: 18,
@@ -115,7 +115,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   ),
                   child: Center(
                     child: Text(
-                      "Expense",
+                      "Pengeluaran",
                       style: kHeading6.copyWith(
                         color: isActive == true ? kRed : kGrey,
                         fontSize: 18,
@@ -156,7 +156,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Balance",
+                      "Saldo",
                       style: kHeading7.copyWith(
                           color: Colors.black45, fontSize: 18),
                     ),
@@ -175,13 +175,13 @@ class _OverviewPageState extends State<OverviewPage> {
                   width: 120,
                   child: DropdownSearch(
                     items: const [
-                      "Day",
-                      "Week",
-                      "Month",
-                      "Year",
+                      "Hari",
+                      "Minggu",
+                      "Bulan",
+                      "Tahun",
                     ],
                     onChanged: print,
-                    selectedItem: "Day",
+                    selectedItem: "Hari",
                   ),
                 ),
               ],
@@ -284,7 +284,7 @@ class _OverviewPageState extends State<OverviewPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Income vs Expanse",
+              "Pemasukan vs Pengeluaran",
               style: kHeading6,
             ),
             Padding(
@@ -328,7 +328,7 @@ class _OverviewPageState extends State<OverviewPage> {
                       );
                     } else {
                       return const Center(
-                        child: Text('No Data'),
+                        child: Text('Data Kosong'),
                       );
                     }
                   }
@@ -372,11 +372,11 @@ class CategoryItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Incomes',
+                'Pemasukan',
                 style: GoogleFonts.poppins(fontSize: 18),
               ),
               Text(
-                'Expanses',
+                'Pengeluaran',
                 style: GoogleFonts.poppins(fontSize: 18),
               )
             ],
