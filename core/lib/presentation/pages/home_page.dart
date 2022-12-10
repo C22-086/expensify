@@ -12,6 +12,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
+import '../widgets/item_show_dialog.dart';
 import '../widgets/no_overview_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -391,9 +392,11 @@ class _HomePageState extends State<HomePage> {
                         context: context,
                         builder: (_) {
                           return AlertDialog(
-                            title: Text(
-                              "Detail",
-                              style: kHeading7.copyWith(fontSize: 18),
+                            title: Center(
+                              child: Text(
+                                "Detail",
+                                style: kHeading7.copyWith(fontSize: 22),
+                              ),
                             ),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -401,124 +404,74 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             content: SizedBox(
-                              height: 200,
+                              height: 230,
                               width: double.maxFinite,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 255, 235, 212),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: const Icon(
-                                          Icons.notes_rounded,
-                                          color:
-                                              Color.fromARGB(255, 255, 155, 40),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        'Judul \t\t\t\t\t :',
-                                        style: kHeading6.copyWith(fontSize: 16),
-                                      ),
-                                      const SizedBox(
-                                        width: 18,
-                                      ),
-                                      Text(
-                                        '${list[index]['title']}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 16),
-                                      )
-                                    ],
+                                  DetailItemDialog(
+                                    title: "Judul  \t\t\t\t\t\t : ",
+                                    subtitle: '${list[index]['title']}',
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.notes_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
+                                    ),
                                   ),
                                   const SizedBox(
-                                    height: 26,
+                                    height: 20,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 221, 235, 255),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: const Icon(
-                                          Icons.category_rounded,
-                                          color: kPrussianBlue,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        'Kategori \t :',
-                                        style: kHeading6.copyWith(fontSize: 16),
-                                      ),
-                                      const SizedBox(
-                                        width: 18,
-                                      ),
-                                      Expanded(
-                                          child: Text(
-                                        '${list[index]['category']}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 16),
-                                      ))
-                                    ],
+                                  DetailItemDialog(
+                                    title: "Nominal  \t\t: ",
+                                    subtitle: formatCurrency
+                                        .format(list[index]['amount']),
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.attach_money_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
+                                    ),
                                   ),
                                   const SizedBox(
-                                    height: 26,
+                                    height: 20,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 207, 238, 213),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: const Icon(
-                                          Icons.attach_money_rounded,
-                                          color: kDarkGreen,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        'Nominal \t :',
-                                        style: kHeading6.copyWith(fontSize: 16),
-                                      ),
-                                      const SizedBox(
-                                        width: 18,
-                                      ),
-                                      Text(
-                                        formatCurrency
-                                            .format(list[index]['amount']),
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 16),
-                                      )
-                                    ],
+                                  DetailItemDialog(
+                                    title: "Tanggal \t\t\t: ",
+                                    subtitle: list[index]['type'] == 'income'
+                                        ? list[index]['incomeDate'].toString()
+                                        : list[index]['expanseDate'].toString(),
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.date_range_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DetailItemDialog(
+                                    title: "Kategori  \t\t: ",
+                                    subtitle: '${list[index]['category']}',
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.category_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
+                                    ),
                                   ),
                                 ],
                               ),
