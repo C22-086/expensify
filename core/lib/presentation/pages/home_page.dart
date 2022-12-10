@@ -536,7 +536,8 @@ class _HomePageState extends State<HomePage> {
                                                 width: 18,
                                               ),
                                               Text(
-                                                '${list[index]['amount']}',
+                                                formatCurrency.format(
+                                                    list[index]['amount']),
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 16),
                                               )
