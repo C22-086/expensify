@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
+import 'package:core/utils/format_currency.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                         style: kSubtitle.copyWith(color: kWhite),
                       ),
                       Text(
-                        "Rp.$totalIncome ",
+                        "+ ${formatCurrency.format(totalIncome)} ",
                         style: kSubtitle.copyWith(color: kWhite, fontSize: 30),
                       ),
                     ],
@@ -194,7 +195,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                   iconPath: 'assets/icon_up.png',
                   color: kSoftGreen,
                   category: income[index]['category'],
-                  amount: income[index]['amount'],
+                  amount: formatCurrency.format(income[index]['amount']),
                   date: income[index]['incomeDate'],
                   label: '+',
                   currencyColor: kGreen,

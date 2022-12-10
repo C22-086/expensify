@@ -34,7 +34,7 @@ class OverviewCard extends StatelessWidget {
             return Container(
               margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.symmetric(
-                horizontal: 10,
+                horizontal: 20,
                 vertical: 10,
               ),
               decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Rp. $label$total',
+                        '$label$total',
                         style: kHeading7.copyWith(
                           fontSize: 20,
                           color: color,
@@ -80,7 +80,7 @@ class OverviewCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 5),
                   Flexible(
                     child: SizedBox(child: chart),
                   ),

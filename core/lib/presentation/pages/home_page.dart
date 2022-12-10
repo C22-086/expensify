@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/domain/entities/chart_income.dart';
 import 'package:core/presentation/widgets/income_tail_card.dart';
+import 'package:core/utils/format_currency.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Rp. ${user['balance']}',
+                    formatCurrency.format(user['balance']),
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
                   const SizedBox(height: 10),
@@ -242,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                                     DetailIncomePage.routeName,
                                   );
                                 },
-                                total: '$totalIncome',
+                                total: formatCurrency.format(totalIncome),
                               ),
                         expanses.isEmpty
                             ? const NoOverviewCard(title: 'pengeluaran')
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                                     DetailExpensePage.routeName,
                                   );
                                 },
-                                total: '$totalExpanse',
+                                total: formatCurrency.format(totalExpanse),
                               )
                       ],
                     );
@@ -410,14 +411,19 @@ class _HomePageState extends State<HomePage> {
                                       "Detail",
                                       style: kHeading7.copyWith(fontSize: 18),
                                     ),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
                                     content: SizedBox(
-                                      height: 240,
-                                      width: 300,
+                                      height: 200,
+                                      width: double.maxFinite,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 15,
                                           ),
                                           Row(
@@ -428,18 +434,18 @@ class _HomePageState extends State<HomePage> {
                                                 height: 35,
                                                 width: 35,
                                                 decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 255, 235, 212),
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.notes_rounded,
                                                   color: Color.fromARGB(
                                                       255, 255, 155, 40),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 12,
                                               ),
                                               Text(
@@ -447,7 +453,7 @@ class _HomePageState extends State<HomePage> {
                                                 style: kHeading6.copyWith(
                                                     fontSize: 16),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 18,
                                               ),
                                               Text(
@@ -457,7 +463,7 @@ class _HomePageState extends State<HomePage> {
                                               )
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 26,
                                           ),
                                           Row(
@@ -468,17 +474,17 @@ class _HomePageState extends State<HomePage> {
                                                 height: 35,
                                                 width: 35,
                                                 decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 221, 235, 255),
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.category_rounded,
                                                   color: kPrussianBlue,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 12,
                                               ),
                                               Text(
@@ -486,7 +492,7 @@ class _HomePageState extends State<HomePage> {
                                                 style: kHeading6.copyWith(
                                                     fontSize: 16),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 18,
                                               ),
                                               Expanded(
@@ -497,7 +503,7 @@ class _HomePageState extends State<HomePage> {
                                               ))
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 26,
                                           ),
                                           Row(
@@ -508,17 +514,17 @@ class _HomePageState extends State<HomePage> {
                                                 height: 35,
                                                 width: 35,
                                                 decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 207, 238, 213),
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.attach_money_rounded,
                                                   color: kDarkGreen,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 12,
                                               ),
                                               Text(
@@ -526,11 +532,12 @@ class _HomePageState extends State<HomePage> {
                                                 style: kHeading6.copyWith(
                                                     fontSize: 16),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 18,
                                               ),
                                               Text(
-                                                '${list[index]['amount']}',
+                                                formatCurrency.format(
+                                                    list[index]['amount']),
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 16),
                                               )
@@ -597,7 +604,8 @@ class _HomePageState extends State<HomePage> {
                                 ? kSoftGreen
                                 : kSoftRed,
                             category: list[index]['category'],
-                            amount: list[index]['amount'],
+                            amount:
+                                formatCurrency.format(list[index]['amount']),
                             date: list[index]['type'].contains('income')
                                 ? list[index]['incomeDate'].split(' ')[0]
                                 : list[index]['expanseDate'].split(' ')[0],

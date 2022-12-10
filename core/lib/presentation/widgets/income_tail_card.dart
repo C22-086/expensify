@@ -19,7 +19,7 @@ class IncomeTailCard extends StatelessWidget {
   final Color color;
   final Color currencyColor;
   final String label;
-  final int amount;
+  final String amount;
   final String category;
   final String date;
 
