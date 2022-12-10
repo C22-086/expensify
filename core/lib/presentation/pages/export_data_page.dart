@@ -218,7 +218,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
                           ),
                           pw.Center(
                               child: pw.Text(
-                            e['type'],
+                            e['type'] == 'income'
+                                ? 'Pendapatan'
+                                : 'Pengeluaran',
                             style: const pw.TextStyle(fontSize: 16),
                           )),
                           pw.Center(
