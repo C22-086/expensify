@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -79,43 +78,6 @@ class _HomePageState extends State<HomePage> {
                     formatCurrency.format(user['balance']),
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
-                  const SizedBox(height: 10),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              content: const Text(
-                                  'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Batal')),
-                                TextButton(
-                                    onPressed: () async {
-                                      final ref = FirebaseDatabase.instance
-                                          .ref('transaction/$uid');
-                                      await ref.remove();
-                                      if (!mounted) return;
-                                      Navigator.pushNamed(
-                                          context, SetBalancePage.routeName);
-                                    },
-                                    child: const Text('Lanjutkan'))
-                              ],
-                            );
-                          });
-                    },
-                    child: Chip(
-                      backgroundColor: Colors.transparent,
-                      labelStyle: GoogleFonts.poppins(
-                        fontSize: 12,
-                      ),
-                      label: const Text('Ubah saldo'),
-                    ),
-                  )
                 ],
               ),
               user['imageProfile'] == ''
@@ -595,7 +557,7 @@ class _HomePageState extends State<HomePage> {
                         elevation: 0,
                         leading: Container(),
                         bottom: const PreferredSize(
-                          preferredSize: Size.fromHeight(155),
+                          preferredSize: Size.fromHeight(118),
                           child: SizedBox(),
                         ),
                         flexibleSpace: FlexibleSpaceBar(
