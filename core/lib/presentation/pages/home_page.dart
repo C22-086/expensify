@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -543,7 +544,21 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         } else {
-          return const Text('data kosong');
+          return Column(
+            children: [
+              Lottie.asset(
+                'assets/nodata.json',
+                height: 200,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Belum ada transaksi",
+                style: kHeading7.copyWith(fontSize: 22),
+              ),
+            ],
+          );
         }
       }
     }
