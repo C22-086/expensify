@@ -182,7 +182,13 @@ class _ExportDataPageState extends State<ExportDataPage> {
                     ),
                     pw.Center(
                       child: pw.Text(
-                        'Tipe',
+                        'Tanggal',
+                        style: const pw.TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    pw.Center(
+                      child: pw.Text(
+                        'Judul',
                         style: const pw.TextStyle(fontSize: 16),
                       ),
                     ),
@@ -194,7 +200,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                     ),
                     pw.Center(
                       child: pw.Text(
-                        'Keterangan',
+                        'Tipe',
                         style: const pw.TextStyle(fontSize: 16),
                       ),
                     ),
@@ -218,9 +224,12 @@ class _ExportDataPageState extends State<ExportDataPage> {
                           ),
                           pw.Center(
                               child: pw.Text(
-                            e['type'] == 'income'
-                                ? 'Pendapatan'
-                                : 'Pengeluaran',
+                            dateController.text.split('-')[2].toString(),
+                            style: const pw.TextStyle(fontSize: 16),
+                          )),
+                          pw.Center(
+                              child: pw.Text(
+                            e['title'],
                             style: const pw.TextStyle(fontSize: 16),
                           )),
                           pw.Center(
@@ -230,7 +239,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
                           )),
                           pw.Center(
                               child: pw.Text(
-                            e['title'],
+                            e['type'] == 'income'
+                                ? 'Pendapatan'
+                                : 'Pengeluaran',
                             style: const pw.TextStyle(fontSize: 16),
                           )),
                           pw.Center(
