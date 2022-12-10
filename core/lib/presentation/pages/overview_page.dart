@@ -323,16 +323,40 @@ class _OverviewPageState extends State<OverviewPage> {
                     );
                   } else {
                     if (snapshot.hasData) {
-                      final data = snapshot.data.snapshot.value;
-                      final listData = data.values.toList();
+                      final data = snapshot.data.snapshot?.value ??
+                          {
+                            '-': {
+                              "amount": 0,
+                              "category": "-",
+                              "expanseDate": "2022-12-14",
+                              "name": "-",
+                              "title": "-",
+                              "transactionId": "-",
+                              "type": "-",
+                              "userId": "-"
+                            }
+                          };
+                      final listData = data.values.toList() ??
+                          [
+                            {
+                              "amount": 0,
+                              "category": "-",
+                              "expanseDate": "2022-12-14",
+                              "name": "-",
+                              "title": "-",
+                              "transactionId": "-",
+                              "type": "-",
+                              "userId": "-"
+                            }
+                          ];
 
                       return ListView(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         children: [
                           buildBalanceInformation(),
-                          buildCategory(listData),
                           buildChart(listData),
+                          buildCategory(listData),
                         ],
                       );
                     } else {
@@ -406,7 +430,9 @@ class CategoryItem extends StatelessWidget {
             barRadius: const Radius.circular(20),
           ),
           SfCircularChart(
-            title: ChartTitle(text: 'Pemasukkan'),
+            title: ChartTitle(
+              text: 'Pemasukkan',
+            ),
             tooltipBehavior: TooltipBehavior(enable: true),
             legend: Legend(
               isVisible: true,
@@ -415,6 +441,8 @@ class CategoryItem extends StatelessWidget {
             ),
             series: [
               PieSeries<ChartIncome, String>(
+                emptyPointSettings:
+                    EmptyPointSettings(mode: EmptyPointMode.zero),
                 enableTooltip: true,
                 dataLabelMapper: (datum, index) {
                   return formatCurrency.format((datum.amount).toInt());
@@ -441,6 +469,8 @@ class CategoryItem extends StatelessWidget {
             ),
             series: [
               PieSeries<ChartIncome, String>(
+                emptyPointSettings:
+                    EmptyPointSettings(mode: EmptyPointMode.zero),
                 enableTooltip: true,
                 dataLabelMapper: (datum, index) {
                   return formatCurrency.format((datum.amount).toInt());
