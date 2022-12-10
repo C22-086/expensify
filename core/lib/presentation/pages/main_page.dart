@@ -9,19 +9,6 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildContent(int currentIndex) {
-      switch (currentIndex) {
-        case 0:
-          return const HomePage();
-        case 1:
-          return const OverviewPage();
-        case 2:
-          return const SettingsPage();
-        default:
-          return const HomePage();
-      }
-    }
-
     return BlocBuilder<SetPage, int>(
       builder: (context, currentIndex) {
         return Scaffold(
@@ -69,9 +56,12 @@ class MainPage extends StatelessWidget {
               ),
             ],
           ),
-          body: Stack(
-            children: [
-              buildContent(currentIndex),
+          body: IndexedStack(
+            index: currentIndex,
+            children: const [
+              HomePage(),
+              OverviewPage(),
+              SettingsPage(),
             ],
           ),
         );
