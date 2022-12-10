@@ -3,12 +3,13 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class ExportDataPage extends StatefulWidget {
   static const routeName = '/export-data';
@@ -125,10 +126,15 @@ class _ExportDataPageState extends State<ExportDataPage> {
   Future<void> _savePdf(List data, totalIncome) async {
     final pdf = pw.Document();
 
+    final netImage = await networkImage(
+        'https://firebasestorage.googleapis.com/v0/b/expensify-3fd31.appspot.com/o/images%2Fapp_icon.png?alt=media&token=8e2b3497-550a-4409-90cc-e70f84d736f9');
+
     pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return pw.Column(children: [
+            pw.Image(netImage, height: 100, width: 100),
+            pw.SizedBox(height: 30),
             pw.Row(
               children: [
                 pw.Text(
