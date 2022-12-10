@@ -19,6 +19,8 @@ class ExportDataPage extends StatefulWidget {
 
 class _ExportDataPageState extends State<ExportDataPage> {
   TextEditingController dateController = TextEditingController();
+  String category = 'kosong';
+  String format = 'kosong';
 
   @override
   void initState() {
@@ -77,12 +79,18 @@ class _ExportDataPageState extends State<ExportDataPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      category = 'pendapatan';
+                    });
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 10),
                     decoration: BoxDecoration(
-                        border: Border.all(color: kGrey, width: 2),
+                        border: Border.all(
+                            color: category == 'pendapatan' ? kGreen : kGrey,
+                            width: 2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
@@ -95,12 +103,18 @@ class _ExportDataPageState extends State<ExportDataPage> {
                   width: 20,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      category = 'pemasukan';
+                    });
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 10),
                     decoration: BoxDecoration(
-                        border: Border.all(color: kGrey, width: 2),
+                        border: Border.all(
+                            color: category == 'pemasukan' ? kGreen : kGrey,
+                            width: 2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
@@ -158,12 +172,17 @@ class _ExportDataPageState extends State<ExportDataPage> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  format = 'PDF';
+                });
+              },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                 decoration: BoxDecoration(
-                    border: Border.all(color: kGrey, width: 2),
+                    border: Border.all(
+                        color: format == 'PDF' ? kGreen : kGrey, width: 2),
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
                 child: Text(
                   "PDF",
