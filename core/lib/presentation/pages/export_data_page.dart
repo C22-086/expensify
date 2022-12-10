@@ -2,6 +2,7 @@
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +12,8 @@ import 'package:pdf/widgets.dart' as pw;
 
 class ExportDataPage extends StatefulWidget {
   static const routeName = '/export-data';
-  const ExportDataPage({super.key});
+  final dynamic user;
+  const ExportDataPage({super.key, required this.user});
 
   @override
   State<ExportDataPage> createState() => _ExportDataPageState();
@@ -31,20 +33,26 @@ class _ExportDataPageState extends State<ExportDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildHeader(context),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
-                child: buildBody(),
-              ),
-            ],
-          ),
-        ],
-      ),
+      body: StreamBuilder<dynamic>(
+          stream: FirebaseDatabase.instance
+              .ref('transaction/${widget.user['uid']}')
+              .onValue,
+          builder: (context, snapshot) {
+            return Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildHeader(context),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height - 130,
+                      child: buildBody(),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
     );
   }
 

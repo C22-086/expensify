@@ -21,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').onValue;
 
     buildAppBar() => SafeArea(
           child: Padding(
@@ -37,72 +37,59 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         );
-    buildHeader() {
+    buildHeader(user) {
       return SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
-          child: FutureBuilder(
-              future: dbRef,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text('Loading...');
-                }
-                final result = snapshot.data;
-                final user = result.snapshot.value;
-                return snapshot.hasData
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              user['imageProfile'] == ''
-                                  ? const CircleAvatar(
-                                      radius: 36,
-                                      child: Text('No Image'),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 36,
-                                      backgroundImage:
-                                          NetworkImage(user['imageProfile']),
-                                    ),
-                              CustomButton(
-                                title: 'Edit Profil',
-                                width: 100,
-                                fontSize: 12,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditProfilePage(
-                                        user: user,
-                                      ),
-                                    ),
-                                  );
-                                },
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      user['imageProfile'] == ''
+                          ? const CircleAvatar(
+                              radius: 36,
+                              child: Text('No Image'),
+                            )
+                          : CircleAvatar(
+                              radius: 36,
+                              backgroundImage:
+                                  NetworkImage(user['imageProfile']),
+                            ),
+                      CustomButton(
+                        title: 'Edit Profil',
+                        width: 100,
+                        fontSize: 12,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                user: user,
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 13,
-                          ),
-                          Text(
-                            user['name'],
-                            style: kHeading6,
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(user['email'], style: kSubtitle),
-                        ],
-                      )
-                    : const Text('Loading...');
-              }),
-        ),
-      );
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  Text(
+                    user['name'],
+                    style: kHeading6,
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Text(user['email'], style: kSubtitle),
+                ],
+              )));
     }
 
-    buildList() {
+    buildList(user) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
         child: Column(
@@ -154,9 +141,13 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  ExportDataPage.routeName,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(
+                      user: user,
+                    ),
+                  ),
                 );
               },
               child: ListTile(
@@ -296,24 +287,39 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           )
         ],
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildAppBar(),
-                Expanded(
-                    child: SizedBox(
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [buildHeader(), buildList()],
-                  ),
-                ))
-              ],
-            ),
-          ],
-        ),
+        child: StreamBuilder<dynamic>(
+            stream: dbRef,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: Text('Loading...'),
+                );
+              }
+              final result = snapshot.data;
+              final user = result.snapshot.value;
+              return snapshot.hasData
+                  ? Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildAppBar(),
+                            Expanded(
+                                child: SizedBox(
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                children: [buildHeader(user), buildList(user)],
+                              ),
+                            ))
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Center(
+                      child: Text('Loading...'),
+                    );
+            }),
       ),
     );
   }

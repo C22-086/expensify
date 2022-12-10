@@ -121,7 +121,9 @@ class MyApp extends StatelessWidget {
                   );
                 case ExportDataPage.routeName:
                   return MaterialPageRoute(
-                    builder: (_) => const ExportDataPage(),
+                    builder: (_) => ExportDataPage(
+                      user: settings.arguments,
+                    ),
                   );
 
                 default:
