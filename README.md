@@ -13,7 +13,7 @@ Expensify adalah aplikasi yang dapat memudahkan pengguna dalam mengelola keuanga
 - Detail dari setiap pemasukan dan pengeluaran
 - Rekapitulasi pemasukan dan pengeluaran pengguna 
 
-## ### Pemasangan Aplikasi
+## Pemasangan Aplikasi
 
 1. Lakukan klon aplikasi di komputer anda 
    ```sh
