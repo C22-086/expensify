@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GeneralForm extends StatelessWidget {
   const GeneralForm({
@@ -24,7 +25,9 @@ class GeneralForm extends StatelessWidget {
       children: [
         Text(
           label,
-          style: kHeading7.copyWith(color: kSoftBlack),
+          style: kHeading7.copyWith(
+            color: context.watch<ThemeBloc>().state ? kWhite : kDark,
+          ),
         ),
         const SizedBox(height: 5),
         TextField(

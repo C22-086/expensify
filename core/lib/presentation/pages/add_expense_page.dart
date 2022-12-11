@@ -244,9 +244,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                 color: kRed,
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.keyboard_arrow_down,
-                                color: state ? kDark : kWhite,
+                                color: kWhite,
                               ),
                             ),
                             hint: const Text('Pilih kategori'),
@@ -463,10 +463,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+                color: kWhite,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 14,
+                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+              ),
             ),
           ),
           Text(

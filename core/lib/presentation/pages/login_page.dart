@@ -72,7 +72,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextButton(
                           child: Text(
                             "Lupa kata sandi",
-                            style: kHeading6.copyWith(fontSize: 15),
+                            style:
+                                kHeading6.copyWith(fontSize: 15, color: kGreen),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     buttonLogIn(),
                     const SizedBox(height: 15),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     LogInQuestion(
                       text: 'Belum punya akun?',
                       buttonText: 'Daftar',
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ],
