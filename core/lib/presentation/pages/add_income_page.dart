@@ -57,6 +57,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
       ref.update({'balance': balance + int.parse(_incomeTextController.text)});
     }
     if (!mounted) return;
+
     BlocProvider.of<DatabaseBloc>(context).add(
       DatabasePushIncomeUser(
         name: widget.user['name'],
@@ -67,6 +68,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         date: _dateController.text,
       ),
     );
+    Navigator.pop(context);
   }
 
   @override

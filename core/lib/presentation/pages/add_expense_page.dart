@@ -61,6 +61,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
         amount: int.parse(_incomeTextController.text),
         title: _titleTextController.text,
         date: _dateController.text));
+    Navigator.pop(context);
   }
 
   @override
