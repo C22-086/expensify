@@ -174,30 +174,105 @@ class _SettingsPageState extends State<SettingsPage> {
             InkWell(
               onTap: () {
                 showDialog(
-                    context: context,
-                    builder: (_) {
-                      return AlertDialog(
-                        content: const Text(
-                            'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Batal')),
-                          TextButton(
-                              onPressed: () async {
-                                final ref = FirebaseDatabase.instance
-                                    .ref('transaction/$uid');
-                                await ref.remove();
-                                if (!mounted) return;
-                                Navigator.pushNamed(
-                                    context, SetBalancePage.routeName);
-                              },
-                              child: const Text('Lanjutkan'))
-                        ],
-                      );
-                    });
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      title: Text(
+                        "Informasi",
+                        style: kHeading7.copyWith(
+                          fontSize: 18,
+                          color: Colors.amber,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      content: SizedBox(
+                        height: 50,
+                        child: Text(
+                          'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada',
+                          style: kHeading7.copyWith(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 36.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: kGreen),
+                              child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Batal',
+                                      style: kHeading7.copyWith(
+                                          fontSize: 16, color: kWhite))),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 36.0,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: kRed,
+                              ),
+                              child: TextButton(
+                                onPressed: () async {
+                                  final ref = FirebaseDatabase.instance
+                                      .ref('transaction/$uid');
+                                  await ref.remove();
+                                  if (!mounted) return;
+                                  Navigator.pushNamed(
+                                      context, SetBalancePage.routeName);
+                                },
+                                child: Text(
+                                  'Lanjutkan',
+                                  style: kHeading7.copyWith(
+                                      fontSize: 16, color: kWhite),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                );
+                // showDialog(
+                //     context: context,
+                //     builder: (_) {
+                //       return AlertDialog(
+                //         content: const Text(
+                //             'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
+                //         actions: [
+                //           TextButton(
+                //               onPressed: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //               child: const Text('Batal')),
+                //           TextButton(
+                //               onPressed: () async {
+                //                 final ref = FirebaseDatabase.instance
+                //                     .ref('transaction/$uid');
+                //                 await ref.remove();
+                //                 if (!mounted) return;
+                //                 Navigator.pushNamed(
+                //                     context, SetBalancePage.routeName);
+                //               },
+                //               child: const Text('Lanjutkan'))
+                //         ],
+                //       );
+                //     });
               },
               child: ListTile(
                   leading: Container(
