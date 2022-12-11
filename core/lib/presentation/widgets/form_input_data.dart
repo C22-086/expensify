@@ -48,7 +48,7 @@ class FormInputData extends StatelessWidget {
         children: [
           Chip(
             backgroundColor: Colors.transparent,
-            labelStyle: kHeading6.copyWith(fontSize: 10, color: kGreen),
+            labelStyle: kHeading6.copyWith(fontSize: 10, color: textColor),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: boderColor, width: 2),
               borderRadius: const BorderRadius.all(
@@ -79,7 +79,9 @@ class FormInputData extends StatelessWidget {
                     : const Color(0xffF7F8F8),
                 hintText: hintText,
                 filled: true,
-                hintStyle: kHeading6.copyWith(fontSize: 12)),
+                hintStyle: kHeading6.copyWith(
+                  fontSize: 12,
+                )),
             controller: controller,
           )
         ],

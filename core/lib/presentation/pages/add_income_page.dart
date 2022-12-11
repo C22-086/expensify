@@ -137,7 +137,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
               const SizedBox(height: 5),
               Text(
                 'Rp. +${_incomeTextController.text}',
-                style: kHeading6.copyWith(fontSize: 22, color: kGreen),
+                style: kHeading6.copyWith(fontSize: 24, color: kGreen),
               ),
             ],
           ),

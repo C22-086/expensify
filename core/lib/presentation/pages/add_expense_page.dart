@@ -88,9 +88,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 Expanded(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height - 130,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [buildBody()],
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: buildBody(),
                     ),
                   ),
                 ),
@@ -124,9 +124,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Pengeluaran :'),
+              const SizedBox(height: 5),
               Text(
                 'Rp. -${_incomeTextController.text}',
-                style: GoogleFonts.poppins(fontSize: 24),
+                style: kHeading6.copyWith(fontSize: 24, color: kRed),
               ),
             ],
           ),
@@ -210,7 +211,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             blurRadius: 49,
                             color: state
                                 ? kDark
-                                : const Color.fromARGB(255, 169, 169, 169),
+                                : const Color.fromARGB(255, 236, 236, 236),
                           ),
                         ],
                       ),
@@ -341,7 +342,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             blurRadius: 49,
                             color: state
                                 ? kDark
-                                : const Color.fromARGB(255, 169, 169, 169),
+                                : const Color.fromARGB(255, 236, 236, 236),
                           ),
                         ],
                       ),
@@ -426,7 +427,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 150,
+                      height: 100,
                     )
                   ],
                 ),
