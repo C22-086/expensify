@@ -1,4 +1,4 @@
-package com.example.expensify
+package com.capstone.expensify
 
 import io.flutter.embedding.android.FlutterActivity
 

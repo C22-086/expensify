@@ -612,7 +612,7 @@ packages:
     source: hosted
     version: "3.6.2"
   printing:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: printing
       url: "https://pub.dartlang.org"

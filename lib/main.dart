@@ -3,6 +3,7 @@ import 'package:core/presentation/pages/onboarding_page.dart';
 import 'package:expensify/firebase_options.dart';
 import 'package:expensify/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,6 +37,8 @@ void main() async {
   final pref = await SharedPreferences.getInstance();
   initializeApp = pref.getBool('onboardingPassed');
   isLogin = pref.getBool('isLogin');
+
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
 
   runApp(const MyApp());
 }

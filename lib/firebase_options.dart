@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '6551562988',
     projectId: 'expensify-3fd31',
     storageBucket: 'expensify-3fd31.appspot.com',
-    iosClientId: '6551562988-ekt0jom96p9hci29l3erd6mu5oplbr0p.apps.googleusercontent.com',
-    iosBundleId: 'com.example.expensify',
+    iosClientId:
+        '6551562988-ekt0jom96p9hci29l3erd6mu5oplbr0p.apps.googleusercontent.com',
+    iosBundleId: 'com.capstone.expensify',
   );
 }
