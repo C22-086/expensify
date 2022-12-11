@@ -2,6 +2,7 @@
 
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
+import 'package:core/utils/format_currency.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,13 +92,13 @@ class _ExportDataPageState extends State<ExportDataPage> {
         }
       }
 
-      final totalIncome = incomesAmount.length >= 2
+      final total = incomesAmount.length >= 2
           ? incomesAmount.reduce((a, b) => a + b)
           : incomesAmount.isEmpty
               ? 0
               : incomesAmount.first;
 
-      _savePdf(dataDateIncome, totalIncome);
+      _savePdf(dataDateIncome, total);
     } else if (category == 'pengeluaran') {
       for (var e in listData) {
         if (e['type'] == 'expanse') {
@@ -111,20 +112,20 @@ class _ExportDataPageState extends State<ExportDataPage> {
         }
       }
 
-      final totalIncome = expansesAmount.length >= 2
+      final total = expansesAmount.length >= 2
           ? expansesAmount.reduce((a, b) => a + b)
           : expansesAmount.isEmpty
               ? 0
               : expansesAmount.first;
 
-      _savePdf(dataDateExpanse, totalIncome);
+      _savePdf(dataDateExpanse, total);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Ada Kesalahan !!')));
     }
   }
 
-  Future<void> _savePdf(List data, totalIncome) async {
+  Future<void> _savePdf(List data, total) async {
     final pdf = pw.Document();
 
     final netImage = await networkImage(
@@ -253,7 +254,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                           )),
                           pw.Center(
                               child: pw.Text(
-                            e['amount'].toString(),
+                            formatCurrency.format(e['amount']),
                             style: const pw.TextStyle(fontSize: 16),
                           )),
                         ],
@@ -272,7 +273,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.Text(
-                  totalIncome.toString(),
+                  formatCurrency.format(total),
                   style: const pw.TextStyle(fontSize: 18),
                 )
               ],
