@@ -76,10 +76,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
         child: ListView(
           children: [
-            InkWell(
+            GestureDetector(
               onTap: () async {
-                final image = await ImagePicker.platform
-                    .pickImage(source: ImageSource.gallery);
+                final image = await ImagePicker.platform.pickImage(
+                  source: ImageSource.gallery,
+                );
                 setState(() {
                   imageUpdate = image;
                 });
@@ -181,8 +182,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   width: 150,
                   height: 50,
                   child: CustomButton(
-                      title: "Simpan",
-                      onPressed: () {
+                    title: "Simpan",
+                    onPressed: () {
+                      if (imageUpdate != null) {
                         BlocProvider.of<DatabaseBloc>(context).add(
                           DatabaseEditUser(
                               name: _nameController.text.isEmpty
@@ -191,9 +193,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               uid: uid),
                         );
                         BlocProvider.of<DatabaseBloc>(context).add(
-                            DatabaseUploadImage(
-                                uid: uid, image: File(imageUpdate!.path)));
-                      }),
+                          DatabaseUploadImage(
+                            uid: uid,
+                            image: File(imageUpdate!.path),
+                          ),
+                        );
+                      } else {
+                        BlocProvider.of<DatabaseBloc>(context).add(
+                          DatabaseEditUser(
+                              name: _nameController.text.isEmpty
+                                  ? widget.user['name']
+                                  : _nameController.text,
+                              uid: uid),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             )

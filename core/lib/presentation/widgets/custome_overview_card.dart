@@ -51,7 +51,7 @@ class OverviewCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '$title Overview',
+                            'Rekap $title',
                             style: kBodyText.copyWith(
                               fontSize: 14,
                               color: state ? kWhite : kRichBlack,

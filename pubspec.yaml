@@ -52,7 +52,9 @@ dependencies:
   path_provider: ^2.0.11
   lottie: ^2.0.0
   syncfusion_flutter_charts: ^20.3.60
-
+  pdf: ^3.8.4
+  shimmer: ^2.0.0
+  printing: ^5.9.3
 
 flutter_icons:
   image_path_android: "assets/app_icon.png"

@@ -58,4 +58,5 @@ export 'presentation/widgets/login_question.dart';
 
 // Common
 export 'utils/failure.dart';
+export 'utils/save_launch.dart';
 export 'common/route_observer.dart';

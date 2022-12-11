@@ -82,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     buttonLogIn(),
                     const SizedBox(height: 15),
-                    buttonLogInWithGoogle(),
                     const SizedBox(height: 30),
                     LogInQuestion(
                       text: 'Belum punya akun?',
@@ -123,53 +122,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget buttonLogInWithGoogle() {
-    return InkWell(
-      onTap: () {
-        _signInWithGoogle(context);
-      },
-      child: Container(
-        height: defaultButtonHeight,
-        width: double.infinity,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(defaultRadius)),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/icon_google.png',
-                  scale: 2,
-                ),
-                state is AuthLoadingGoogle
-                    ? Container(
-                        width: 24,
-                        height: 24,
-                        padding: const EdgeInsets.all(2.0),
-                        child: const CircularProgressIndicator(
-                          color: kGreen,
-                          strokeWidth: 3,
-                        ),
-                      )
-                    : Text(
-                        'Masuk dengan Google',
-                        style: kHeading7,
-                      ),
-                const SizedBox(
-                  width: 0,
-                )
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   Future<void> _signInEmailAndPassword(context) async {
     if (_emailController.text.isEmpty) {
       const snackbar = SnackBar(content: Text('Email belum di isi'));
@@ -185,11 +137,5 @@ class _LoginPageState extends State<LoginPage> {
       final pref = await SharedPreferences.getInstance();
       pref.setBool('isLogin', true);
     }
-  }
-
-  void _signInWithGoogle(context) {
-    BlocProvider.of<AuthBloc>(context).add(
-      GoogleLogInRequested(),
-    );
   }
 }

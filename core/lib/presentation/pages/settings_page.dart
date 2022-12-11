@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings_page';
@@ -21,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final dbRef = FirebaseDatabase.instance.ref('users/$uid').once();
+    final dbRef = FirebaseDatabase.instance.ref('users/$uid').onValue;
 
     buildAppBar() => SafeArea(
           child: Padding(
@@ -37,84 +37,59 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         );
-    buildHeader() {
+    buildHeader(user) {
       return SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
-          child: FutureBuilder(
-              future: dbRef,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text('Loading...');
-                }
-                final result = snapshot.data;
-                final user = result.snapshot.value;
-                return snapshot.hasData
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              user['imageProfile'] == ''
-                                  ? const CircleAvatar(
-                                      radius: 36,
-                                      child: Text('No Image'),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 36,
-                                      backgroundImage:
-                                          NetworkImage(user['imageProfile']),
-                                    ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditProfilePage(
-                                        user: user,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 17, 20, 17),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Edit Profil',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: kWhite,
-                                  ),
-                                ),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      user['imageProfile'] == ''
+                          ? const CircleAvatar(
+                              radius: 36,
+                              child: Text('No Image'),
+                            )
+                          : CircleAvatar(
+                              radius: 36,
+                              backgroundImage:
+                                  NetworkImage(user['imageProfile']),
+                            ),
+                      CustomButton(
+                        title: 'Edit Profil',
+                        width: 100,
+                        fontSize: 12,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                user: user,
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 13,
-                          ),
-                          Text(
-                            user['name'],
-                            style: kHeading6,
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(user['email'], style: kSubtitle),
-                        ],
-                      )
-                    : const Text('Loading...');
-              }),
-        ),
-      );
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  Text(
+                    user['name'],
+                    style: kHeading6,
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Text(user['email'], style: kSubtitle),
+                ],
+              )));
     }
 
-    buildList() {
+    buildList(user) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
         child: Column(
@@ -164,11 +139,68 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 33,
             ),
+            InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        content: const Text(
+                            'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Batal')),
+                          TextButton(
+                              onPressed: () async {
+                                final ref = FirebaseDatabase.instance
+                                    .ref('transaction/$uid');
+                                await ref.remove();
+                                if (!mounted) return;
+                                Navigator.pushNamed(
+                                    context, SetBalancePage.routeName);
+                              },
+                              child: const Text('Lanjutkan'))
+                        ],
+                      );
+                    });
+              },
+              child: ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kGrey,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15))),
+                    child: Image.asset(
+                      'assets/balance.png',
+                    ),
+                  ),
+                  title: Text(
+                    'Ubah Saldo',
+                    style: kHeading6,
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                  )),
+            ),
+            const SizedBox(
+              height: 33,
+            ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  ExportDataPage.routeName,
+                  MaterialPageRoute(
+                    builder: (context) => ExportDataPage(
+                      user: user,
+                    ),
+                  ),
                 );
               },
               child: ListTile(
@@ -308,24 +340,47 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           )
         ],
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildAppBar(),
-                Expanded(
-                    child: SizedBox(
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [buildHeader(), buildList()],
-                  ),
-                ))
-              ],
-            ),
-          ],
-        ),
+        child: StreamBuilder<dynamic>(
+            stream: dbRef,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Column(
+                  children: const [
+                    Spacer(),
+                    Text('Loading data...'),
+                    Spacer(),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: LinearProgressIndicator(backgroundColor: kGrey),
+                    ),
+                  ],
+                );
+              }
+              final result = snapshot.data;
+              final user = result.snapshot.value;
+              return snapshot.hasData
+                  ? Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildAppBar(),
+                            Expanded(
+                                child: SizedBox(
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                children: [buildHeader(user), buildList(user)],
+                              ),
+                            ))
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Center(
+                      child: Text('Loading...'),
+                    );
+            }),
       ),
     );
   }

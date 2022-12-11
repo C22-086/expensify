@@ -6,12 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/custom_add_card.dart';
 import '../widgets/custome_overview_card.dart';
+import '../widgets/item_show_dialog.dart';
 import '../widgets/no_overview_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     final pageController = PageController(
@@ -48,13 +51,12 @@ class _HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Hai, ${user['name']}',
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      color: kWhite,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: width / 1.5,
+                    child: Text(
+                      'Hai, ${user['name']}',
+                      overflow: TextOverflow.ellipsis,
+                      style: kHeading6.copyWith(color: kWhite),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -77,43 +79,6 @@ class _HomePageState extends State<HomePage> {
                     formatCurrency.format(user['balance']),
                     style: kHeading6.copyWith(color: kWhite, fontSize: 22),
                   ),
-                  const SizedBox(height: 10),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              content: const Text(
-                                  'Dengan melanjutkan pengubahan saldo kamu saat ini, kamu akan mereset semua transaksi yang sudah ada'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Batal')),
-                                TextButton(
-                                    onPressed: () async {
-                                      final ref = FirebaseDatabase.instance
-                                          .ref('transaction/$uid');
-                                      await ref.remove();
-                                      if (!mounted) return;
-                                      Navigator.pushNamed(
-                                          context, SetBalancePage.routeName);
-                                    },
-                                    child: const Text('Lanjutkan'))
-                              ],
-                            );
-                          });
-                    },
-                    child: Chip(
-                      backgroundColor: Colors.transparent,
-                      labelStyle: GoogleFonts.poppins(
-                        fontSize: 12,
-                      ),
-                      label: const Text('Ubah saldo'),
-                    ),
-                  )
                 ],
               ),
               user['imageProfile'] == ''
@@ -141,184 +106,176 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    buildCard(data) {
-      return Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 20,
-            ),
-            height: 195,
-            width: double.infinity,
-            child: StreamBuilder<dynamic>(
-              stream: FirebaseDatabase.instance
-                  .ref()
-                  .child('transaction/$uid')
-                  .onValue,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  if (snapshot.hasData) {
-                    final Map<dynamic, dynamic> transactions =
-                        snapshot.data.snapshot.value ?? {};
-                    final listData = transactions.values.toList();
+    Widget buildCard(data, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        final Map<dynamic, dynamic> transactions =
+            snapshot.data.snapshot.value ?? {};
+        final listData = transactions.values.toList();
 
-                    //get total income
-                    final incomesAmount = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'income') {
-                        incomesAmount.add(e['amount']);
-                      }
-                    }
-                    final totalIncome = incomesAmount.length >= 2
-                        ? incomesAmount.reduce((a, b) => a + b)
-                        : incomesAmount.isEmpty
-                            ? 0
-                            : incomesAmount.first;
+        //get total income
+        final incomesAmount = [];
+        for (var e in listData) {
+          if (e['type'] == 'income') {
+            incomesAmount.add(e['amount']);
+          }
+        }
+        final totalIncome = incomesAmount.length >= 2
+            ? incomesAmount.reduce((a, b) => a + b)
+            : incomesAmount.isEmpty
+                ? 0
+                : incomesAmount.first;
 
-                    //get all income
-                    final List<ChartIncome> incomes = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'income') {
-                        incomes.add(ChartIncome.fromMap(e));
-                      }
-                    }
-                    //get total Expanse
-                    final expansesAmount = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'expanse') {
-                        expansesAmount.add(e['amount']);
-                      }
-                    }
-                    final totalExpanse = expansesAmount.length >= 2
-                        ? expansesAmount.reduce((a, b) => a + b)
-                        : expansesAmount.isEmpty
-                            ? 0
-                            : expansesAmount.first;
+        //get all income
+        final List<ChartIncome> incomes = [];
+        for (var e in listData) {
+          if (e['type'] == 'income') {
+            incomes.add(ChartIncome.fromMap(e));
+          }
+        }
 
-                    //get all expanses
-                    final List<ChartIncome> expanses = [];
-                    for (var e in listData) {
-                      if (e['type'] == 'expanse') {
-                        expanses.add(ChartIncome.fromMap(e));
-                      }
-                    }
-                    return PageView(
-                      padEnds: false,
-                      controller: pageController,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        incomes.isEmpty
-                            ? const NoOverviewCard(
-                                title: 'pemasukkan',
-                              )
-                            : OverviewCard(
-                                titleImageUrl: 'assets/icon-trending-up.png',
-                                color: kGreen,
-                                secColor: kSoftGreen,
-                                title: 'Income',
-                                label: "+",
-                                chart: SfCircularChart(
-                                  margin: EdgeInsets.zero,
-                                  tooltipBehavior: TooltipBehavior(
-                                      enable: true,
-                                      format: 'point.x : Rp. point.y'),
-                                  series: [
-                                    DoughnutSeries<ChartIncome, String>(
-                                      explode: true,
-                                      enableTooltip: true,
-                                      dataSource: incomes,
-                                      xValueMapper: (data, _) =>
-                                          incomes[_].category,
-                                      yValueMapper: (data, _) =>
-                                          incomes[_].amount,
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailIncomePage.routeName,
-                                  );
-                                },
-                                total: formatCurrency.format(totalIncome),
+        //get total Expanse
+        final expansesAmount = [];
+        for (var e in listData) {
+          if (e['type'] == 'expanse') {
+            expansesAmount.add(e['amount']);
+          }
+        }
+        final totalExpanse = expansesAmount.length >= 2
+            ? expansesAmount.reduce((a, b) => a + b)
+            : expansesAmount.isEmpty
+                ? 0
+                : expansesAmount.first;
+
+        //get all expanses
+        final List<ChartIncome> expanses = [];
+        for (var e in listData) {
+          if (e['type'] == 'expanse') {
+            expanses.add(ChartIncome.fromMap(e));
+          }
+        }
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 20,
+                  ),
+                  height: 195,
+                  width: double.infinity,
+                  child: PageView(
+                    padEnds: false,
+                    controller: pageController,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      incomes.isEmpty
+                          ? const NoOverviewCard(
+                              title: 'pemasukkan',
+                            )
+                          : OverviewCard(
+                              titleImageUrl: 'assets/icon-trending-up.png',
+                              color: kGreen,
+                              secColor: kSoftGreen,
+                              title: 'Pemasukan',
+                              label: "+",
+                              chart: SfCircularChart(
+                                margin: EdgeInsets.zero,
+                                tooltipBehavior: TooltipBehavior(
+                                    enable: true,
+                                    format: 'point.x : Rp. point.y'),
+                                series: [
+                                  DoughnutSeries<ChartIncome, String>(
+                                    explode: true,
+                                    enableTooltip: true,
+                                    dataSource: incomes,
+                                    xValueMapper: (data, _) =>
+                                        incomes[_].category,
+                                    yValueMapper: (data, _) =>
+                                        incomes[_].amount,
+                                  )
+                                ],
                               ),
-                        expanses.isEmpty
-                            ? const NoOverviewCard(title: 'pengeluaran')
-                            : OverviewCard(
-                                titleImageUrl: 'assets/icon-trending-down.png',
-                                color: kRed,
-                                secColor: kSoftGreen,
-                                title: 'Expanse',
-                                label: "-",
-                                chart: expanses.isEmpty
-                                    ? const NoOverviewCard(title: 'pengeluaran')
-                                    : SfCircularChart(
-                                        margin: EdgeInsets.zero,
-                                        tooltipBehavior: TooltipBehavior(
-                                            enable: true,
-                                            format: 'point.x : Rp. point.y'),
-                                        series: [
-                                          DoughnutSeries<ChartIncome, String>(
-                                            explode: true,
-                                            enableTooltip: true,
-                                            dataSource: expanses,
-                                            xValueMapper: (data, _) =>
-                                                expanses[_].category,
-                                            yValueMapper: (data, _) =>
-                                                expanses[_].amount,
-                                          )
-                                        ],
-                                      ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailExpensePage.routeName,
-                                  );
-                                },
-                                total: formatCurrency.format(totalExpanse),
-                              )
-                      ],
-                    );
-                  } else {
-                    return PageView(
-                      padEnds: false,
-                      controller: pageController,
-                      physics: const BouncingScrollPhysics(),
-                      children: const [
-                        NoOverviewCard(title: ''),
-                      ],
-                    );
-                  }
-                }
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          SmoothPageIndicator(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  DetailIncomePage.routeName,
+                                );
+                              },
+                              total: formatCurrency.format(totalIncome),
+                            ),
+                      expanses.isEmpty
+                          ? const NoOverviewCard(title: 'pengeluaran')
+                          : OverviewCard(
+                              titleImageUrl: 'assets/icon-trending-down.png',
+                              color: kRed,
+                              secColor: kSoftGreen,
+                              title: 'Pengeluaran',
+                              label: "-",
+                              chart: expanses.isEmpty
+                                  ? const NoOverviewCard(title: 'pengeluaran')
+                                  : SfCircularChart(
+                                      margin: EdgeInsets.zero,
+                                      tooltipBehavior: TooltipBehavior(
+                                          enable: true,
+                                          format: 'point.x : Rp. point.y'),
+                                      series: [
+                                        DoughnutSeries<ChartIncome, String>(
+                                          explode: true,
+                                          enableTooltip: true,
+                                          dataSource: expanses,
+                                          xValueMapper: (data, _) =>
+                                              expanses[_].category,
+                                          yValueMapper: (data, _) =>
+                                              expanses[_].amount,
+                                        )
+                                      ],
+                                    ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  DetailExpensePage.routeName,
+                                );
+                              },
+                              total: formatCurrency.format(totalExpanse),
+                            )
+                    ],
+                  )),
+              const SizedBox(height: 10),
+              SmoothPageIndicator(
+                controller: pageController,
+                count: 2,
+                effect: CustomizableEffect(
+                  activeDotDecoration: DotDecoration(
+                    width: 35,
+                    height: 8,
+                    color: kGreen,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  dotDecoration: DotDecoration(
+                    width: 15,
+                    height: 8,
+                    color: kSoftGreen,
+                    borderRadius: BorderRadius.circular(16),
+                    verticalOffset: 0,
+                  ),
+                  spacing: 6.0,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return PageView(
+            padEnds: false,
             controller: pageController,
-            count: 2,
-            effect: CustomizableEffect(
-              activeDotDecoration: DotDecoration(
-                width: 35,
-                height: 8,
-                color: kGreen,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              dotDecoration: DotDecoration(
-                width: 15,
-                height: 8,
-                color: kSoftGreen,
-                borderRadius: BorderRadius.circular(16),
-                verticalOffset: 0,
-              ),
-              spacing: 6.0,
-            ),
-          ),
-        ],
-      );
+            physics: const BouncingScrollPhysics(),
+            children: const [
+              NoOverviewCard(title: ''),
+            ],
+          );
+        }
+      }
     }
 
     buildMainFuture(user) {
@@ -369,265 +326,205 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget buildContent() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            StreamBuilder(
-              stream: FirebaseDatabase.instance.ref('transaction/$uid').onValue,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Kamu belum melakukan transaksi'));
-                  } else if (snapshot.hasData) {
-                    Map<dynamic, dynamic> transaction =
-                        snapshot.data.snapshot.value == null
-                            ? {}
-                            : snapshot.data!.snapshot!.value;
+    Widget buildContent(AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+        if (snapshot.hasError) {
+          return const Center(child: Text('Kamu belum melakukan transaksi'));
+        } else if (snapshot.hasData) {
+          Map<dynamic, dynamic> transaction =
+              snapshot.data.snapshot.value == null
+                  ? {}
+                  : snapshot.data!.snapshot!.value;
 
-                    List<dynamic> list = transaction.values.toList();
+          List<dynamic> list = transaction.values.toList();
 
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      "Detail",
-                                      style: kHeading7.copyWith(fontSize: 18),
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Center(
+                              child: Text(
+                                "Detail",
+                                style: kHeading7.copyWith(fontSize: 22),
+                              ),
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            content: SizedBox(
+                              height: 230,
+                              width: double.maxFinite,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DetailItemDialog(
+                                    title: "Judul  \t\t\t\t\t\t : ",
+                                    subtitle: '${list[index]['title']}',
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.notes_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
                                     ),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DetailItemDialog(
+                                    title: "Nominal  \t\t: ",
+                                    subtitle: formatCurrency
+                                        .format(list[index]['amount']),
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.attach_money_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
                                     ),
-                                    content: SizedBox(
-                                      height: 200,
-                                      width: double.maxFinite,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 255, 235, 212),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.notes_rounded,
-                                                  color: Color.fromARGB(
-                                                      255, 255, 155, 40),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Judul \t\t\t\t\t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Text(
-                                                '${list[index]['title']}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 26,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 221, 235, 255),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.category_rounded,
-                                                  color: kPrussianBlue,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Kategori \t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Expanded(
-                                                  child: Text(
-                                                '${list[index]['category']}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              ))
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 26,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 207, 238, 213),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.attach_money_rounded,
-                                                  color: kDarkGreen,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                'Nominal \t :',
-                                                style: kHeading6.copyWith(
-                                                    fontSize: 16),
-                                              ),
-                                              const SizedBox(
-                                                width: 18,
-                                              ),
-                                              Text(
-                                                formatCurrency.format(
-                                                    list[index]['amount']),
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 16),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DetailItemDialog(
+                                    title: "Tanggal \t\t\t: ",
+                                    subtitle: list[index]['type'] == 'income'
+                                        ? list[index]['incomeDate'].toString()
+                                        : list[index]['expanseDate'].toString(),
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.date_range_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Batal'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () async {
-                                          final getBalance =
-                                              await FirebaseDatabase.instance
-                                                  .ref()
-                                                  .child('users/$uid/balance')
-                                                  .get();
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DetailItemDialog(
+                                    title: "Kategori  \t\t: ",
+                                    subtitle: '${list[index]['category']}',
+                                    color: list[index]['type'] == 'income'
+                                        ? kSoftGreen
+                                        : kSoftRed,
+                                    icon: Icon(
+                                      Icons.category_rounded,
+                                      color: list[index]['type'] == 'income'
+                                          ? kGreen
+                                          : kRed,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  final getBalance = await FirebaseDatabase
+                                      .instance
+                                      .ref()
+                                      .child('users/$uid/balance')
+                                      .get();
 
-                                          final refUser = FirebaseDatabase
-                                              .instance
-                                              .ref('users/$uid');
-                                          if (getBalance.exists) {
-                                            if (list[index]['type']
-                                                .contains('income')) {
-                                              await refUser.update({
-                                                'balance': int.parse(getBalance
-                                                        .value
-                                                        .toString()) -
-                                                    list[index]['amount']
-                                              });
-                                            } else {
-                                              await refUser.update({
-                                                'balance': int.parse(getBalance
-                                                        .value
-                                                        .toString()) +
-                                                    list[index]['amount']
-                                              });
-                                            }
-                                          }
-                                          await FirebaseDatabase.instance
-                                              .ref('transaction/$uid')
-                                              .child(
-                                                  list[index]['transactionId'])
-                                              .remove()
-                                              .then(
-                                                  (value) => Navigator.pop(_));
-                                        },
-                                        child: const Text('Hapus'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: IncomeTailCard(
-                            iconPath: list[index]['type'].contains('income')
-                                ? 'assets/icon_up.png'
-                                : 'assets/icon_down.png',
-                            color: list[index]['type'].contains('income')
-                                ? kSoftGreen
-                                : kSoftRed,
-                            category: list[index]['category'],
-                            amount:
-                                formatCurrency.format(list[index]['amount']),
-                            date: list[index]['type'].contains('income')
-                                ? list[index]['incomeDate'].split(' ')[0]
-                                : list[index]['expanseDate'].split(' ')[0],
-                            label: list[index]['type'].contains('income')
-                                ? '+'
-                                : '-',
-                            currencyColor:
-                                list[index]['type'] == 'income' ? kGreen : kRed,
-                            title: list[index]['title'],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Text('data kosong');
-                  }
-                }
+                                  final refUser = FirebaseDatabase.instance
+                                      .ref('users/$uid');
+                                  if (getBalance.exists) {
+                                    if (list[index]['type']
+                                        .contains('income')) {
+                                      await refUser.update({
+                                        'balance': int.parse(
+                                                getBalance.value.toString()) -
+                                            list[index]['amount']
+                                      });
+                                    } else {
+                                      await refUser.update({
+                                        'balance': int.parse(
+                                                getBalance.value.toString()) +
+                                            list[index]['amount']
+                                      });
+                                    }
+                                  }
+                                  await FirebaseDatabase.instance
+                                      .ref('transaction/$uid')
+                                      .child(list[index]['transactionId'])
+                                      .remove()
+                                      .then((value) => Navigator.pop(_));
+                                },
+                                child: const Text('Hapus'),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                  child: IncomeTailCard(
+                    iconPath: list[index]['type'].contains('income')
+                        ? 'assets/icon_up.png'
+                        : 'assets/icon_down.png',
+                    color: list[index]['type'].contains('income')
+                        ? kSoftGreen
+                        : kSoftRed,
+                    category: list[index]['category'],
+                    amount: formatCurrency.format(list[index]['amount']),
+                    date: list[index]['type'].contains('income')
+                        ? list[index]['incomeDate'].split(' ')[0]
+                        : list[index]['expanseDate'].split(' ')[0],
+                    label: list[index]['type'].contains('income') ? '+' : '-',
+                    currencyColor:
+                        list[index]['type'] == 'income' ? kGreen : kRed,
+                    title: list[index]['title'],
+                  ),
+                );
               },
             ),
-          ],
-        ),
-      );
+          );
+        } else {
+          return Column(
+            children: [
+              Lottie.asset(
+                'assets/nodata.json',
+                height: 200,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Belum ada transaksi",
+                style: kHeading7.copyWith(fontSize: 22),
+              ),
+            ],
+          );
+        }
+      }
     }
 
     return Scaffold(
@@ -644,8 +541,120 @@ class _HomePageState extends State<HomePage> {
           stream: FirebaseDatabase.instance.ref('users/$uid').onValue,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: Text('Loading...'),
+              return SafeArea(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  enabled: true,
+                  direction: ShimmerDirection.ltr,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 20,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            const CircleAvatar(radius: 30),
+                          ],
+                        ),
+                        Container(
+                          height: 20,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Container(
+                          height: 150,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 100,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          height: 30,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
               );
             }
             final result = snapshot.data;
@@ -661,7 +670,7 @@ class _HomePageState extends State<HomePage> {
                         elevation: 0,
                         leading: Container(),
                         bottom: const PreferredSize(
-                          preferredSize: Size.fromHeight(155),
+                          preferredSize: Size.fromHeight(118),
                           child: SizedBox(),
                         ),
                         flexibleSpace: FlexibleSpaceBar(
@@ -677,26 +686,34 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          buildCard(user),
-                          buildMainFuture(user),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 20,
+                      StreamBuilder<dynamic>(
+                        stream: FirebaseDatabase.instance
+                            .ref()
+                            .child('transaction/$uid')
+                            .onValue,
+                        builder: (context, AsyncSnapshot snapshot) {
+                          return SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                buildCard(user, snapshot),
+                                buildMainFuture(user),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 20),
+                                  child: Text(
+                                    "Transaksi Terbaru",
+                                    style: kHeading5.copyWith(
+                                      color: context.watch<ThemeBloc>().state
+                                          ? kWhite
+                                          : kSoftBlack,
+                                    ),
+                                  ),
+                                ),
+                                buildContent(snapshot),
+                              ],
                             ),
-                            child: Text(
-                              "Transaksi Terbaru",
-                              style: kHeading5.copyWith(
-                                color: context.watch<ThemeBloc>().state
-                                    ? kWhite
-                                    : kSoftBlack,
-                              ),
-                            ),
-                          ),
-                          buildContent(),
-                        ]),
+                          );
+                        },
                       ),
                     ],
                   )
