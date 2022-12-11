@@ -147,7 +147,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               if (e['type'] == 'income') e['incomeDate'] else e['expanseDate'],
               e['title'],
               e['category'],
-              formatCurrency.format(e['amount']),
+              formatBalance.format(e['amount']),
             ])
         .toList();
 
@@ -226,7 +226,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                       fontSize: 12, fontBold: pw.Font.courierBold()),
                 ),
                 pw.Text(
-                  formatCurrency.format(total),
+                  formatBalance.format(total),
                   style: const pw.TextStyle(fontSize: 12),
                 )
               ],
@@ -239,9 +239,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                       fontSize: 12, fontBold: pw.Font.courierBold()),
                 ),
                 pw.Text(
-                  category == 'semua'
-                      ? formatCurrency.format(totalExpanse)
-                      : '',
+                  category == 'semua' ? formatBalance.format(totalExpanse) : '',
                   style: const pw.TextStyle(fontSize: 12),
                 )
               ],
