@@ -66,6 +66,16 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
+                    const SizedBox(height: 10),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          child: Text(
+                            "Lupa kata sandi",
+                            style: kHeading6.copyWith(fontSize: 15),
+                          ),
+                          onPressed: () {},
+                        ))
                   ],
                 ),
                 Column(
