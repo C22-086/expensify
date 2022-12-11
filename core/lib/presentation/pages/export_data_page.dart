@@ -282,7 +282,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
 
     Uint8List bytes = await pdf.save();
 
-    await saveAndLaunchFile(bytes, 'document.pdf');
+    await saveAndLaunchFile(bytes, '${dateController.text}.pdf');
   }
 
   Widget buildBody(user) {
