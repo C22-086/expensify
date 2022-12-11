@@ -249,17 +249,13 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                   color: kGreen,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: state ? kDark : kWhite,
+                                  color: kWhite,
                                 ),
                               ),
                               hint: const Text('Pilih kategori'),
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: kRichBlack,
-                              ),
+                              style: kHeading6.copyWith(fontSize: 12),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
@@ -269,75 +265,65 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                 fillColor:
                                     state ? kSoftDark : const Color(0xffF7F8F8),
                               ),
-                              items: [
+                              items: const [
                                 DropdownMenuItem(
                                   enabled: false,
                                   child: Text(
                                     'Pilih kategori',
-                                    style: kHeading6.copyWith(fontSize: 14),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Gaji',
                                   child: Text(
                                     'Gaji',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Penjualan Barang',
                                   child: Text(
                                     'Penjualan',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Tabungan',
                                   child: Text(
                                     'Tabungan',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Penerimaan Piutang',
                                   child: Text(
                                     'Penerimaan Piutang',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Komisi',
                                   child: Text(
                                     'Komisi',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Pendapatan Jasa',
                                   child: Text(
                                     'Pendapatan Jasa',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Pendapatan Bunga',
                                   child: Text(
                                     'Pendapatan Bunga',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Pendapatan Sewa',
                                   child: Text(
                                     'Pendapatan Sewa',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Pendapatan lain',
                                   child: Text(
                                     'Pendapatan lain',
-                                    style: kHeading6.copyWith(fontSize: 12),
                                   ),
                                 ),
                               ],
@@ -496,10 +482,14 @@ class _AddIncomePageState extends State<AddIncomePage> {
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+                color: kWhite,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 14,
+                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+              ),
             ),
           ),
           Text(
