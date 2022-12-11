@@ -66,6 +66,7 @@ Expensify adalah aplikasi yang dapat memudahkan pengguna dalam mengelola keuanga
 - [syncfusion_flutter_charts](https://pub.dev/packages/syncfusion_flutter_charts)
 - [pdf](https://pub.dev/packages/pdf)
 - [shimmer](https://pub.dev/packages/shimmer)
+- [printing](https://pub.dev/packages/printing)
 
 ## Team
 - [Aisyah Pertiwi](https://github.com/aisyaaaicha)
