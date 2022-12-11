@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckBoxLogIn extends StatelessWidget {
   const CheckBoxLogIn(
@@ -60,6 +61,7 @@ class CheckBoxRegister extends StatelessWidget {
                 text: 'Saya menyetujui segala isi ',
                 style: kBodyText.copyWith(
                   fontSize: 12,
+                  color: context.watch<ThemeBloc>().state ? kWhite : kDark,
                 ),
                 children: [
                   TextSpan(
@@ -73,6 +75,7 @@ class CheckBoxRegister extends StatelessWidget {
                     text: 'dan ',
                     style: kBodyText.copyWith(
                       fontSize: 12,
+                      color: context.watch<ThemeBloc>().state ? kWhite : kDark,
                     ),
                   ),
                   TextSpan(
