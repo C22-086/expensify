@@ -68,7 +68,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         date: _dateController.text,
       ),
     );
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, MainPage.routeName);
   }
 
   @override
