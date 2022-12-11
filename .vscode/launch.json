@@ -7,7 +7,7 @@
         {
             "name": "expensify",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         },
         {
             "name": "expensify (profile mode)",
@@ -23,9 +23,10 @@
         },
         {
             "name": "core",
-            "cwd": "core",
+            "cwd": "lib/main",
             "request": "launch",
             "type": "dart"
+            
         },
         {
             "name": "core (profile mode)",

@@ -57,6 +57,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
       ref.update({'balance': balance + int.parse(_incomeTextController.text)});
     }
     if (!mounted) return;
+
     BlocProvider.of<DatabaseBloc>(context).add(
       DatabasePushIncomeUser(
         name: widget.user['name'],
@@ -67,6 +68,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         date: _dateController.text,
       ),
     );
+    Navigator.pop(context);
   }
 
   @override
@@ -94,10 +96,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 Expanded(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height - 130,
-                    child: ListView(
+                    child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [buildBody()],
+                      child: buildBody(),
                     ),
                   ),
                 ),
@@ -135,9 +136,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Pemasukkan :'),
+              const SizedBox(height: 5),
               Text(
                 'Rp. +${_incomeTextController.text}',
-                style: GoogleFonts.poppins(fontSize: 24),
+                style: kHeading6.copyWith(fontSize: 24, color: kGreen),
               ),
             ],
           ),
@@ -217,7 +219,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               blurRadius: 49,
                               color: state
                                   ? kDark
-                                  : const Color.fromARGB(255, 169, 169, 169),
+                                  : const Color.fromARGB(255, 236, 236, 236),
                             ),
                           ],
                         ),
@@ -242,10 +244,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             const SizedBox(height: 9),
                             DropdownButtonFormField(
                               icon: Container(
-                                padding: const EdgeInsets.all(3),
+                                width: 40,
                                 decoration: BoxDecoration(
                                   color: kGreen,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Icon(
                                   Icons.keyboard_arrow_down,
@@ -275,41 +277,68 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                     style: kHeading6.copyWith(fontSize: 14),
                                   ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Gaji',
-                                  child: Text('Gaji'),
+                                  child: Text(
+                                    'Gaji',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Penjualan Barang',
-                                  child: Text('Penjualan'),
+                                  child: Text(
+                                    'Penjualan',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Tabungan',
-                                  child: Text('Tabungan'),
+                                  child: Text(
+                                    'Tabungan',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Penerimaan Piutang',
-                                  child: Text('Penerimaan Piutang'),
+                                  child: Text(
+                                    'Penerimaan Piutang',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Komisi',
-                                  child: Text('Komisi'),
+                                  child: Text(
+                                    'Komisi',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Jasa',
-                                  child: Text('Pendapatan Jasa'),
+                                  child: Text(
+                                    'Pendapatan Jasa',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Bunga',
-                                  child: Text('Pendapatan Bunga'),
+                                  child: Text(
+                                    'Pendapatan Bunga',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Sewa',
-                                  child: Text('Pendapatan Sewa'),
+                                  child: Text(
+                                    'Pendapatan Sewa',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan lain',
-                                  child: Text('Pendapatan lain'),
+                                  child: Text(
+                                    'Pendapatan lain',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
                               ],
                               onChanged: (value) {
@@ -337,7 +366,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               blurRadius: 49,
                               color: state
                                   ? kDark
-                                  : const Color.fromARGB(255, 169, 169, 169),
+                                  : const Color.fromARGB(255, 236, 236, 236),
                             ),
                           ],
                         ),
@@ -430,7 +459,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 150,
+                        height: 100,
                       )
                     ],
                   ),

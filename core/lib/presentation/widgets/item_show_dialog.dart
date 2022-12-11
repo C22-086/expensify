@@ -44,6 +44,8 @@ class DetailItemDialog extends StatelessWidget {
             subtitle,
             style: kHeading6.copyWith(fontSize: 16),
             textAlign: TextAlign.left,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
         )
       ],

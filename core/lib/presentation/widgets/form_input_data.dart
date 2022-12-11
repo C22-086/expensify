@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../core.dart';
 
@@ -40,7 +39,7 @@ class FormInputData extends StatelessWidget {
             blurRadius: 49,
             color: context.watch<ThemeBloc>().state
                 ? kDark
-                : const Color.fromARGB(255, 169, 169, 169),
+                : const Color.fromARGB(255, 236, 236, 236),
           ),
         ],
       ),
@@ -49,11 +48,7 @@ class FormInputData extends StatelessWidget {
         children: [
           Chip(
             backgroundColor: Colors.transparent,
-            labelStyle: GoogleFonts.poppins(
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-              color: textColor,
-            ),
+            labelStyle: kHeading6.copyWith(fontSize: 10, color: textColor),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: boderColor, width: 2),
               borderRadius: const BorderRadius.all(
@@ -72,22 +67,21 @@ class FormInputData extends StatelessWidget {
             },
             keyboardType: keyboardType,
             decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              fillColor: context.watch<ThemeBloc>().state
-                  ? kSoftDark
-                  : const Color(0xffF7F8F8),
-              hintText: hintText,
-              filled: true,
-              hintStyle: GoogleFonts.poppins(
-                fontSize: 12,
-              ),
-            ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                fillColor: context.watch<ThemeBloc>().state
+                    ? kSoftDark
+                    : const Color(0xffF7F8F8),
+                hintText: hintText,
+                filled: true,
+                hintStyle: kHeading6.copyWith(
+                  fontSize: 12,
+                )),
             controller: controller,
           )
         ],

@@ -59,14 +59,35 @@ class _SettingsPageState extends State<SettingsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       user['imageProfile'] == ''
-                          ? const CircleAvatar(
-                              radius: 36,
-                              child: Text('No Image'),
+                          ? CircleAvatar(
+                              radius: 43,
+                              backgroundColor: kGreen,
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundColor: kWhite,
+                                child: CircleAvatar(
+                                  radius: 36,
+                                  child: Center(
+                                    child: Text(
+                                      'No Image',
+                                      style: kHeading6.copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             )
                           : CircleAvatar(
-                              radius: 36,
-                              backgroundImage:
-                                  NetworkImage(user['imageProfile']),
+                              radius: 43,
+                              backgroundColor: kGreen,
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundColor: kWhite,
+                                child: CircleAvatar(
+                                  radius: 36,
+                                  backgroundImage:
+                                      NetworkImage(user['imageProfile']),
+                                ),
+                              ),
                             ),
                       CustomButton(
                         title: 'Edit Profil',
@@ -203,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 33,
             ),
-            GestureDetector(
+            InkWell(
               onTap: () {
                 Navigator.push(
                   context,

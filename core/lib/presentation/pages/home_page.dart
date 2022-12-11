@@ -442,45 +442,91 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  final getBalance = await FirebaseDatabase
-                                      .instance
-                                      .ref()
-                                      .child('users/$uid/balance')
-                                      .get();
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 15, left: 20, right: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          color: kGreen,
+                                        ),
+                                        child: TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Batal',
+                                                style: kHeading7.copyWith(
+                                                    fontSize: 16,
+                                                    color: kWhite))),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0,
+                                        ),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            color: kRed),
+                                        child: TextButton(
+                                            onPressed: () async {
+                                              final getBalance =
+                                                  await FirebaseDatabase
+                                                      .instance
+                                                      .ref()
+                                                      .child(
+                                                          'users/$uid/balance')
+                                                      .get();
 
-                                  final refUser = FirebaseDatabase.instance
-                                      .ref('users/$uid');
-                                  if (getBalance.exists) {
-                                    if (list[index]['type']
-                                        .contains('income')) {
-                                      await refUser.update({
-                                        'balance': int.parse(
-                                                getBalance.value.toString()) -
-                                            list[index]['amount']
-                                      });
-                                    } else {
-                                      await refUser.update({
-                                        'balance': int.parse(
-                                                getBalance.value.toString()) +
-                                            list[index]['amount']
-                                      });
-                                    }
-                                  }
-                                  await FirebaseDatabase.instance
-                                      .ref('transaction/$uid')
-                                      .child(list[index]['transactionId'])
-                                      .remove()
-                                      .then((value) => Navigator.pop(_));
-                                },
-                                child: const Text('Hapus'),
+                                              final refUser = FirebaseDatabase
+                                                  .instance
+                                                  .ref('users/$uid');
+                                              if (getBalance.exists) {
+                                                if (list[index]['type']
+                                                    .contains('income')) {
+                                                  await refUser.update({
+                                                    'balance': int.parse(
+                                                            getBalance.value
+                                                                .toString()) -
+                                                        list[index]['amount']
+                                                  });
+                                                } else {
+                                                  await refUser.update({
+                                                    'balance': int.parse(
+                                                            getBalance.value
+                                                                .toString()) +
+                                                        list[index]['amount']
+                                                  });
+                                                }
+                                              }
+                                              await FirebaseDatabase.instance
+                                                  .ref('transaction/$uid')
+                                                  .child(list[index]
+                                                      ['transactionId'])
+                                                  .remove()
+                                                  .then((value) =>
+                                                      Navigator.pop(_));
+                                            },
+                                            child: Text('Hapus',
+                                                style: kHeading7.copyWith(
+                                                    fontSize: 16,
+                                                    color: kWhite))),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           );
