@@ -255,7 +255,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                 ),
                               ),
                               hint: const Text('Pilih kategori'),
-                              style: kHeading6.copyWith(fontSize: 12),
+                              style: kHeading6.copyWith(
+                                fontSize: 12,
+                                color: state ? kWhite : kDark,
+                              ),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
