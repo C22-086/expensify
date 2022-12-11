@@ -139,7 +139,13 @@ class _ExportDataPageState extends State<ExportDataPage> {
   }
 
   Future<void> _savePdf(List data, total, totalExpanse) async {
-    const tableHeader = ['No', 'Tanggal', 'Judul', 'Kategori', 'Nominal'];
+    const tableHeader = [
+      ' No ',
+      ' Tanggal ',
+      ' Judul ',
+      ' Kategori ',
+      ' Nominal '
+    ];
     int no = 1;
     final dataTable = data
         .map((e) => [
@@ -147,7 +153,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               if (e['type'] == 'income') e['incomeDate'] else e['expanseDate'],
               e['title'],
               e['category'],
-              formatCurrency.format(e['amount']),
+              formatBalance.format(e['amount']),
             ])
         .toList();
 
@@ -157,6 +163,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
         'https://firebasestorage.googleapis.com/v0/b/expensify-3fd31.appspot.com/o/images%2Fapp_icon.png?alt=media&token=8e2b3497-550a-4409-90cc-e70f84d736f9');
 
     pdf.addPage(pw.Page(
+        orientation: pw.PageOrientation.landscape,
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return pw.Column(children: [
@@ -172,11 +179,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
               children: [
                 pw.Text(
                   'Nama : ',
-                  style: const pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 10),
                 ),
                 pw.Text(
                   widget.user['name'],
-                  style: const pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 10),
                 )
               ],
             ),
@@ -184,11 +191,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
               children: [
                 pw.Text(
                   'Email : ',
-                  style: const pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 10),
                 ),
                 pw.Text(
                   widget.user['email'],
-                  style: const pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 10),
                 )
               ],
             ),
@@ -204,6 +211,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               headerDecoration: const pw.BoxDecoration(
                 color: PdfColor.fromInt(0xFF21DD73),
               ),
+              headerPadding: const pw.EdgeInsets.symmetric(horizontal: 8),
               rowDecoration: const pw.BoxDecoration(
                 border: pw.Border(
                   bottom: pw.BorderSide(
@@ -212,6 +220,15 @@ class _ExportDataPageState extends State<ExportDataPage> {
                   ),
                 ),
               ),
+              cellAlignment: pw.Alignment.center,
+              cellAlignments: {
+                0: pw.Alignment.center,
+                1: pw.Alignment.centerLeft,
+                2: pw.Alignment.centerLeft,
+                3: pw.Alignment.centerLeft,
+                4: pw.Alignment.centerLeft,
+              },
+              cellPadding: const pw.EdgeInsets.all(5),
             ),
             pw.SizedBox(height: 20),
             pw.Row(
@@ -223,11 +240,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
                           ? 'Jumlah Pendapatan : '
                           : 'Jumlah Pengeluaran : ',
                   style: pw.TextStyle(
-                      fontSize: 12, fontBold: pw.Font.courierBold()),
+                      fontSize: 10, fontBold: pw.Font.courierBold()),
                 ),
                 pw.Text(
-                  formatCurrency.format(total),
-                  style: const pw.TextStyle(fontSize: 12),
+                  formatBalance.format(total),
+                  style: const pw.TextStyle(fontSize: 10),
                 )
               ],
             ),
@@ -236,13 +253,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 pw.Text(
                   category == 'semua' ? 'Jumlah Pengeluaran : ' : '',
                   style: pw.TextStyle(
-                      fontSize: 12, fontBold: pw.Font.courierBold()),
+                      fontSize: 10, fontBold: pw.Font.courierBold()),
                 ),
                 pw.Text(
-                  category == 'semua'
-                      ? formatCurrency.format(totalExpanse)
-                      : '',
-                  style: const pw.TextStyle(fontSize: 12),
+                  category == 'semua' ? formatBalance.format(totalExpanse) : '',
+                  style: const pw.TextStyle(fontSize: 10),
                 )
               ],
             ),
