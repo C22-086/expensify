@@ -60,7 +60,7 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                   },
                 ),
                 Text(
-                  "Income overview",
+                  "Rekap Pemasukan",
                   style: kHeading6.copyWith(color: kWhite),
                 ),
                 const SizedBox(width: 20)
