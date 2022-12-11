@@ -1,7 +1,7 @@
 # Expensify
 
 <p align="center">
-  <img src="assets/app_icon.png" width="250">
+  <img src="assets/app_icon.png" width="220">
 </p>
 
 Expensify adalah aplikasi yang dapat memudahkan pengguna dalam mengelola keuangan dengan menyediakan berbagai fitur sebagai berikut:
