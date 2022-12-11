@@ -71,7 +71,77 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   CustomButton(
                     title: "Kirim",
                     onPressed: () {
-                      sendEmail();
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                            title: Text(
+                              "Informasi",
+                              style: kHeading7.copyWith(
+                                  fontSize: 18, color: Colors.amber),
+                              textAlign: TextAlign.center,
+                            ),
+                            content: SizedBox(
+                              height: 50,
+                              child: Center(
+                                child: Text(
+                                  "Mohon periksa email spam, jika tidak menemukan email reset password",
+                                  style: kHeading7.copyWith(fontSize: 14),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            actions: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 36.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        color: kGreen),
+                                    child: TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Batal',
+                                            style: kHeading7.copyWith(
+                                                fontSize: 16, color: kWhite))),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 36.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        color: kRed),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        sendEmail();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Oke',
+                                        style: kHeading7.copyWith(
+                                            fontSize: 16, color: kWhite),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   )
                 ],
