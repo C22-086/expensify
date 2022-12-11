@@ -70,6 +70,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
     final dataExpanse = [];
     final expansesAmount = [];
 
+    final dataAll = [];
+    // final allAmount = [];
+
     if (category == 'pendapatan') {
       for (var e in listData) {
         if (e['type'] == 'income') {
@@ -84,7 +87,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ? 0
               : incomesAmount.first;
 
-      _savePdf(dataIncome, total);
+      _savePdf(dataIncome, total, '');
     } else if (category == 'pengeluaran') {
       for (var e in listData) {
         if (e['type'] == 'expanse') {
@@ -99,14 +102,43 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ? 0
               : expansesAmount.first;
 
-      _savePdf(dataExpanse, total);
+      _savePdf(dataExpanse, total, '');
+    } else if (category == 'semua') {
+      for (var e in listData) {
+        dataAll.add(e);
+      }
+
+      for (var e in listData) {
+        if (e['type'] == 'expanse') {
+          expansesAmount.add(e['amount']);
+        }
+      }
+      for (var e in listData) {
+        if (e['type'] == 'income') {
+          incomesAmount.add(e['amount']);
+        }
+      }
+
+      final totalIncome = incomesAmount.length >= 2
+          ? incomesAmount.reduce((a, b) => a + b)
+          : incomesAmount.isEmpty
+              ? 0
+              : incomesAmount.first;
+
+      final totalExpanse = expansesAmount.length >= 2
+          ? expansesAmount.reduce((a, b) => a + b)
+          : expansesAmount.isEmpty
+              ? 0
+              : expansesAmount.first;
+
+      _savePdf(dataAll, totalIncome, totalExpanse);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Ada Kesalahan !!')));
     }
   }
 
-  Future<void> _savePdf(List data, total) async {
+  Future<void> _savePdf(List data, total, totalExpanse) async {
     const tableHeader = ['No', 'Tanggal', 'Judul', 'Kategori', 'Nominal'];
     int no = 1;
     final dataTable = data
@@ -185,14 +217,31 @@ class _ExportDataPageState extends State<ExportDataPage> {
             pw.Row(
               children: [
                 pw.Text(
-                  category == 'pendapatan'
+                  category == 'semua'
                       ? 'Jumlah Pendapatan : '
-                      : 'Jumlah Pengeluaran : ',
+                      : category == 'pendapatan'
+                          ? 'Jumlah Pendapatan : '
+                          : 'Jumlah Pengeluaran : ',
                   style: pw.TextStyle(
                       fontSize: 12, fontBold: pw.Font.courierBold()),
                 ),
                 pw.Text(
                   formatCurrency.format(total),
+                  style: const pw.TextStyle(fontSize: 12),
+                )
+              ],
+            ),
+            pw.Row(
+              children: [
+                pw.Text(
+                  category == 'semua' ? 'Jumlah Pengeluaran : ' : '',
+                  style: pw.TextStyle(
+                      fontSize: 12, fontBold: pw.Font.courierBold()),
+                ),
+                pw.Text(
+                  category == 'semua'
+                      ? formatCurrency.format(totalExpanse)
+                      : '',
                   style: const pw.TextStyle(fontSize: 12),
                 )
               ],
@@ -263,6 +312,28 @@ class _ExportDataPageState extends State<ExportDataPage> {
                   ),
                 )
               ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  category = 'semua';
+                });
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: category == 'semua' ? kGreen : kGrey, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: Text(
+                  "Semua",
+                  style: kHeading7,
+                ),
+              ),
             ),
             const SizedBox(
               height: 20,
