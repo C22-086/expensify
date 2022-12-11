@@ -62,6 +62,11 @@ Expensify adalah aplikasi yang dapat memudahkan pengguna dalam mengelola keuanga
 - [pdf](https://pub.dev/packages/pdf)
 - [shimmer](https://pub.dev/packages/shimmer)
 
+## Team
+- [Aisyah Pertiwi](https://github.com/aisyaaaicha)
+- [Novan Noviansyah Pratama](https://github.com/novannp)
+- [Rivan Albani Ray](https://github.com/rrivann)
+- [T. Munawar Khalil](https://github.com/teukumunawark)
 
 # License
 [MIT](./LICENSE) License Copyright (c) 2022 Expensify
