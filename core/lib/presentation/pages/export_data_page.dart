@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/back_button.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:core/utils/format_currency.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -270,10 +271,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                             width: 2),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8))),
-                    child: Text(
-                      "Pendapatan",
-                      style: kHeading7.copyWith(color: kSoftBlack),
-                    ),
+                    child: Text("Pendapatan", style: kHeading7),
                   ),
                 ),
                 const SizedBox(
@@ -296,7 +294,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                             const BorderRadius.all(Radius.circular(8))),
                     child: Text(
                       "Pengeluaran",
-                      style: kHeading7.copyWith(color: kSoftBlack),
+                      style: kHeading7,
                     ),
                   ),
                 )
@@ -363,7 +361,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
                 child: Text(
                   "PDF",
-                  style: kHeading7.copyWith(color: kSoftBlack),
+                  style: kHeading7,
                 ),
               ),
             ),
@@ -439,23 +437,12 @@ class _ExportDataPageState extends State<ExportDataPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            onTap: () {
+          CustomBackButton(
+            onPressed: () {
               Navigator.pop(context);
             },
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: kWhite,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
-            ),
           ),
-          Text(
-            'Ekspor Data',
-            style: kHeading6.copyWith(color: kWhite),
-          ),
+          Text('Ekspor Data', style: kHeading6.copyWith(color: kWhite)),
           const SizedBox(width: 24),
         ],
       ),

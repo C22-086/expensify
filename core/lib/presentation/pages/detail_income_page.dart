@@ -8,7 +8,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/back_button.dart';
-import '../widgets/custom_category.dart';
 import '../widgets/custom_header_app.dart';
 
 class DetailIncomePage extends StatefulWidget {
@@ -67,36 +66,6 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
                 const SizedBox(width: 20)
               ],
             ),
-          ),
-        );
-
-    buildCategory() => Padding(
-          padding: EdgeInsets.only(
-            left: defaultMargin,
-            right: defaultMargin,
-            top: height * 0.03,
-            bottom: height * 0.01,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CustomeCategory(
-                index: 0,
-                title: "Last Year",
-              ),
-              CustomeCategory(
-                index: 1,
-                title: "Last Month",
-              ),
-              CustomeCategory(
-                index: 2,
-                title: "Last Week",
-              ),
-              CustomeCategory(
-                index: 3,
-                title: "Last Day",
-              ),
-            ],
           ),
         );
 
@@ -216,7 +185,6 @@ class _DetailIncomePageState extends State<DetailIncomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildAppBar(),
-              buildCategory(),
               Expanded(
                 child: FutureBuilder<dynamic>(
                     future: fetchUserTransaction(),
