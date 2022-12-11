@@ -8,7 +8,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -23,15 +22,8 @@ class ExportDataPage extends StatefulWidget {
 }
 
 class _ExportDataPageState extends State<ExportDataPage> {
-  TextEditingController dateController = TextEditingController();
   String category = 'kosong';
   String format = 'kosong';
-
-  @override
-  void initState() {
-    super.initState();
-    dateController.text = "";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,22 +65,15 @@ class _ExportDataPageState extends State<ExportDataPage> {
     final listData = transactions.values.toList();
 
     final dataIncome = [];
-    final dataDateIncome = [];
     final incomesAmount = [];
 
     final dataExpanse = [];
-    final dataDateExpanse = [];
     final expansesAmount = [];
 
     if (category == 'pendapatan') {
       for (var e in listData) {
         if (e['type'] == 'income') {
           dataIncome.add(e);
-        }
-      }
-      for (var e in dataIncome) {
-        if (e['incomeDate'] == dateController.text) {
-          dataDateIncome.add(e);
           incomesAmount.add(e['amount']);
         }
       }
@@ -99,16 +84,11 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ? 0
               : incomesAmount.first;
 
-      _savePdf(dataDateIncome, total);
+      _savePdf(dataIncome, total);
     } else if (category == 'pengeluaran') {
       for (var e in listData) {
         if (e['type'] == 'expanse') {
           dataExpanse.add(e);
-        }
-      }
-      for (var e in dataExpanse) {
-        if (e['expanseDate'] == dateController.text) {
-          dataDateExpanse.add(e);
           expansesAmount.add(e['amount']);
         }
       }
@@ -119,7 +99,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ? 0
               : expansesAmount.first;
 
-      _savePdf(dataDateExpanse, total);
+      _savePdf(dataExpanse, total);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Ada Kesalahan !!')));
@@ -181,22 +161,6 @@ class _ExportDataPageState extends State<ExportDataPage> {
               ],
             ),
             pw.SizedBox(height: 20),
-            pw.Divider(),
-            pw.Row(
-              children: [
-                pw.Text(
-                  category == 'pendapatan'
-                      ? 'Tanggal Pendapatan : '
-                      : 'Tanggal Pengeluaran : ',
-                  style: const pw.TextStyle(fontSize: 12),
-                ),
-                pw.Text(
-                  dateController.text,
-                  style: const pw.TextStyle(fontSize: 12),
-                )
-              ],
-            ),
-            pw.SizedBox(height: 20),
             pw.Table.fromTextArray(
               data: dataTable,
               border: null,
@@ -239,7 +203,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
 
     Uint8List bytes = await pdf.save();
 
-    await saveAndLaunchFile(bytes, '${dateController.text}.pdf');
+    await saveAndLaunchFile(bytes, '${widget.user['email']}.pdf');
   }
 
   Widget buildBody(user) {
@@ -303,45 +267,6 @@ class _ExportDataPageState extends State<ExportDataPage> {
             const SizedBox(
               height: 20,
             ),
-            Text("Pilih Tanggal", style: kHeading6),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Center(
-                    child: TextFormField(
-                  controller: dateController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.calendar_today),
-                      hintText: "Masukkan Tanggal",
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: kGreen, width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: kGrey, width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(8)))),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
-                    );
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat("yyyy-MM-dd").format(pickedDate);
-
-                      setState(() {
-                        dateController.text = formattedDate.toString();
-                      });
-                    } else {}
-                  },
-                ))),
-            const SizedBox(
-              height: 20,
-            ),
             Text("Pilih Format", style: kHeading6),
             const SizedBox(
               height: 20,
@@ -382,9 +307,6 @@ class _ExportDataPageState extends State<ExportDataPage> {
                       } else if (format == 'kosong') {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Pilih Format !!')));
-                      } else if (dateController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Pilih Tanggal !!')));
                       } else {
                         _createPdf(user);
                       }
