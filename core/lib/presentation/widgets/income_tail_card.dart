@@ -42,25 +42,33 @@ class IncomeTailCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(title, style: kHeading7),
-              const SizedBox(height: 5),
-              Text(
-                category,
-                style: kBodyText,
-              ),
-              const SizedBox(height: 5),
-              Text(date, style: kBodyText),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: kHeading7,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  category,
+                  style: kBodyText,
+                ),
+                const SizedBox(height: 5),
+                Text(date, style: kBodyText),
+              ],
+            ),
           ),
-          const Spacer(),
-          Text(
-            "$label $amount",
-            style: kHeading6.copyWith(
-              color: currencyColor,
+          SizedBox(
+            child: Text(
+              "$label $amount",
+              style: kHeading6.copyWith(
+                color: currencyColor,
+              ),
             ),
           )
         ],
