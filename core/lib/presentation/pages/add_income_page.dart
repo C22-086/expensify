@@ -275,41 +275,68 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                     style: kHeading6.copyWith(fontSize: 14),
                                   ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Gaji',
-                                  child: Text('Gaji'),
+                                  child: Text(
+                                    'Gaji',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Penjualan Barang',
-                                  child: Text('Penjualan'),
+                                  child: Text(
+                                    'Penjualan',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Tabungan',
-                                  child: Text('Tabungan'),
+                                  child: Text(
+                                    'Tabungan',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Penerimaan Piutang',
-                                  child: Text('Penerimaan Piutang'),
+                                  child: Text(
+                                    'Penerimaan Piutang',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Komisi',
-                                  child: Text('Komisi'),
+                                  child: Text(
+                                    'Komisi',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Jasa',
-                                  child: Text('Pendapatan Jasa'),
+                                  child: Text(
+                                    'Pendapatan Jasa',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Bunga',
-                                  child: Text('Pendapatan Bunga'),
+                                  child: Text(
+                                    'Pendapatan Bunga',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan Sewa',
-                                  child: Text('Pendapatan Sewa'),
+                                  child: Text(
+                                    'Pendapatan Sewa',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: 'Pendapatan lain',
-                                  child: Text('Pendapatan lain'),
+                                  child: Text(
+                                    'Pendapatan lain',
+                                    style: kHeading6.copyWith(fontSize: 12),
+                                  ),
                                 ),
                               ],
                               onChanged: (value) {
