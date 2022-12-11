@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:core/core.dart';
+import 'package:core/presentation/widgets/back_button.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -131,22 +132,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             SizedBox(
               height: 46,
-              child: Text(
-                "Nama",
-                style: kHeading6.copyWith(
-                  color: kSoftBlack,
-                ),
-              ),
+              child: Text("Nama", style: kHeading6),
             ),
             _buildTextField(widget.user['name'], false),
             SizedBox(
               height: 46,
-              child: Text(
-                "Email",
-                style: kHeading6.copyWith(
-                  color: kSoftBlack,
-                ),
-              ),
+              child: Text("Email", style: kHeading6),
             ),
             _buildTextField(widget.user['email'], true),
             const SizedBox(
@@ -262,18 +253,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            onTap: () {
+          CustomBackButton(
+            onPressed: () {
               Navigator.pop(context);
             },
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: kWhite,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
-            ),
           ),
           Text(
             'Edit Profile',

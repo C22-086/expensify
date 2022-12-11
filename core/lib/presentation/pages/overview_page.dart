@@ -83,8 +83,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   children: [
                     Text(
                       "Saldo",
-                      style: kHeading7.copyWith(
-                          color: Colors.black45, fontSize: 18),
+                      style: kHeading7.copyWith(fontSize: 18),
                     ),
                     Text(
                       formatCurrency.format(user['balance']),
