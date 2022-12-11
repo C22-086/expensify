@@ -94,10 +94,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 Expanded(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height - 130,
-                    child: ListView(
+                    child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [buildBody()],
+                      child: buildBody(),
                     ),
                   ),
                 ),
@@ -135,9 +134,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Pemasukkan :'),
+              const SizedBox(height: 5),
               Text(
                 'Rp. +${_incomeTextController.text}',
-                style: GoogleFonts.poppins(fontSize: 24),
+                style: kHeading6.copyWith(fontSize: 22, color: kGreen),
               ),
             ],
           ),
@@ -217,7 +217,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               blurRadius: 49,
                               color: state
                                   ? kDark
-                                  : const Color.fromARGB(255, 169, 169, 169),
+                                  : const Color.fromARGB(255, 236, 236, 236),
                             ),
                           ],
                         ),
@@ -242,10 +242,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             const SizedBox(height: 9),
                             DropdownButtonFormField(
                               icon: Container(
-                                padding: const EdgeInsets.all(3),
+                                width: 40,
                                 decoration: BoxDecoration(
                                   color: kGreen,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Icon(
                                   Icons.keyboard_arrow_down,
@@ -337,7 +337,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               blurRadius: 49,
                               color: state
                                   ? kDark
-                                  : const Color.fromARGB(255, 169, 169, 169),
+                                  : const Color.fromARGB(255, 236, 236, 236),
                             ),
                           ],
                         ),
@@ -430,7 +430,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 150,
+                        height: 100,
                       )
                     ],
                   ),
