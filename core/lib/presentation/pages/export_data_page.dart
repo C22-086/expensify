@@ -49,17 +49,17 @@ class _ExportDataPageState extends State<ExportDataPage> {
             final result = snapshot.data;
             final user = result.snapshot.value;
             return snapshot.hasData
-                ? Stack(
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildHeader(context),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 130,
+                      buildHeader(context),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Container(
                             child: buildBody(user),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   )
