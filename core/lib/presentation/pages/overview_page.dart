@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:core/core.dart';
 import 'package:core/domain/entities/chart_income.dart';
 import 'package:core/utils/format_currency.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -74,43 +73,25 @@ class _OverviewPageState extends State<OverviewPage> {
               snapshot.data as Map<String, dynamic>;
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Saldo",
-                      style: kHeading7.copyWith(
-                          color: Colors.black45, fontSize: 18),
-                    ),
-                    Text(
-                      formatCurrency.format(user['balance']),
-                      style: kHeading7.copyWith(
-                        color: kGreen,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 60,
-                  width: 120,
-                  child: DropdownSearch(
-                    items: const [
-                      "Hari",
-                      "Minggu",
-                      "Bulan",
-                      "Tahun",
-                    ],
-                    onChanged: print,
-                    selectedItem: "Hari",
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Saldo",
+                    style:
+                        kHeading7.copyWith(color: Colors.black45, fontSize: 18),
                   ),
-                ),
-              ],
+                  Text(
+                    formatBalance.format(user['balance']),
+                    style: kHeading7.copyWith(
+                      color: kGreen,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

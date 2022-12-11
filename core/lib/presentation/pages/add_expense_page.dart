@@ -61,7 +61,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
         amount: int.parse(_incomeTextController.text),
         title: _titleTextController.text,
         date: _dateController.text));
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, MainPage.routeName);
   }
 
   @override
@@ -250,11 +250,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                               ),
                             ),
                             hint: const Text('Pilih kategori'),
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: kRichBlack,
-                            ),
+                            style: kHeading6.copyWith(fontSize: 12),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -267,15 +263,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             items: [
                               DropdownMenuItem(
                                 enabled: false,
-                                child: Text(
-                                  'Pilih kategori',
-                                  style:
-                                      GoogleFonts.poppins(color: Colors.grey),
-                                ),
+                                child: Text('Pilih kategori', style: kHeading6),
                               ),
-                              const DropdownMenuItem(
+                              DropdownMenuItem(
                                 value: 'Pembelian Makanan',
-                                child: Text('Pembelian Makanan'),
+                                child: Text(
+                                  'Pembelian Makanan',
+                                  style: kHeading6.copyWith(fontSize: 12),
+                                ),
                               ),
                               const DropdownMenuItem(
                                 value: 'Pembelian Pakaian',

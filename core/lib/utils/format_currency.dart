@@ -5,3 +5,9 @@ final formatCurrency = NumberFormat.compactCurrency(
   symbol: "Rp. ",
   decimalDigits: 0,
 );
+
+final formatBalance = NumberFormat.currency(
+  locale: "id_ID",
+  symbol: "Rp. ",
+  decimalDigits: 0,
+);
