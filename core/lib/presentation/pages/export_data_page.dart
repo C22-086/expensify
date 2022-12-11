@@ -126,7 +126,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
   }
 
   Future<void> _savePdf(List data, total) async {
-    const tableHeader = ['No', 'Tanggal', 'Judul', 'Kategori', 'Jumlah'];
+    const tableHeader = ['No', 'Tanggal', 'Judul', 'Kategori', 'Nominal'];
     int no = 1;
     final dataTable = data
         .map((e) => [
@@ -216,113 +216,6 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 ),
               ),
             ),
-            // pw.Table(
-            //   columnWidths: {
-            //     1: const pw.FlexColumnWidth(1),
-            //   },
-            //   children: [
-            //     pw.TableRow(
-            //       verticalAlignment: pw.TableCellVerticalAlignment.middle,
-            //       decoration: const pw.BoxDecoration(
-            //         color: PdfColors.green300,
-            //       ),
-            //       children: [
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'No',
-            //             style: pw.TextStyle(
-            //               fontSize: 12,
-            //               fontBold: pw.Font.helveticaBold(),
-            //             ),
-            //           ),
-            //         ),
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'Tanggal',
-            //             style: pw.TextStyle(
-            //               fontSize: 12,
-            //               fontBold: pw.Font.helveticaBold(),
-            //             ),
-            //           ),
-            //         ),
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'Judul',
-            //             style: const pw.TextStyle(fontSize: 12),
-            //           ),
-            //         ),
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'Kategori',
-            //             style: pw.TextStyle(
-            //               fontSize: 12,
-            //               fontBold: pw.Font.helveticaBold(),
-            //             ),
-            //           ),
-            //         ),
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'Tipe',
-            //             style: pw.TextStyle(
-            //               fontSize: 12,
-            //               fontBold: pw.Font.helveticaBold(),
-            //             ),
-            //           ),
-            //         ),
-            //         pw.Center(
-            //           child: pw.Text(
-            //             'Jumlah',
-            //             style: pw.TextStyle(
-            //               fontSize: 12,
-            //               fontBold: pw.Font.helveticaBold(),
-            //             ),
-            //           ),
-            //         )
-            //       ],
-            //     ),
-            //     ...data
-            //         .map(
-            //           (e) => pw.TableRow(
-            //             children: [
-            //               pw.Center(
-            //                 child: pw.Text(
-            //                   (data.indexOf(e) + 1).toString(),
-            //                   style: const pw.TextStyle(fontSize: 12),
-            //                 ),
-            //               ),
-            //               pw.Center(
-            //                   child: pw.Text(
-            //                 dateController.text.toString(),
-            //                 style: const pw.TextStyle(fontSize: 12),
-            //               )),
-            //               pw.Center(
-            //                   child: pw.Text(
-            //                 e['title'],
-            //                 style: const pw.TextStyle(fontSize: 12),
-            //               )),
-            //               pw.Center(
-            //                   child: pw.Text(
-            //                 e['category'],
-            //                 style: const pw.TextStyle(fontSize: 12),
-            //               )),
-            //               pw.Center(
-            //                   child: pw.Text(
-            //                 e['type'] == 'income'
-            //                     ? 'Pendapatan'
-            //                     : 'Pengeluaran',
-            //                 style: const pw.TextStyle(fontSize: 12),
-            //               )),
-            //               pw.Center(
-            //                   child: pw.Text(
-            //                 formatCurrency.format(e['amount']),
-            //                 style: const pw.TextStyle(fontSize: 12),
-            //               )),
-            //             ],
-            //           ),
-            //         )
-            //         .toList(),
-            //   ],
-            // ),
             pw.SizedBox(height: 20),
             pw.Row(
               children: [
