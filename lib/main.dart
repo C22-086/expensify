@@ -71,76 +71,16 @@ class MyApp extends StatelessWidget {
                 : isLogin == false || isLogin == null
                     ? LoginPage.routeName
                     : MainPage.routeName,
-            onGenerateRoute: (RouteSettings settings) {
-              switch (settings.name) {
-                case OnboardingPage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const OnboardingPage(),
-                  );
-                case MainPage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const MainPage(),
-                  );
-                case LoginPage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const LoginPage(),
-                  );
-                case SetBalancePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const SetBalancePage(),
-                  );
-                case RegisterPage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const RegisterPage(),
-                  );
-                case HomePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const HomePage(),
-                  );
-                case AddIncomePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => AddIncomePage(
-                      user: settings.arguments,
-                    ),
-                  );
-                case AddExpensePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => AddExpensePage(
-                      user: settings.arguments,
-                    ),
-                  );
-                case DetailIncomePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const DetailIncomePage(),
-                  );
-                case DetailExpensePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => const DetailExpensePage(),
-                  );
-                case EditProfilePage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => EditProfilePage(
-                      user: settings.arguments,
-                    ),
-                  );
-                case ExportDataPage.routeName:
-                  return MaterialPageRoute(
-                    builder: (_) => ExportDataPage(
-                      user: settings.arguments,
-                    ),
-                  );
-
-                default:
-                  return MaterialPageRoute(
-                    builder: (_) {
-                      return const Scaffold(
-                        body: Center(
-                          child: Text('Page not found :('),
-                        ),
-                      );
-                    },
-                  );
-              }
+            routes: {
+              OnboardingPage.routeName: (context) => const OnboardingPage(),
+              MainPage.routeName: (context) => const MainPage(),
+              LoginPage.routeName: (context) => const LoginPage(),
+              SetBalancePage.routeName: (context) => const SetBalancePage(),
+              RegisterPage.routeName: (context) => const RegisterPage(),
+              HomePage.routeName: (context) => const HomePage(),
+              DetailIncomePage.routeName: (context) => const DetailIncomePage(),
+              DetailExpensePage.routeName: (context) =>
+                  const DetailExpensePage(),
             },
           );
         },

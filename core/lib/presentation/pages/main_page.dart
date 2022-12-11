@@ -3,9 +3,16 @@ import 'package:core/presentation/pages/overview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   static const routeName = '/main';
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  DateTime currentBackPressTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +63,31 @@ class MainPage extends StatelessWidget {
               ),
             ],
           ),
-          body: IndexedStack(
-            index: currentIndex,
-            children: const [
-              HomePage(),
-              OverviewPage(),
-              SettingsPage(),
-            ],
+          body: WillPopScope(
+            onWillPop: () async {
+              final difference =
+                  DateTime.now().difference(currentBackPressTime);
+              final exitWarning = difference >= const Duration(seconds: 2);
+              currentBackPressTime = DateTime.now();
+              if (exitWarning) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Tekan sekali lagi untuk keluar'),
+                  ),
+                );
+                return false;
+              } else {
+                return true;
+              }
+            },
+            child: IndexedStack(
+              index: currentIndex,
+              children: const [
+                HomePage(),
+                OverviewPage(),
+                SettingsPage(),
+              ],
+            ),
           ),
         );
       },
