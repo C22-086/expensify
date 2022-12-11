@@ -23,20 +23,31 @@ class _SettingsPageState extends State<SettingsPage> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final dbRef = FirebaseDatabase.instance.ref('users/$uid').onValue;
 
-    buildAppBar() => SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 25,
-              horizontal: defaultMargin,
-            ),
-            child: Center(
-              child: Text(
-                "Pengaturan",
-                style: kHeading6,
+    buildAppBar() {
+      return Container(
+        height: 110,
+        width: double.maxFinite,
+        decoration: const BoxDecoration(
+          color: kGreen,
+          image: DecorationImage(
+            image: AssetImage('assets/income_card.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Text(
+              "Pengaturan",
+              style: kHeading6.copyWith(
+                color: kWhite,
+                fontSize: 22,
               ),
             ),
           ),
-        );
+        ),
+      );
+    }
+
     buildHeader(user) {
       return SafeArea(
           child: Padding(

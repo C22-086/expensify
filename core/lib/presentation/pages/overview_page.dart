@@ -7,7 +7,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -57,79 +56,6 @@ class _OverviewPageState extends State<OverviewPage> {
                 fontSize: 22,
               ),
             ),
-          ),
-        ),
-      );
-    }
-
-    buildButton() {
-      return Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-        child: Container(
-          height: 75,
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: context.watch<ThemeBloc>().state ? kSoftBlack : kSoftGrey,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2 - 30,
-                  decoration: BoxDecoration(
-                    color: isActive == true
-                        ? Colors.transparent
-                        : context.watch<ThemeBloc>().state
-                            ? kDark
-                            : kWhite,
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Pemasukan",
-                      style: kHeading6.copyWith(
-                        color: isActive == true ? kGrey : kGreen,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  setState(() {
-                    isActive = false;
-                  });
-                },
-              ),
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2 - 30,
-                  decoration: BoxDecoration(
-                    color: isActive == true
-                        ? context.watch<ThemeBloc>().state
-                            ? kDark
-                            : kWhite
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Pengeluaran",
-                      style: kHeading6.copyWith(
-                        color: isActive == true ? kRed : kGrey,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  setState(() {
-                    isActive = true;
-                  });
-                },
-              ),
-            ],
           ),
         ),
       );

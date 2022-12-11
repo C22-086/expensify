@@ -98,9 +98,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
               : incomesAmount.first;
 
       _savePdf(dataDateIncome, totalIncome);
-    }
-
-    if (category == 'pengeluaran') {
+    } else if (category == 'pengeluaran') {
       for (var e in listData) {
         if (e['type'] == 'expanse') {
           dataExpanse.add(e);
@@ -120,6 +118,9 @@ class _ExportDataPageState extends State<ExportDataPage> {
               : expansesAmount.first;
 
       _savePdf(dataDateExpanse, totalIncome);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Ada Kesalahan !!')));
     }
   }
 
@@ -282,7 +283,7 @@ class _ExportDataPageState extends State<ExportDataPage> {
 
     Uint8List bytes = await pdf.save();
 
-    await saveAndLaunchFile(bytes, 'document.pdf');
+    await saveAndLaunchFile(bytes, '${dateController.text}.pdf');
   }
 
   Widget buildBody(user) {
@@ -422,7 +423,18 @@ class _ExportDataPageState extends State<ExportDataPage> {
                 child: CustomButton(
                     title: "Ekspor",
                     onPressed: () {
-                      _createPdf(user);
+                      if (category == 'kosong') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Pilih Kategori !!')));
+                      } else if (format == 'kosong') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Pilih Format !!')));
+                      } else if (dateController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Pilih Tanggal !!')));
+                      } else {
+                        _createPdf(user);
+                      }
                     }),
               ),
             )
