@@ -485,10 +485,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 color: kWhite,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios_new_rounded,
                 size: 14,
-                color: context.watch<ThemeBloc>().state ? kDark : kWhite,
+                color: kDark,
               ),
             ),
           ),
