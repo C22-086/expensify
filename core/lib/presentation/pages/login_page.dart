@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/presentation/pages/forgot_password_page.dart';
 import 'package:core/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                             "Lupa kata sandi",
                             style: kHeading6.copyWith(fontSize: 15),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              ForgotPasswordPage.routeName,
+                            );
+                          },
                         ))
                   ],
                 ),
