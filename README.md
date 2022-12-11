@@ -41,7 +41,7 @@ Expensify adalah aplikasi yang dapat memudahkan pengguna dalam mengelola keuanga
 
 
 ## Screenshot
-[screenshot documentation]()
+[screenshot documentation](https://docs.google.com/document/d/1BFPVrn_YiBxf4a4PU9NltS0w_jRoEXFtUYB3eYB7fko/edit?usp=sharing)
 
 
     
