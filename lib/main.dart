@@ -81,6 +81,8 @@ class MyApp extends StatelessWidget {
               DetailIncomePage.routeName: (context) => const DetailIncomePage(),
               DetailExpensePage.routeName: (context) =>
                   const DetailExpensePage(),
+              ForgotPasswordPage.routeName: (context) =>
+                  const ForgotPasswordPage()
             },
           );
         },

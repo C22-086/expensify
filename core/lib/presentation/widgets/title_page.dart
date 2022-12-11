@@ -17,9 +17,13 @@ class TitlePage extends StatelessWidget {
           style: kTitle,
         ),
         const SizedBox(height: 5),
-        Text(
-          subHeading,
-          style: kBodyText,
+        SizedBox(
+          width: 320,
+          child: Text(
+            subHeading,
+            style: kBodyText,
+            textAlign: TextAlign.center,
+          ),
         ),
         const SizedBox(height: 26),
       ],

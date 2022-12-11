@@ -27,6 +27,7 @@ export 'presentation/pages/settings_page.dart';
 export 'presentation/pages/edit_profile_page.dart';
 export 'presentation/pages/export_data_page.dart';
 export 'presentation/pages/add_expense_page.dart';
+export 'presentation/pages/forgot_password_page.dart';
 
 // Data
 export 'data/repository/auth_repository_impl.dart';
