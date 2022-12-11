@@ -224,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 33,
             ),
-            GestureDetector(
+            InkWell(
               onTap: () {
                 Navigator.push(
                   context,
