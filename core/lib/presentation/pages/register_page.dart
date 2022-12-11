@@ -93,8 +93,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     buttonRegister(),
                     const SizedBox(height: 15),
-                    buttonLogInWithGoogle(),
-                    const SizedBox(height: 20),
                     LogInQuestion(
                       text: 'Sudah punya akun?',
                       buttonText: 'Masuk',
@@ -131,56 +129,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget buttonLogInWithGoogle() {
-    return InkWell(
-      onTap: () {
-        _signInWithGoogle(context);
-      },
-      child: Container(
-        height: defaultButtonHeight,
-        width: double.infinity,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(defaultRadius)),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/icon_google.png',
-                  scale: 2,
-                ),
-                state is AuthLoadingGoogle
-                    ? Container(
-                        width: 24,
-                        height: 24,
-                        padding: const EdgeInsets.all(2.0),
-                        child: const CircularProgressIndicator(
-                          color: kGreen,
-                          strokeWidth: 3,
-                        ),
-                      )
-                    : const Text(
-                        'Masuk dengan Google',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                const SizedBox(
-                  width: 0,
-                )
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   void _signUpEmailAndPassword(context) {
     if (_emailController.text.isEmpty) {
       const snackbar = SnackBar(content: Text('Email belum di isi'));
@@ -196,11 +144,5 @@ class _RegisterPageState extends State<RegisterPage> {
             password: _passwordController.text),
       );
     }
-  }
-
-  void _signInWithGoogle(context) {
-    BlocProvider.of<AuthBloc>(context).add(
-      GoogleLogInRequested(),
-    );
   }
 }

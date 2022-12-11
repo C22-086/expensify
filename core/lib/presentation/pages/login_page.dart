@@ -67,15 +67,6 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
-                    const SizedBox(height: 7),
-                    CheckBoxLogIn(
-                      isAgree: _isAgree,
-                      onChanged: (value) {
-                        setState(() {
-                          _isAgree = value;
-                        });
-                      },
-                    ),
                   ],
                 ),
                 Column(
