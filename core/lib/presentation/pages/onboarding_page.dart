@@ -27,7 +27,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         imageUrl: 'assets/onboarding_2.png',
         title: 'Statistik Pengeluaran',
         description:
-            'Pola pengeluaran diplot dalam berbagai jenis bagan berdasarkan tanggal dan waktu agar mudah dipahami.'),
+            'Pola pengeluaran diplot dalam berbagai jenis bagan agar mudah dipahami.'),
     const OnboardingContent(
       imageUrl: 'assets/onboarding_3.png',
       title: 'Rencanakan Masa Depan Anda',

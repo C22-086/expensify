@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import '../../utils/format_currency.dart';
 import '../widgets/back_button.dart';
-import '../widgets/custom_category.dart';
 import '../widgets/custom_header_app.dart';
 
 class DetailExpensePage extends StatefulWidget {
@@ -55,46 +54,12 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
                   },
                 ),
                 Text(
-                  "Expenses overview",
+                  "Rekap Pengeluaran",
                   style: kHeading6.copyWith(color: kWhite),
                 ),
                 const SizedBox(width: 20)
               ],
             ),
-          ),
-        );
-
-    buildCategory() => Padding(
-          padding: EdgeInsets.only(
-            left: defaultMargin,
-            right: defaultMargin,
-            top: height * 0.03,
-            bottom: height * 0.01,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CustomeCategory(
-                index: 0,
-                title: "Last Year",
-                titleColor: kRed,
-              ),
-              CustomeCategory(
-                index: 1,
-                title: "Last Month",
-                titleColor: kRed,
-              ),
-              CustomeCategory(
-                index: 2,
-                title: "Last Week",
-                titleColor: kRed,
-              ),
-              CustomeCategory(
-                index: 3,
-                title: "Last Day",
-                titleColor: kRed,
-              ),
-            ],
           ),
         );
 
@@ -230,7 +195,6 @@ class _DetailExpensePageState extends State<DetailExpensePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildAppBar(),
-              buildCategory(),
               Expanded(
                 child: FutureBuilder<dynamic>(
                     future: fetchUserTransaction(),

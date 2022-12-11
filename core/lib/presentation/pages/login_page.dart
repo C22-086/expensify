@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool? _isAgree = false;
   bool _isPasswordShow = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -64,15 +63,6 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         setState(() {
                           _isPasswordShow = !_isPasswordShow;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 7),
-                    CheckBoxLogIn(
-                      isAgree: _isAgree,
-                      onChanged: (value) {
-                        setState(() {
-                          _isAgree = value;
                         });
                       },
                     ),
