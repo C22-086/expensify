@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key, required this.subHeading});
@@ -21,7 +22,9 @@ class TitlePage extends StatelessWidget {
           width: 320,
           child: Text(
             subHeading,
-            style: kBodyText,
+            style: kBodyText.copyWith(
+              color: context.watch<ThemeBloc>().state ? kWhite : kDark,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
